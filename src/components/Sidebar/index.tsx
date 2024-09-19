@@ -19,7 +19,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [cookies] = useCookies(['accessToken', 'refreshToken']);
   const [gateData, setGateData] = useRecoilState(gateState);
   const apartmentUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_APARTMENT_ENDPOINT;
-  const gateUrl = `${import.meta.env.VITE_BASE_URL}/apartment/${gateData.id}${import.meta.env.VITE_GATE_ENDPOINT}`;
+  const gateUrl = `${import.meta.env.VITE_BASE_URL}/api/vi/apartment/${gateData.id}${import.meta.env.VITE_GATE_ENDPOINT}`;
 
   // URL을 로그로 확인
   // console.log('Generated gateUrl:', gateUrl);
