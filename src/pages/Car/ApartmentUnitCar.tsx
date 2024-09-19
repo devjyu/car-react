@@ -118,7 +118,7 @@ const ApartmentUnitCar: React.FC = () => {
       phone
     };
 
-    // console.log(addUnitCar);
+    // console.log(addUnitCar, '차량등록정보');
 
     try {
       const response = await axios.post(carUnitDongUrl, addUnitCar, {
@@ -128,6 +128,7 @@ const ApartmentUnitCar: React.FC = () => {
       });
       // console.log(response);
     } catch (error) {
+      alert("해당 아파트는 차량 3대까지 등록 가능합니다.");
       console.error('Error fetching data:', error);
     } finally {
       getCarUnitDongData(currentDong);
@@ -419,11 +420,11 @@ const ApartmentUnitCar: React.FC = () => {
                                     // key={index}
                                     >
                                       <div className="flex-1 flex justify-center px-1"
-                                        // onClick={(e) => {
-                                        //   e.stopPropagation();
-                                        //   openModal({ id: s.id, vehicleNumber: s.vehicleNumber });
-                                        //   selectVehicleHandle(s);
-                                        // }}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          openModal({ id: s.id, vehicleNumber: s.vehicleNumber });
+                                          selectVehicleHandle(s);
+                                        }}
                                       >
                                         {searchData ? fillColorNumber(s.vehicleNumber) : s.vehicleNumber}
                                         {/* <span className='text-xs text-slate-400 pt-0.5 pl-1'>({s.addition.length})</span> */}
@@ -466,7 +467,7 @@ const ApartmentUnitCar: React.FC = () => {
                               <AddUnitCarModal
                                 dong={currentDong}
                                 ho={vehicles.ho}
-                                // vehicle={vehicles}
+                                vehicle={vehicles}
                                 addHandler={(vehicleNumber, phone) => { addUnitCarHandler(vehicles.unitId, vehicleNumber, phone) }}
                               />
                               {/* <button

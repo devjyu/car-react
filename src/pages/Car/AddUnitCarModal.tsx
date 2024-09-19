@@ -22,7 +22,7 @@ interface AddUnrecognizedCar {
 const AddUnitCarModal = ({
   dong,
   ho,
-  // vehicle,
+  vehicle,
   addHandler,
   // addUnrecognizedHandler
 }) => {
@@ -169,7 +169,7 @@ const AddUnitCarModal = ({
             <p className="text-sm text-gray-600 dark:text-gray-400">{dong}동 {ho}호</p>
             <h2 className="text-xl font-bold text-gray-800 dark:text-white">차량 등록</h2>
           </div>
-          {/* <div className="grid grid-cols-2 mb-4">
+          <div className="grid grid-cols-2 mb-4">
             <button
               className={`px-4 py-2 ${activeTab === '차량 추가' ? 'bg-primary text-white' : 'bg-gray-200 border-b-2 border-primary'}`}
               onClick={() => setActiveTab('차량 추가')}
@@ -182,9 +182,9 @@ const AddUnitCarModal = ({
             >
               미인식 차량 추가
             </button>
-          </div> */}
+          </div>
           <div className="text-left">
-            <div className='p-4'>
+            {/* <div className='p-4'>
               <div className="w-full mb-5 grid grid-cols-3 flex items-center gap-4">
                 <label className="block text-sm font-medium text-black dark:text-white col-span-1">
                   차량번호 <span className="text-meta-1">*</span>
@@ -209,8 +209,8 @@ const AddUnitCarModal = ({
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                 />
               </div>
-            </div>
-            {/* {activeTab === '차량 추가' ? (
+            </div> */}
+            {activeTab === '차량 추가' ? (
               <>
                 <div className='p-4'>
                   <div className="w-full mb-5 grid grid-cols-3 flex items-center gap-4">
@@ -274,17 +274,17 @@ const AddUnitCarModal = ({
                   </div>
                 </div>
               </>
-            )} */}
+            )}
           </div>
           <div className="-mx-3 flex flex-wrap gap-y-4">
             <div className="2xsm:w-1/2 w-full px-3">
-              <button
+              {/* <button
                 className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
                 onClick={addUnitCar}
               >
                 등록
-              </button>
-              {/* {activeTab === '차량 추가' ? (
+              </button> */}
+              {activeTab === '차량 추가' ? (
                 <button
                   className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
                   onClick={addUnitCar}
@@ -297,7 +297,7 @@ const AddUnitCarModal = ({
                   onClick={addUnrecognizedCarHandler}
                 >
                   등록
-                </button>)} */}
+                </button>)}
             </div>
             <div className="2xsm:w-1/2 w-full px-3">
               <button
