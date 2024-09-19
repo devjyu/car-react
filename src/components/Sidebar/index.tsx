@@ -208,7 +208,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           fill=""
                         />
                       </svg> */}
-                      <img src="../../../public/realtime.png" alt="" className='w-5' />
+                      <img src="/realtime.png" alt="" className='w-5' />
                       실시간 입/출차
                     </NavLink>
                   </li>
@@ -299,7 +299,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 fill=""
                               />
                             </svg> */}
-                            <img src="../../../public/apartment.png" alt="" className='w-5' />
+                            <img src="/apartment.png" alt="" className='w-5' />
                             아파트 관리
                             <svg
                               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
@@ -595,7 +595,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 fill=""
                               />
                             </svg> */}
-                            <img src="../../../public/car.png" alt="" className='w-5' />
+                            <img src="/car.png" alt="" className='w-5' />
                             차량 관리
                             <svg
                               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
@@ -715,7 +715,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 fill=""
                               />
                             </svg> */}
-                            <img src="../../../public/inout.png" alt="" className='w-5' />
+                            <img src="/inout.png" alt="" className='w-5' />
                             입/출차 관리
                             <svg
                               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
@@ -944,7 +944,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 fill=""
                               />
                             </svg> */}
-                            <img src="../../../public/notice.png" alt="" className='w-5.5' />
+                            <img src="/notice.png" alt="" className='w-5.5' />
                             공지사항
                             <svg
                               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
