@@ -73,7 +73,7 @@ const ModalEdit: React.FC = () => {
         break;
       case '/car':
         updateUrl = updateUrl + import.meta.env.VITE_CAR_ENDPOINT;
-        console.log(editableEditData, '뭐임?');
+        // console.log(editableEditData, '뭐임?');
         
         editableEditData.forEach((data) => {
           if (['vehicleNumber', 'purpose', 'phone', 'startDate', 'endDate', 'type'].includes(data.key)) {
@@ -105,7 +105,7 @@ const ModalEdit: React.FC = () => {
     }
 
     try {
-      console.log(willUpdateData, '전송할 데이터');
+      // console.log(willUpdateData, '전송할 데이터');
       const id = initialEditData.find(data => data.key === 'id').value;
       const response = await axios.put(`${updateUrl}/${id}`, willUpdateData, {
         headers: headers

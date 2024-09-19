@@ -108,7 +108,7 @@ const ApartmentUnitCar: React.FC = () => {
     }
   };
 
-  console.log(carUnitDongData, "유닛동");
+  // console.log(carUnitDongData, "유닛동");
 
   const addUnitCarHandler = async (unitId, vehicleNumber, phone) => {
     // console.log(unitId);

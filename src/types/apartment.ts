@@ -39,3 +39,8 @@ export interface ApartmentUnitData {
     dong: string;
     ho: string;
 }
+
+export interface ApartmentGate {
+    id: number;
+    gateStatus: string;
+}

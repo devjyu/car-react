@@ -1,5 +1,11 @@
+
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { gateState } from '../../state/atoms/gateState.ts';
+import { ApartmentGate } from '../../types/apartment.ts';
 import SidebarLinkGroup from './SidebarLinkGroup.tsx';
 
 interface SidebarProps {
@@ -8,6 +14,16 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [cookies] = useCookies(['accessToken', 'refreshToken']);
+  const [gateData, setGateData] = useRecoilState(gateState);
+  const apartmentUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_APARTMENT_ENDPOINT;
+  const gateUrl = `${import.meta.env.VITE_BASE_URL}/apartment/${gateData.id}${import.meta.env.VITE_GATE_ENDPOINT}`;
+
+  // URL을 로그로 확인
+  // console.log('Generated gateUrl:', gateUrl);
+
   const location = useLocation();
   const { pathname } = location;
 
@@ -56,6 +72,77 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       document.querySelector('body')?.classList.remove('sidebar-expanded');
     }
   }, [sidebarExpanded]);
+
+  // gate 정보만 가져오기
+  const getGateStatus = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(apartmentUrl, {
+        headers: {
+          Authorization: cookies.accessToken
+        },
+        params: {
+          id: 0,
+          gateStatus: ''
+        } as ApartmentGate,
+      });
+
+
+      setGateData({
+        id: response.data.content[0].id,
+        gateStatus: response.data.content[0].gateStatus
+      });
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getGateStatus();
+  }, []);
+
+  // 열기/닫기 상태에 따라 버튼 활성화 여부 결정
+  const isClosed = gateData.gateStatus === 'CLOSE';
+
+  const handleOpen = () => {
+    if (gateData.id !== null) {
+      updateGateStatus('OPEN'); // 열기 버튼 클릭 시 'OPEN' 상태로 업데이트
+    }
+  };
+
+  const handleClose = () => {
+    if (gateData.id !== null) {
+      updateGateStatus('CLOSE'); // 닫기 버튼 클릭 시 'CLOSE' 상태로 업데이트
+    }
+  };
+
+
+  const updateGateStatus = async (status) => {
+    try {
+      const response = await axios.put(
+        gateUrl, // gateUrl은 이미 동적으로 생성됨
+        { gateStatus: status }, // 두 번째 인수로 body에 gateStatus 포함
+        {
+          headers: {
+            Authorization: cookies.accessToken, // 세 번째 인수로 headers 전달
+          },
+        }
+      );
+
+      // 성공적으로 업데이트되면 Recoil 상태 갱신
+      setGateData((prevData) => ({
+        ...prevData,
+        gateStatus: status, // 새로운 상태 반영
+      }));
+      alert(response.data);
+      // console.log('Gate status updated:', response.data);
+    } catch (error) {
+      console.error('Error updating gate status:', error);
+    }
+  };
 
   return (
     <>
@@ -903,8 +990,33 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </div>
             </nav>
             {/* <!-- Sidebar Menu --> */}
+            <div className="z-50 px-6 py-4 flex space-x-4">
+              <button
+                onClick={handleOpen}
+                className={`flex w-full items-center justify-center rounded-lg px-4 py-2 font-semibold shadow-md transition-all duration-300 ease-in-out ${isClosed
+                  ? 'bg-gray text-zinc-500 hover:bg-blue-500 hover:text-white' // 'CLOSE' 상태일 때 회색으로 표시
+                  : 'bg-primary text-white' // 'OPEN' 상태일 때 기본 'bg-primary'
+                  }`}
+                disabled={!isClosed} // 'OPEN' 상태면 비활성화
+              >
+                열기
+              </button>
+              <button
+                onClick={handleClose}
+                className={`flex w-full items-center justify-center rounded-lg px-4 py-2 font-semibold shadow-md transition-all duration-300 ease-in-out ${isClosed
+                  ? 'bg-rose-500 text-white hover:bg-red-600' // 'CLOSE' 상태면 기본 활성화
+                  : 'bg-gray text-zinc-500 hover:bg-red hover:text-white' // 'OPEN' 상태면 비활성화
+                  }`}
+                disabled={isClosed} // 'CLOSE' 상태면 비활성화
+              >
+                닫기
+              </button>
+            </div>
           </div>
         </aside>
+        <div>
+          ddd
+        </div>
       </div>
     </>
   );

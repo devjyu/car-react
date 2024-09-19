@@ -86,7 +86,7 @@ const Monitoring: React.FC = () => {
     }
   };
 
-  console.log(carLogDetails, "ddd");
+  // console.log(carLogDetails, "ddd");
 
 
   return (
