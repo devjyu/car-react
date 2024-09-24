@@ -39,7 +39,7 @@ module.exports = {
         'gray-2': '#F7F9FC',
         'gray-3': '#FAFAFA',
         // whiten: '#FFFCFC',
-        whiten: '#F1F5F9',
+        whiten: '#FFFFFF',
         whiter: '#F5F7FD',
         boxdark: '#24303F',
         'boxdark-2': '#1A222C',
