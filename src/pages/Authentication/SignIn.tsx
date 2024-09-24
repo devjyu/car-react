@@ -52,7 +52,8 @@ const SignIn: React.FC = () => {
               <form action={"/main"} onSubmit={onSubmit}>
                 <div className='flex flex-col gap-4 justify-center items-center'>
                   <div className='mb-3'>
-                    <img className="w-48" src={Logo} alt="Logo" />
+                  <div className='text-title-lg text-black font-extrabold'>주차 관리 솔루션</div>
+                    {/* <img className="w-48" src={Logo} alt="Logo" /> */}
                   </div>
                   <div className="w-full">
                     {/* <label className="mb-2.5 block text-xs text-black dark:text-white">
