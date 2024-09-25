@@ -275,7 +275,7 @@ const Sidebar = (
                               (isActive && '!text-basicWhite')
                             }
                           >
-                            세대별 차량 목록
+                            관리 차량
                           </NavLink>
                         </li>
                         <li>
@@ -287,7 +287,7 @@ const Sidebar = (
                               (isActive && '!text-basicWhite')
                             }
                           >
-                            세대외 차량 관리
+                            비관리 차량
                           </NavLink>
                         </li>
                       </ul>
