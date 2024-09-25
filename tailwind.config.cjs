@@ -63,7 +63,9 @@ module.exports = {
         lightred: '#FFCBC7',
         // 새로운 설정
         basicdark: '#333',
-        basicWhite: '#ffffff'
+        basicWhite: '#ffffff',
+        sidebarcolor: '#555',
+        basicponint: '#008080',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],

@@ -13,10 +13,13 @@ import Loader from '../../common/Loader';
 import { useRecoilState } from 'recoil';
 import { headerState } from '../../state/atoms/headerState';
 
-const Header = (props: {
-  sidebarOpen: string | boolean | undefined;
-  setSidebarOpen: (arg0: boolean) => void;
-}) => {
+const Header = (
+  { sidebarOpen, setSidebarOpen }
+  // props: {
+  // sidebarOpen: string | boolean | undefined;
+  // setSidebarOpen: (arg0: boolean) => void;
+// }
+) => {  
   const [loading, setLoading] = useState<boolean>(true);
   const [cookies] = useCookies(['accessToken', 'refreshToken']);
   const [headerData, setHeaderData] = useRecoilState(headerState);
@@ -79,7 +82,7 @@ const Header = (props: {
         <header className="sticky top-0 z-999 flex w-full items-center px-5 py-2.5 text-basicWhite bg-basicdark dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex w-full items-center justify-between">
             {/* <!-- SIDEBAR HEADER --> */}
-            <div className='text-2xl cursor-pointer'>☰</div>
+            <div className='text-2xl cursor-pointer' onClick={() => setSidebarOpen(!sidebarOpen)}>☰</div>
             <div className="">
               <NavLink to="/main">
                 <div className='text-2xl text-center flex-grow'>주차 관리 솔루션</div>
