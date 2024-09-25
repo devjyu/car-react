@@ -155,15 +155,16 @@ const CarLogTable = ({
       [
         { v: '차량구분', t: 's', s: { alignment: { horizontal: 'center' } } },
         { v: '차량번호', t: 's', s: { alignment: { horizontal: 'center' } } },
-        { v: '동', t: 's', s: { alignment: { horizontal: 'center' } } },
-        { v: '호수', t: 's', s: { alignment: { horizontal: 'center' } } },
+        // { v: '동', t: 's', s: { alignment: { horizontal: 'center' } } },
+        // { v: '호수', t: 's', s: { alignment: { horizontal: 'center' } } },
         { v: '입차일시', t: 's', s: { alignment: { horizontal: 'center' } } },
         { v: '출차일시', t: 's', s: { alignment: { horizontal: 'center' } } }
       ]
     ];
     data.forEach((e) => {
       rows.push([
-        e.typeText, e.originVehicleNumber ? e.originVehicleNumber : e.in.vehicleNumber, e.dong, e.ho, e.in.inOutTime, e.out ? e.out.inOutTime : ''
+        e.typeText, e.originVehicleNumber ? e.originVehicleNumber : e.in.vehicleNumber, e.in.inOutTime, e.out ? e.out.inOutTime : ''
+        // e.typeText, e.originVehicleNumber ? e.originVehicleNumber : e.in.vehicleNumber, e.dong, e.ho, e.in.inOutTime, e.out ? e.out.inOutTime : ''
       ]);
     });
     // console.log(rows);
@@ -171,8 +172,8 @@ const CarLogTable = ({
     ws['!cols'] = [
       { wpx: 150 },
       { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
+      // { wpx: 150 },
+      // { wpx: 150 },
       { wpx: 150 },
       { wpx: 150 },
     ];
@@ -250,11 +251,11 @@ const CarLogTable = ({
       value: 'ALL'
     },
     {
-      label: '세대',
+      label: '관리',
       value: 'MEMBER'
     },
     {
-      label: '방문',
+      label: '비관리',
       value: 'VISIT'
     },
     {
@@ -320,14 +321,14 @@ const CarLogTable = ({
   return (
     <div className='flex gap-7 relative'>
       <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10 basis-3/4">
-        <section className="data-table-common data-table-two rounded-sm border border-stroke bg-white py-4 shadow-default text-xs dark:border-strokedark  dark:bg-boxdark">
+        <section className="data-table-common data-table-two rounded-lg bg-basicWhite py-4 shadow-md text-xs dark:border-strokedark  dark:bg-boxdark">
           <div className='flex flex-col gap-3 px-8 mb-3'>
             <div>
               <div className='flex items-center justify-between mb-2'>
                 <div className='flex text-xl font-semibold'>
                   <div >검색기준</div>
                   <div>
-                    &nbsp;&#40;총 <span className='text-indigo-500'>{data.length}</span>건&#41;
+                    &nbsp;&#40;총 <span className='text-basicponint'>{data.length}</span>건&#41;
                   </div>
                 </div>
                 <div className="flex items-center font-medium">
@@ -368,7 +369,7 @@ const CarLogTable = ({
                   />
                 </div> */}
                   <div className='flex gap-2 items-center'>
-                    <div className="relative w-40 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                    <div className="relative w-40 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-basicponint dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
                       {/* <input
                       type="text"
                       value={startDate}
@@ -392,7 +393,7 @@ const CarLogTable = ({
                     )} */}
                     </div>
                     <div>~</div>
-                    <div className="w-40 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                    <div className="w-40 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-basicponint dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
                       {/* <input
                       type="text"
                       value={endDate}
@@ -421,7 +422,7 @@ const CarLogTable = ({
                 </div> */}
                   <div className='flex'>
                     <div className='mr-4'>
-                      <div className="w-35 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                      <div className="w-35 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-basicponint dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
                         <input
                           type="text"
                           value={searchOption.value}
@@ -436,7 +437,7 @@ const CarLogTable = ({
                       <button
                         type='button'
                         onClick={handleSearch}
-                        className="inline-flex items-center justify-center rounded-md bg-primary w-full h-full px-8 text-center font-medium text-white hover:bg-opacity-90 lg:px"
+                        className="inline-flex items-center justify-center rounded-md bg-basicponint w-full h-full px-8 text-center font-medium text-basicWhite hover:bg-basicdarkponint lg:px"
                       >검색</button>
                     </div>
                   </div>
@@ -453,9 +454,9 @@ const CarLogTable = ({
             <>
               <table
                 {...getTableProps()}
-                className="text-center datatable-table w-full table-auto border-collapse overflow-hidden break-words px-4 /*md:table-fixed*/ md:overflow-auto md:px-8"
+                className="text-center datatable-table border-b-tborder w-full table-auto border-collapse overflow-hidden break-words px-4 /*md:table-fixed*/ md:overflow-auto md:px-8"
               >
-                <thead className='bg-indigo-50'>
+                <thead className='bg-thead'>
                   {headerGroups.map((headerGroup, key) => (
                     <tr {...headerGroup.getHeaderGroupProps()} key={key}>
                       {headerGroup.headers.map((column, key) => (
@@ -497,7 +498,7 @@ const CarLogTable = ({
                           getCarLogInDetails(null);
                           setCarLogOutDetails(null);
                         }}
-                        className={selectedRowIndex === key ? 'bg-violet-50' : ''}
+                        className={selectedRowIndex === key ? 'bg-basicponint text-basicWhite' : ''}
                       >
                         {row.cells.map((cell, key) => {
                           return (
@@ -534,9 +535,9 @@ const CarLogTable = ({
                   })}
                 </tbody>
               </table>
-              <div className="flex justify-between items-center border-t border-stroke px-8 pt-5 dark:border-strokedark">
+              <div className="flex justify-between items-center border-t border-tborder px-8 pt-5 dark:border-strokedark">
                 <p className="font-medium text-lg font-semibold">
-                  총 <span className='text-indigo-500'>{data.length}</span>건
+                  총 <span className='text-basicponint'>{data.length}</span>건
                 </p>
                 <div className='flex items-center'>
                   <p className="font-medium mr-2">
@@ -544,7 +545,7 @@ const CarLogTable = ({
                   </p>
                   <div className="flex">
                     <button
-                      className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-white"
+                      className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-basicponint hover:text-white"
                       onClick={() => previousPage()}
                       disabled={!canPreviousPage}
                     >
@@ -578,7 +579,7 @@ const CarLogTable = ({
                 ))} */}
 
                     <button
-                      className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-white"
+                      className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-basicponint hover:text-white"
                       onClick={() => nextPage()}
                       disabled={!canNextPage}
                     >
@@ -604,24 +605,25 @@ const CarLogTable = ({
         </section>
       </div>
       <div className={`basis-1/4 h-full relative`}>
-        <div className={`flex flex-col gap-5 md:gap-7 2xl:gap-3 ${detailsClass}`}>
+        <div className={`flex flex-col gap-5 2xl:gap-5 ${detailsClass}`}>
           {loading ? (
             null
           ) : carLogInDetails && carLogInDetails.files ? (
             <>
-              <div className="border border-stroke rounded-md p-4 bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-fit">
-                <div className="text-lg font-semibold mb-2">입차 이미지</div>
+              <div className="rounded-lg p-4 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark h-fit">
+                {/* <div className="text-lg font-semibold mb-2">입차 이미지</div> */}
                 <div className="flex flex-wrap gap-4">
                   {/* <div className='flex w-full justify-between items-center'> */}
                   <div className='w-full justify-between items-center flex'>
                     <div className='text-left w-1/2'>
-                      <div className='text-indigo-500 font-semibold text-lg'>
+                      {/* <div className='text-indigo-500 font-semibold text-lg'>
                         {carLogInDetails && carLogInDetails.type === 'MEMBER' ? '세대' :
                           carLogInDetails.type === 'VISIT' ? '방문' :
                             carLogInDetails.type === 'UNKNOWN' ? '미인식' :
                               carLogInDetails.type === 'UNREGISTER' ? '미등록' : ''}
-                      </div>
-                      <div>
+                      </div> */}
+                      <div className="text-lg font-semibold mb-2 text-gateopen">입차 이미지</div>
+                      <div className='text-sm'>
                         {carLogInDetails.inOutTime}
                       </div>
                     </div>
@@ -654,19 +656,20 @@ const CarLogTable = ({
             null
           ) : carLogOutDetails && carLogOutDetails.files ? (
             <>
-              <div className="border border-stroke rounded-md p-4 bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="text-lg font-semibold mb-2">출차 이미지</div>
+              <div className="rounded-lg p-4 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark">
+                {/* <div className="text-lg font-semibold mb-2">출차 이미지</div> */}
                 <div className="flex flex-wrap gap-4">
                   {/* <div className='flex w-full justify-between items-center'> */}
                   <div className='w-full justify-between items-center flex'>
                     <div className='text-left'>
-                      <div className='text-indigo-500 font-semibold text-lg'>
+                      {/* <div className='text-indigo-500 font-semibold text-lg'>
                         {carLogOutDetails.type === 'MEMBER' ? '세대' :
                           carLogOutDetails.type === 'VISIT' ? '방문' :
                             carLogOutDetails.type === 'UNKNOWN' ? '미인식' :
                               carLogOutDetails.type === 'UNREGISTER' ? '미등록' : ''}
-                      </div>
-                      <div>
+                      </div> */}
+                      <div className="text-lg font-semibold mb-2 text-gateclose">출차 이미지</div>
+                      <div className='text-sm'>
                         {carLogOutDetails.inOutTime}
                       </div>
                     </div>

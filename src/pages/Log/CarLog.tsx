@@ -85,10 +85,10 @@ const CarLog: React.FC = () => {
       repsonseCarLog.forEach(c => {
         switch (c.type) {
           case CarLogType.MEMBER:
-            c.typeText = '세대차량';
+            c.typeText = '관리차량';
             break;
           case CarLogType.VISIT:
-            c.typeText = '방문차량';
+            c.typeText = '비관리차량';
             break;
           case CarLogType.UNKNOWN:
             c.typeText = '미인식차량';
@@ -159,10 +159,10 @@ const CarLog: React.FC = () => {
       repsonseCarLog.forEach(c => {
         switch (c.type) {
           case CarLogType.MEMBER:
-            c.typeText = '세대차량';
+            c.typeText = '관리차량';
             break;
           case CarLogType.VISIT:
-            c.typeText = '방문차량';
+            c.typeText = '비관리차량';
             break;
           case CarLogType.UNKNOWN:
             c.typeText = '미인식차량';
@@ -211,12 +211,14 @@ const CarLog: React.FC = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="입출차 내역" rootPage="입출차" refreshHandle={getAllCarLog} />
-      {loading ? (
-        <Loader />
-      ) : (
-        <CarLogTable tableData={carLog.content} column={apartmentColumns} onSearch={getCarLog} />
-      )}
+      <div className='mb-20'>
+        <Breadcrumb pageName="입출차 내역" rootPage="입출차" refreshHandle={getAllCarLog} />
+        {loading ? (
+          <Loader />
+        ) : (
+          <CarLogTable tableData={carLog.content} column={apartmentColumns} onSearch={getCarLog} />
+        )}
+      </div>
     </DefaultLayout>
   );
 };
