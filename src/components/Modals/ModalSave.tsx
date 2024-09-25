@@ -286,7 +286,7 @@ const ModalSave: React.FC = () => {
       <button
         ref={trigger}
         onClick={() => setModalOpen(!modalOpen)}
-        className="float-right mt-3 inline-flex items-center justify-center rounded-md bg-primary py-3 px-5 text-center font-medium text-white hover:bg-opacity-90"
+        className="float-right mt-3 inline-flex items-center justify-center rounded-md bg-basicponint py-3 px-5 text-center font-medium text-basicWhite hover:bg-basicdarkponint"
       >
         추가
       </button>
@@ -297,7 +297,7 @@ const ModalSave: React.FC = () => {
         <div
           ref={modal}
           onFocus={() => setModalOpen(true)}
-          className="max-h-full overflow-auto w-100 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
+          className="max-h-full overflow-auto w-100 rounded-sm border border-stroke bg-basicWhite shadow-default dark:border-strokedark dark:bg-boxdark"
         >
           {/* <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black text-lg dark:text-white">
@@ -310,7 +310,7 @@ const ModalSave: React.FC = () => {
               {saveData.map((data, index) => {
                 return data.visable ? (
                   <div className="mb-5 grid grid-cols-3 flex items-center gap-4" key={index}>
-                    <label className="block text-sm font-medium text-black dark:text-white col-span-1">
+                    <label className="block text-sm font-medium text-basicdark dark:text-white col-span-1">
                       {data.label} {data.optional ? null : (<span className="text-meta-1">*</span>)}
                     </label>
                     {data.valueType === ValueType.Text && (
@@ -319,7 +319,7 @@ const ModalSave: React.FC = () => {
                         placeholder=""
                         value={data.value}
                         onChange={(e) => handleChange(index, e.target.value, e.target.type)}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-pribasicponintmary disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                       />
                     )}
                     {data.valueType === ValueType.Content && (
@@ -327,7 +327,7 @@ const ModalSave: React.FC = () => {
                         rows={6}
                         placeholder=""
                         onChange={(e) => handleChange(index, e.target.value, e.target.type)}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                         defaultValue={data.value}
                       ></textarea>
                     )}
@@ -337,7 +337,7 @@ const ModalSave: React.FC = () => {
                         placeholder="2024-01-01"
                         value={data.value ? data.value : ''}
                         onChange={(e) => handleChange(index, e.target.value, e.target.type)}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                       />
                     )}
                     {data.valueType === ValueType.SelectGroup && (
@@ -350,7 +350,7 @@ const ModalSave: React.FC = () => {
                           placeholder="2024-01-01"
                           value={data.value ? data.value : ''}
                           onChange={(e) => handleDateChange(index, e.target.value)}
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                         />
                         {data.key === 'endDate' && location.pathname === '/notice' && (
                           <div className="text-xs font-medium mt-1.5 px-2 text-[#CD5D5D]">
@@ -405,7 +405,7 @@ const ModalSave: React.FC = () => {
                 <div className="2xsm:w-1/2 w-full px-3">
                   <div
                     onClick={() => closeModal()}
-                    className="cursor-pointer block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+                    className="cursor-pointer block w-full rounded bg-deactivate p-3 text-center font-medium text-deactivatetxt transition hover:bg-basicdarkponint hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
                   >
                     취소
                   </div>
@@ -413,7 +413,7 @@ const ModalSave: React.FC = () => {
                 <div className="2xsm:w-1/2 w-full px-3">
                   <div
                     onClick={saveHandler}
-                    className="cursor-pointer block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+                    className="cursor-pointer block w-full rounded bg-basicponint p-3 text-center font-medium text-white transition hover:bg-basicdarkponint"
                   >
                     저장
                   </div>

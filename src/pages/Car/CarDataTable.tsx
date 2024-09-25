@@ -155,7 +155,7 @@ const CarDataTable = ({
 }
 
   return (
-    <section className="data-table-common data-table-two rounded-sm border border-stroke bg-white py-4 shadow-default text-xs dark:border-strokedark  dark:bg-boxdark">
+    <section className="data-table-common data-table-two rounded-lg bg-white py-4 shadow-md text-xs dark:border-strokedark dark:bg-boxdark">
       <div className='flex flex-col gap-3'>
         <div className='px-8'>
           <div className='flex gap-4'>
@@ -224,7 +224,7 @@ const CarDataTable = ({
                 onKeyDown={handleKeyPress}
               />
               <svg
-                className="fill-[#637381] hover:fill-primary cursor-pointer"
+                className="fill-basicponint hover:fill-basicdarkponint cursor-pointer"
                 width="18"
                 height="18"
                 viewBox="0 0 18 18"
@@ -266,9 +266,9 @@ const CarDataTable = ({
 
       <table
         {...getTableProps()}
-        className="text-center datatable-table w-full table-auto border-collapse overflow-hidden break-words px-4 /*md:table-fixed*/ md:overflow-auto md:px-8"
+        className="text-center datatable-table w-full table-auto border-b-tborder border-collapse overflow-hidden break-words px-4 /*md:table-fixed*/ md:overflow-auto md:px-8"
       >
-        <thead>
+        <thead className='bg-thead'>
           {headerGroups.map((headerGroup, key) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={key}>
               {headerGroup.headers.map((column, key) => (
@@ -340,7 +340,7 @@ const CarDataTable = ({
               <tr {...row.getRowProps()} key={key}>
                 {row.cells.map((cell, key) => {
                   return (
-                    <td {...cell.getCellProps()} key={key} className={cell.column.id === 'endDate' && isExpired(cell.value) ? 'text-[#DC3545]' : ''}>
+                    <td {...cell.getCellProps()} key={key} className={cell.column.id === 'endDate' && isExpired(cell.value) ? 'text-basicponint' : ''}>
                       {typeof cell.value === 'boolean' ? 
                         cell.value ? '예' : '아니오'
                       : cell.value}
@@ -374,7 +374,7 @@ const CarDataTable = ({
         </p>
         <div className="flex">
           <button
-            className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-white"
+            className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-basicponint hover:text-white"
             onClick={() => previousPage()}
             disabled={!canPreviousPage}
           >
@@ -388,7 +388,7 @@ const CarDataTable = ({
             >
               <path
                 d="M12.1777 16.1156C12.009 16.1156 11.8402 16.0593 11.7277 15.9187L5.37148 9.44995C5.11836 9.19683 5.11836 8.80308 5.37148 8.54995L11.7277 2.0812C11.9809 1.82808 12.3746 1.82808 12.6277 2.0812C12.8809 2.33433 12.8809 2.72808 12.6277 2.9812L6.72148 8.99995L12.6559 15.0187C12.909 15.2718 12.909 15.6656 12.6559 15.9187C12.4871 16.0312 12.3465 16.1156 12.1777 16.1156Z"
-                fill=""
+                fill="#333"
               />
             </svg>
           </button>
@@ -400,15 +400,15 @@ const CarDataTable = ({
                 gotoPage(index);
               }}
               className={`${
-                pageIndex === index && 'bg-primary text-white'
-              } mx-1 flex cursor-pointer items-center justify-center rounded-md p-1 px-3 hover:bg-primary hover:text-white`}
+                pageIndex === index && 'bg-basicponint text-white'
+              } mx-1 flex cursor-pointer items-center justify-center rounded-md p-1 px-3 hover:bg-basicdarkponint hover:text-white`}
             >
               {index + 1}
             </button>
           ))}
 
           <button
-            className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-white"
+            className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-basicdarkponint hover:text-white"
             onClick={() => nextPage()}
             disabled={!canNextPage}
           >

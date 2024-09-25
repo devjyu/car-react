@@ -44,9 +44,9 @@ const Car: React.FC = () => {
         } as AllCarParams,
       });
       // console.log(response);
-      
+
       setCarData(response.data.content.map(c => {
-        switch(c.type) {
+        switch (c.type) {
           case 'ALLOW':
             return { ...c, type: '허용' };
           case 'DENY':
@@ -69,12 +69,12 @@ const Car: React.FC = () => {
   const deviceCameraColumns = [
     // { Header: 'ID', accessor: 'id'},
     // { Header: '아파트명', accessor: 'apartment.name'},
-    { Header: '차량번호', accessor: 'vehicleNumber'},
-    { Header: '전화번호', accessor: 'phone'},
-    { Header: '시작일자', accessor: 'startDate'},
-    { Header: '종료일자', accessor: 'endDate'},
-    { Header: '메모', accessor: 'purpose'},
-    { Header: '허용여부', accessor: 'type'}
+    { Header: '차량번호', accessor: 'vehicleNumber' },
+    { Header: '전화번호', accessor: 'phone' },
+    { Header: '시작일자', accessor: 'startDate' },
+    { Header: '종료일자', accessor: 'endDate' },
+    { Header: '메모', accessor: 'purpose' },
+    { Header: '허용여부', accessor: 'type' }
 
   ];
 
@@ -89,7 +89,7 @@ const Car: React.FC = () => {
       // console.log(response);
 
       const apartmentUnitDetailsData = [];
-      
+
       Object.keys(response.data).forEach((k) => {
         let detail: DetailsData = {
           key: '',
@@ -158,10 +158,10 @@ const Car: React.FC = () => {
         }
         apartmentUnitDetailsData.push(detail);
       });
-      
+
       setDetailsData(apartmentUnitDetailsData);
     } catch (error) {
-      
+
     }
   };
 
@@ -174,7 +174,7 @@ const Car: React.FC = () => {
       });
 
       const carEditData = [];
-      
+
       Object.keys(response.data).forEach((k) => {
         let editData: EditData = {
           key: '',
@@ -264,7 +264,7 @@ const Car: React.FC = () => {
       });
       setEditData(carEditData);
     } catch (error) {
-      
+
     }
   };
 
@@ -281,7 +281,7 @@ const Car: React.FC = () => {
     });
 
     // console.log(params);
-    
+
     try {
       // setLoading(true);
       const response = await axios.get(carUrl, {
@@ -292,7 +292,7 @@ const Car: React.FC = () => {
       });
 
       const repsonseCar = response.data.content.map(c => {
-        switch(c.type) {
+        switch (c.type) {
           case 'ALLOW':
             return { ...c, type: '허용' };
           case 'DENY':
@@ -313,7 +313,7 @@ const Car: React.FC = () => {
 
   const deleteHandler = async (id) => {
     const deleteUrl = carUrl + `/${id}`
-    const response = await axios.delete(deleteUrl , {
+    const response = await axios.delete(deleteUrl, {
       headers: {
         Authorization: cookies.accessToken
       }
@@ -322,7 +322,7 @@ const Car: React.FC = () => {
   };
 
   const convertValueToText = (value) => {
-    switch(value) {
+    switch (value) {
       case 'ALLOY':
         return '허용';
       case 'DENY':
@@ -338,15 +338,17 @@ const Car: React.FC = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="차량 관리" rootPage="차량 관리" />
-      <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
-        {loading ? (
-          <Loader />
-        ) : (
-          <CarDataTable tableData={carData} column={deviceCameraColumns} onSearch={getCarLog} editHandler={editHandler} deleteHandler={deleteHandler} />
-        )}
+      <div className='mb-20'>
+        <Breadcrumb pageName="차량 관리" rootPage="차량 관리" />
+        <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
+          {loading ? (
+            <Loader />
+          ) : (
+            <CarDataTable tableData={carData} column={deviceCameraColumns} onSearch={getCarLog} editHandler={editHandler} deleteHandler={deleteHandler} />
+          )}
+        </div>
+        <ModalSave />
       </div>
-      <ModalSave />
     </DefaultLayout>
   );
 };

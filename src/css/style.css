@@ -38,7 +38,7 @@
   @apply opacity-100;
 }
 .tableCheckbox:checked ~ div {
-  @apply border-primary bg-primary;
+  @apply border-basicponint bg-basicponint;
 }
 
 .apexcharts-legend-text {
@@ -87,7 +87,7 @@
 }
 .flatpickr-months .flatpickr-prev-month:hover svg,
 .flatpickr-months .flatpickr-next-month:hover svg {
-  @apply fill-primary;
+  @apply fill-basicponint;
 }
 .flatpickr-calendar.arrowTop:before {
   @apply dark:!border-b-boxdark;
@@ -160,7 +160,7 @@ span.flatpickr-weekday,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
   background: #3c50e0;
-  @apply !border-primary !bg-primary hover:!border-primary hover:!bg-primary;
+  @apply !border-basicponint !bg-basicponint hover:!border-basicdarkponint hover:!bg-basicdarkponint;
 }
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
@@ -169,7 +169,7 @@ span.flatpickr-weekday,
 }
 
 .map-btn .jvm-zoom-btn {
-  @apply flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-white px-0 pb-0.5 pt-0 text-2xl leading-none text-body hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-bodydark dark:hover:border-primary dark:hover:bg-primary dark:hover:text-white;
+  @apply flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-white px-0 pb-0.5 pt-0 text-2xl leading-none text-body hover:border-basicdarkponint hover:bg-basicdarkponint hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-bodydark dark:hover:border-basicdarkponint dark:hover:bg-basicponint dark:hover:text-white;
 }
 .mapOne .jvm-zoom-btn {
   @apply bottom-0 left-auto top-auto;
@@ -197,7 +197,7 @@ span.flatpickr-weekday,
   @apply line-through;
 }
 .taskCheckbox:checked ~ .box {
-  @apply border-primary bg-primary dark:border-primary;
+  @apply border-basicponint bg-basicponint dark:border-basicponint;
 }
 
 .custom-input-date::-webkit-calendar-picker-indicator {
@@ -251,7 +251,7 @@ span.flatpickr-weekday,
   @apply relative !ml-0 w-100 overflow-hidden rounded;
 }
 .data-table-one .datatable-search input {
-  @apply h-[46px] w-full rounded border border-stroke bg-transparent px-5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary;
+  @apply h-[46px] w-full rounded border border-stroke bg-transparent px-5 outline-none focus:border-basicponint dark:border-strokedark dark:bg-meta-4 dark:focus:border-basicponint;
 }
 .data-table-common .datatable-selector {
   @apply relative z-20 inline-flex bg-transparent p-0 font-medium text-body outline-none dark:text-bodydark;
@@ -280,13 +280,13 @@ span.flatpickr-weekday,
   @apply !border-b border-stroke pb-4 dark:border-strokedark;
 }
 .data-table-common .datatable-table > thead > tr:last-child > th input {
-  @apply h-[34px] w-full rounded border border-stroke bg-transparent px-3 text-sm outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary;
+  @apply h-[34px] w-full rounded border border-stroke bg-transparent px-3 text-sm outline-none focus:border-basicponint dark:border-strokedark dark:bg-meta-4 dark:focus:border-basicponint;
 }
 .data-table-common .datatable-table > tbody > tr {
-  @apply hover:bg-primary hover:bg-opacity-5;
+  @apply hover:bg-basicponint hover:bg-opacity-5;
 }
 .data-table-one .datatable-table > tbody > tr > td:first-child {
-  @apply text-primary dark:text-white;
+  @apply text-basicdarkponint dark:text-white;
 }
 .data-table-common .datatable-table > tbody > tr > td {
   @apply border-b border-stroke py-5 font-medium dark:border-strokedark;
@@ -304,10 +304,10 @@ span.flatpickr-weekday,
   @apply !m-0;
 }
 .data-table-common .datatable-pagination a {
-  @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded p-0 font-medium text-body hover:bg-primary hover:text-white dark:text-bodydark;
+  @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded p-0 font-medium text-body hover:bg-basicdarkponint hover:text-white dark:text-bodydark;
 }
 .data-table-common .datatable-pagination .datatable-active a {
-  @apply bg-primary text-white;
+  @apply bg-basicponint text-white;
 }
 .data-table-common .datatable-pagination li.datatable-hidden {
   @apply !visible;
@@ -316,7 +316,7 @@ span.flatpickr-weekday,
   @apply flex flex-col gap-4 px-8 py-7 after:hidden sm:flex-row sm:items-center sm:justify-between sm:gap-0 sm:space-x-4;
 }
 .data-table-two .datatable-search input {
-  @apply h-11.5 w-full rounded border border-stroke bg-whiter px-5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary;
+  @apply h-11.5 w-full rounded border border-stroke bg-whiter px-5 outline-none focus:border-basicponint dark:border-strokedark dark:bg-meta-4 dark:focus:border-basicponint;
 }
 
 .rangeSliderCommon .noUi-target {
@@ -326,13 +326,13 @@ span.flatpickr-weekday,
   @apply h-1.5 rounded-full bg-stroke dark:bg-strokedark;
 }
 .rangeSliderCommon .noUi-connect {
-  @apply h-1.5 rounded-full bg-primary;
+  @apply h-1.5 rounded-full bg-basicponint;
 }
 .rangeSliderOne .noUi-horizontal .noUi-handle {
-  @apply -top-2 h-5.5 w-5.5 rounded-full border-none bg-primary shadow-none;
+  @apply -top-2 h-5.5 w-5.5 rounded-full border-none bg-basicponint shadow-none;
 }
 .rangeSliderTwo .noUi-horizontal .noUi-handle {
-  @apply -top-2 h-6 w-6 rounded-full border-[6px] border-primary bg-white shadow-none dark:bg-black;
+  @apply -top-2 h-6 w-6 rounded-full border-[6px] border-basicponint bg-white shadow-none dark:bg-black;
 }
 .noUi-horizontal .noUi-handle:after,
 .noUi-horizontal .noUi-handle:before {

@@ -82,7 +82,7 @@ const ModalDelete = ({
           ref={modal}
           onFocus={() => setModalOpen(true)}
           onBlur={() => setModalOpen(false)}
-          className="md:px-17.5 w-full max-w-142.5 rounded-lg bg-white px-8 py-12 text-center dark:bg-boxdark md:py-15"
+          className="md:px-17.5 w-full max-w-142.5 rounded-lg bg-basicWhite px-8 py-12 text-center dark:bg-boxdark md:py-15"
         >
           <span className="mx-auto inline-block">
             <svg
@@ -108,7 +108,7 @@ const ModalDelete = ({
               />
             </svg>
           </span>
-          <h3 className="mt-5.5 pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
+          <h3 className="mt-5.5 pb-2 text-xl font-bold text-basicdark dark:text-white sm:text-2xl">
             삭제하시겠습니까?
           </h3>
           <p className="mb-10">
@@ -118,7 +118,7 @@ const ModalDelete = ({
             <div className="2xsm:w-1/2 w-full px-3">
               <button
                 onClick={() => setModalOpen(false)}
-                className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+                className="block w-full rounded bg-deactivate p-3 text-center font-medium text-deactivatetxt transition hover:bg-basicdarkponint hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
               >
                 취소
               </button>
@@ -126,7 +126,7 @@ const ModalDelete = ({
             <div className="2xsm:w-1/2 w-full px-3">
               <button 
                 onClick={comfirmClickHandler}
-                className="block w-full rounded border border-meta-1 bg-meta-1 p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+                className="block w-full rounded bg-basicponint p-3 text-center font-medium text-white transition hover:bg-basicdarkponint"
               >
                 삭제
               </button>
