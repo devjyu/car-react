@@ -20,7 +20,7 @@ const options: ApexOptions = {
     }
   },
   // colors: ['#3C50E0', '#80CAEE'],
-  colors: ['#C44D63', '#FBE3E3'],
+  colors: ['#008080', '#005757'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     height: 335,
@@ -81,8 +81,8 @@ const options: ApexOptions = {
   },
   markers: {
     size: 4,
-    colors: '#fff',
-    strokeColors: ['#C44D63', '#FBE3E3'],
+    colors: '#333',
+    strokeColors: ['#008080', '#005757'],
     strokeWidth: 3,
     strokeOpacity: 0.9,
     strokeDashArray: 0,
@@ -207,7 +207,7 @@ const ChartDay = ({
   handleReset;
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-4">
+    <div className="col-span-12 rounded-lg bg-basicWhite px-5 pt-7.5 pb-5 shadow-md dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-4">
       <div>
         <div id="chartOne" className="-ml-5">
           <ReactApexChart

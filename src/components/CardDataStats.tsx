@@ -18,14 +18,14 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
   children,
 }) => {
   return (
-    <div className="flex items-center gap-4 rounded-sm border border-stroke bg-white py-4 px-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="flex items-center gap-4 bg-basicWhite rounded-lg shadow-md py-4 px-6 dark:border-strokedark dark:bg-boxdark">
       <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
         {children}
       </div>
 
       <div className="flex items-end justify-between">
         <div>
-          <h4 className="text-title-md font-bold text-black dark:text-white">
+          <h4 className="text-title-md font-bold text-basicdark dark:text-white">
             {total}
           </h4>
           <span className="text-sm font-medium">{title}</span>

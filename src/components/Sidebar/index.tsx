@@ -75,7 +75,7 @@ const Sidebar = (
       {/* <div className={sidebarVisible ? 'hidden' : 'flex justify-end mt-5 pr-4'} onClick={() => setSidebarVisible(true)}>
         <div className='flex justify-end pl-4' onClick={() => setSidebarVisible(!sidebarVisible)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="rgb(138,153,175)">
-            <path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z" />
+            // <path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z" />
           </svg>
         </div>
       </div> */}

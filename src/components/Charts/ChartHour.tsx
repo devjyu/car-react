@@ -19,14 +19,14 @@ const options: ApexOptions = {
       color: '#AAAAAA'
     }
   },
-  colors: ['#C44D63', '#FBE3E3'],
+  colors: ['#008080', '#005757'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     height: 335,
     type: 'area',
     dropShadow: {
       enabled: true,
-      color: '#FDF0F0',
+      color: '#00BCD4',
       top: 10,
       blur: 4,
       left: 0,
@@ -82,7 +82,7 @@ const options: ApexOptions = {
     size: 4,
     colors: '#fff',
     // strokeColors: ['#FDF0F0', '#80CAEE'],
-    strokeColors: ['#C44D63', '#FBE3E3'],
+    strokeColors: ['#008080', '#005757'],
     strokeWidth: 3,
     strokeOpacity: 0.9,
     strokeDashArray: 0,
@@ -184,7 +184,7 @@ const ChartHour = ({
   handleReset;
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+    <div className="col-span-12 rounded-lg bg-basicWhite px-5 pt-7.5 pb-5 shadow-md dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       {/* <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
         <div className="flex w-full flex-wrap gap-3 sm:gap-5">
           <div className="flex min-w-47.5">
