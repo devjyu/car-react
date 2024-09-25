@@ -43,7 +43,7 @@ const SignIn: React.FC = () => {
             </div>
           </div> */}
 
-          <div className="rounded-sm basis-96 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-lg basis-96 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark">
             <div className="w-full p-10">
               {/* <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 로그인
@@ -52,7 +52,7 @@ const SignIn: React.FC = () => {
               <form action={"/main"} onSubmit={onSubmit}>
                 <div className='flex flex-col gap-4 justify-center items-center'>
                   <div className='mb-3'>
-                  <div className='text-title-lg text-black font-extrabold'>주차 관리 솔루션</div>
+                  <div className='text-title-lg text-basicdark font-bold'>주차 관리 솔루션</div>
                     {/* <img className="w-48" src={Logo} alt="Logo" /> */}
                   </div>
                   <div className="w-full">
@@ -63,7 +63,7 @@ const SignIn: React.FC = () => {
                       <input
                         type="text"
                         placeholder="아이디를 입력해주세요."
-                        className="w-full text-sm rounded-lg border border-stroke bg-transparent py-3 pl-4 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        className="w-full text-sm rounded-lg border border-stroke bg-transparent py-3 pl-4 pr-10 text-basicdark outline-none focus:border-basicponint focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         value={userId}
                         onChange={(e) => setuserId(e.target.value)}
                       />
@@ -78,7 +78,7 @@ const SignIn: React.FC = () => {
                       <input
                         type="password"
                         placeholder="비밀번호를 입력해주세요."
-                        className="w-full text-sm rounded-lg border border-stroke bg-transparent py-3 pl-4 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        className="w-full text-sm rounded-lg border border-stroke bg-transparent py-3 pl-4 pr-10 text-basicdark outline-none focus:border-basicponint focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
@@ -111,7 +111,7 @@ const SignIn: React.FC = () => {
                     <input
                       type="submit"
                       value="로그인"
-                      className="w-full text-sm cursor-pointer rounded-lg border border-primary bg-primary p-2 text-white transition hover:bg-opacity-80"
+                      className="w-full text-sm cursor-pointer rounded-lg bg-basicponint p-2 text-basicWhite transition hover:bg-opacity-80"
                     />
                   </div>
                 </div>

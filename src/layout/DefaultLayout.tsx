@@ -5,7 +5,6 @@ import Footer from '../components/Footer/index';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  console.log(sidebarOpen, '사이드바 상태')
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/* <!-- ===== Header Start ===== --> */}
