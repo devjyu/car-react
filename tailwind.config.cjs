@@ -62,10 +62,18 @@ module.exports = {
         newred: '#BF2A37',
         lightred: '#FFCBC7',
         // 새로운 설정
+        basicbg: '#f4f4f4',
         basicdark: '#333',
         basicWhite: '#ffffff',
         sidebarcolor: '#555',
         basicponint: '#008080',
+        basicdarkponint: '#005757',
+        gateopen: '#4CAF50',
+        gateopenhover: '#00BCD4',
+        gateclose: '#F44336',
+        gateclosehover: '#D32F2F',
+        deactivate: '#E0E0E0',
+        deactivatetxt: '#9E9E9E',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],

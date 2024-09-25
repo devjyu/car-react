@@ -1,11 +1,11 @@
 import { atom } from "recoil";
 
-interface HeaderData {
+interface GateData {
     id: number;
     gateStatus: string;
   }
 
-export const gateState = atom<HeaderData>({
+export const gateState = atom<GateData>({
     key: "gateState",
     default: {
       id: 0,

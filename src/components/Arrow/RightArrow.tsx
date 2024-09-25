@@ -1,7 +1,7 @@
 const RightArrow = () => {
   return (
     <button
-      className="dark:bg-whiten/30 flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-whiten hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark">
+      className="dark:bg-whiten/30 flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-white hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark">
       <svg
         width="18"
         height="18"
