@@ -998,6 +998,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </div>
             </nav>
             {/* <!-- Sidebar Menu --> */}
+            <div className="z-50 px-6 py-2">차단기 수동 제어</div>
             <div className="z-50 px-6 py-4 flex space-x-4">
               <button
                 onClick={handleOpen}
@@ -1007,7 +1008,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 disabled={!isClosed} // 'OPEN' 상태면 비활성화
               >
-                열기
+                OPEN
               </button>
               <button
                 onClick={handleClose}
@@ -1017,7 +1018,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 disabled={isClosed} // 'CLOSE' 상태면 비활성화
               >
-                닫기
+                CLOSE
               </button>
             </div>
           </div>

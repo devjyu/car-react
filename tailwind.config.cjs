@@ -61,6 +61,9 @@ module.exports = {
         warning: '#FFA70B',
         newred: '#BF2A37',
         lightred: '#FFCBC7',
+        // 새로운 설정
+        basicdark: '#333',
+        basicWhite: '#ffffff'
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],
