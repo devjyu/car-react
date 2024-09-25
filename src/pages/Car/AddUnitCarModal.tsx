@@ -152,9 +152,9 @@ const AddUnitCarModal = ({
       <button
         ref={trigger}
         onClick={() => setModalOpen(!modalOpen)}
-        className="inline-flex rounded-lg border border-[#d5d5d5] border-dashed py-1 px-6 text-sm font-medium hover:opacity-80 dark:text-white"
+        className="inline-flex rounded-lg py-1 px-6 text-sm font-semibold bg-basicponint text-basicWhite hover:bg-basicdarkponint dark:text-white"
       >
-        <span className='text-[#aaaaaa] font-bold'>추가</span>
+        추가
       </button>
       <div
         className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${modalOpen ? 'block' : 'hidden'
@@ -163,21 +163,21 @@ const AddUnitCarModal = ({
         <div
           ref={modal}
           onFocus={() => setModalOpen(true)}
-          className="md:px-17.5 w-full max-w-142.5 rounded-lg bg-white px-8 py-12 text-center dark:bg-boxdark md:py-15"
+          className="md:px-17.5 w-full max-w-142.5 rounded-lg bg-basicWhite px-8 py-12 text-center dark:bg-boxdark md:py-15"
         >
           <div className="mb-4 text-center mb-5">
-            <p className="text-sm text-gray-600 dark:text-gray-400">{dong}동 {ho}호</p>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-white">차량 등록</h2>
+            <p className="text-sm text-basicdark dark:text-gray-400">{dong}동 {ho}호</p>
+            <h2 className="text-xl font-bold text-basicdark dark:text-white">차량 등록</h2>
           </div>
           <div className="grid grid-cols-2 mb-4">
             <button
-              className={`px-4 py-2 ${activeTab === '차량 추가' ? 'bg-primary text-white' : 'bg-gray-200 border-b-2 border-primary'}`}
+              className={`px-4 py-2 ${activeTab === '차량 추가' ? 'bg-basicponint text-basicWhite' : 'border-b-2 border-basicponint text-basicponint hover:text-basicdarkponint'}`}
               onClick={() => setActiveTab('차량 추가')}
             >
               차량 추가
             </button>
             <button
-              className={`px-4 py-2 ${activeTab === '미인식 차량 추가' ? 'bg-primary text-white' : 'bg-gray-200 border-b-2 border-primary'}`}
+              className={`px-4 py-2 ${activeTab === '미인식 차량 추가' ? 'bg-basicponint text-white' : 'border-b-2 border-basicponint text-basicponint hover:text-basicdarkponint'}`}
               onClick={() => setActiveTab('미인식 차량 추가')}
             >
               미인식 차량 추가
@@ -214,7 +214,7 @@ const AddUnitCarModal = ({
               <>
                 <div className='p-4'>
                   <div className="w-full mb-5 grid grid-cols-3 flex items-center gap-4">
-                    <label className="block text-sm font-medium text-black dark:text-white col-span-1">
+                    <label className="block text-sm font-medium text-basicdark dark:text-white col-span-1">
                       차량번호 <span className="text-meta-1">*</span>
                     </label>
                     <input
@@ -222,11 +222,11 @@ const AddUnitCarModal = ({
                       placeholder=""
                       value={vehicleNumber}
                       onChange={(e) => { setVehicleNumber(e.target.value.replace(/(\s*)/g, "")) }}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                     />
                   </div>
                   <div className="w-full mb-5 grid grid-cols-3 flex items-center gap-4">
-                    <label className="block text-sm font-medium text-black dark:text-white col-span-1">
+                    <label className="block text-sm font-medium text-basicdark dark:text-white col-span-1">
                       전화번호
                     </label>
                     <input
@@ -234,7 +234,7 @@ const AddUnitCarModal = ({
                       placeholder=""
                       value={phone}
                       onChange={(e) => { setPhone(e.target.value.replace(/(\s*)/g, "")) }}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                     />
                   </div>
                 </div>
@@ -254,7 +254,7 @@ const AddUnitCarModal = ({
                           // onChange={(e) => setUnrecognizedVehicleNumber(e.target.value)}
                           className="mr-2"
                         />
-                        <label htmlFor={`unrecognized-${v.id}`} className="text-black dark:text-white">
+                        <label htmlFor={`unrecognized-${v.id}`} className="text-basicdark dark:text-white">
                           {v.vehicleNumber}
                         </label>
                       </div>
@@ -269,7 +269,7 @@ const AddUnitCarModal = ({
                       placeholder=""
                       value={unrecognizedVehicleNumber}
                       onChange={(e) => { setUnrecognizedVehicleNumber(e.target.value.replace(/(\s*)/g, "")) }}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                     />
                   </div>
                 </div>
@@ -286,14 +286,14 @@ const AddUnitCarModal = ({
               </button> */}
               {activeTab === '차량 추가' ? (
                 <button
-                  className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+                  className="block w-full rounded bg-basicponint p-3 text-center font-medium text-white transition hover:bg-basicdarkponint"
                   onClick={addUnitCar}
                 >
                   등록
                 </button>
               ) : (
                 <button
-                  className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+                  className="block w-full rounded bg-basicponint p-3 text-center font-medium text-white transition hover:bg-basicdarkponint"
                   onClick={addUnrecognizedCarHandler}
                 >
                   등록
@@ -302,7 +302,7 @@ const AddUnitCarModal = ({
             <div className="2xsm:w-1/2 w-full px-3">
               <button
                 onClick={() => closeModal()}
-                className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+                className="block w-full rounded bg-deactivate p-3 text-center font-medium text-deactivatetxt transition hover:bg-basicdarkponint hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
               >
                 취소
               </button>

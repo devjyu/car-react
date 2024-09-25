@@ -89,6 +89,9 @@ const ApartmentUnitCar: React.FC = () => {
     }
   }
 
+  // console.log(carUnitData,"dd");
+  
+
   const getCarUnitDongData = async (dong) => {
     try {
       setDongLoading(true);
@@ -300,14 +303,14 @@ const ApartmentUnitCar: React.FC = () => {
     <DefaultLayout>
       <Breadcrumb pageName="세대별 차량 목록" rootPage="차량" />
       {loading ? (<Loader />) : (
-        <div className="sm:h-[calc(100vh-174px)] h-[calc(100vh-186px)] overflow-hidden">
+        <div className="sm:h-[calc(100vh-174px)] h-[calc(100vh-186px)] overflow-hidden mb-20">
           <div
-            className="h-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark lg:flex">
+            className="flex h-full rounded-lg bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark lg:flex">
             <div
-              className={`lg:w-1/5 fixed bottom-0 top-22.5 z-999 flex w-[230px] -translate-x-[120%] flex-col rounded-md border border-stroke bg-white dark:border-strokedark dark:bg-boxdark lg:static lg:translate-x-0 lg:border-none ${inboxSidebarToggle && '!translate-x-0 duration-300 ease-linear'
+              className={`lg:w-1/5 -translate-x-[120%] flex-col rounded-lg dark:border-strokedark dark:bg-boxdark lg:static lg:translate-x-0 lg:border-none ${inboxSidebarToggle && '!translate-x-0 duration-300 ease-linear'
                 }`}
             >
-              <div className="no-scrollbar max-h-full overflow-auto py-6">
+              <div className="py-6">
                 {/* <ul className={`flex flex-col gap-2 ${selectedDiv ? 'bg-primary' : ''}`}> */}
                 <ul className={`flex flex-col gap-2`}>
                   {/* <ul className="flex flex-col gap-2 "> */}
@@ -316,7 +319,7 @@ const ApartmentUnitCar: React.FC = () => {
                       <li key={index}>
                         <div
                           onClick={() => { dongClickHandle(dong.dong) }}
-                          className={`relative flex items-center gap-2.5 py-2.5 px-5 font-medium duration-300 ease-linear cursor-pointer before:absolute before:left-0 before:h-0 before:w-1 before:bg-primary before:duration-300 before:ease-linear hover:bg-primary/5 hover:text-primary hover:before:h-full
+                          className={`relative flex items-center gap-2.5 py-2.5 px-5 font-medium duration-300 ease-linear cursor-pointer before:absolute before:left-0 before:h-0 before:w-1 before:bg-basicponint before:duration-300 before:ease-linear hover:bg-basicponint/5 hover:text-basicponint hover:before:h-full
                             ${searchData ? isIncludesDong(dong.dong) ? '' : 'hidden' : ''}
                           `}
                         >
@@ -352,7 +355,7 @@ const ApartmentUnitCar: React.FC = () => {
                       onKeyDown={handleKeyPress}
                     />
                     <svg
-                      className="fill-[#637381] hover:fill-primary cursor-pointer"
+                      className="fill-basicponint hover:fill-basicdarkponint cursor-pointer"
                       width="18"
                       height="18"
                       viewBox="0 0 18 18"

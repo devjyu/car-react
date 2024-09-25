@@ -64,17 +64,17 @@ const UnrecognizedCarModal: React.FC<UnrecognizedCarProps> = ({ vehicleId, vehic
             <div
                 ref={modal}
                 onFocus={() => setModalOpen(true)}
-                className="md:px-17.5 w-full max-w-142.5 rounded-lg bg-white px-8 py-12 text-center dark:bg-boxdark md:py-15"
+                className="md:px-17.5 w-full max-w-142.5 rounded-lg bg-basicWhite px-8 py-12 text-center dark:bg-boxdark md:py-15"
             >
-                <span className="mx-auto mb-1.5 inline-block h-1 w-22.5 rounded bg-primary"></span>
-                <div className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl mb-4">
-                    <div className="mb-1">미인식 번호 관리</div>
-                    <div className='text-lg mb-1 text-[#818181]'>{vehicleNumber}</div>
+                <span className="mx-auto mb-1.5 inline-block h-1 w-22.5 rounded bg-basicponint"></span>
+                <div className="pb-2 text-xl text-basicdark dark:text-white sm:text-2xl mb-4">
+                    <div className="mb-1 font-bold">미인식 번호 관리</div>
+                    <div className='text-lg mt-2 mb-1 text-deactivatetxt'>{vehicleNumber}</div>
                 </div>
                 <div className="mb-10 text-left">
                     <div className="mb-5">
                         <table className="text-center datatable-table w-full table-auto border-collapse overflow-hidden break-words px-4 /*md:table-fixed*/ md:overflow-auto md:px-8">
-                            <thead className='bg-indigo-50 cursor-default'>
+                            <thead className='bg-thead cursor-default'>
                                 <tr>
                                     <th>
                                         <div className="flex items-center justify-center">등록된 미인식 차량번호</div>
@@ -84,12 +84,12 @@ const UnrecognizedCarModal: React.FC<UnrecognizedCarProps> = ({ vehicleId, vehic
                             <tbody className="cursor-default">
                                 {additionalVehicles.length > 0 ? additionalVehicles.map((vehicle, index) => {
                                     return (
-                                        <tr className="border-b border-zinc-200" key={index}>
+                                        <tr className="border-b border-tborder" key={index}>
                                             <td>{vehicle.number}</td>
                                         </tr>
                                     )
                                 }) : (
-                                    <tr className="border-b border-zinc-200">
+                                    <tr className="border-b border-tborder">
                                         <td>없습니다</td>
                                     </tr>
                                 )}
@@ -98,7 +98,7 @@ const UnrecognizedCarModal: React.FC<UnrecognizedCarProps> = ({ vehicleId, vehic
                     </div>
                 </div>
                 <button
-                    className="w-1/2 rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+                    className="w-1/2 rounded bg-deactivate p-3 text-center font-medium text-deactivatetxt transition hover:bg-basicdarkponint hover:text-white"
                     onClick={closeModal}
                 >
                     닫기

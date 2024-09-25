@@ -74,6 +74,8 @@ module.exports = {
         gateclosehover: '#D32F2F',
         deactivate: '#E0E0E0',
         deactivatetxt: '#9E9E9E',
+        thead: '#f2f2f2',
+        tborder: '#ddd',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],
