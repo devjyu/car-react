@@ -271,8 +271,8 @@ const Sidebar = (
                             reloadDocument
                             to="/car-unit"
                             className={({ isActive }) =>
-                              'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                              (isActive && '!text-white')
+                              'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-basicWhite duration-300 ease-in-out hover:text-deactivatetxt hover:bg-basicdarkponint' +
+                              (isActive && '!text-basicWhite')
                             }
                           >
                             세대별 차량 목록
@@ -283,8 +283,8 @@ const Sidebar = (
                             reloadDocument
                             to="/car"
                             className={({ isActive }) =>
-                              'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                              (isActive && '!text-white')
+                              'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-basicWhite duration-300 ease-in-out hover:text-deactivatetxt hover:bg-basicdarkponint' +
+                              (isActive && '!text-basicWhite')
                             }
                           >
                             세대외 차량 관리
@@ -377,8 +377,8 @@ const Sidebar = (
                             reloadDocument
                             to="/c/log"
                             className={({ isActive }) =>
-                              'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                              (isActive && '!text-white')
+                              'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-basicWhite duration-300 ease-in-out hover:text-deactivatetxt hover:bg-basicdarkponint' +
+                              (isActive && '!text-basicWhite')
                             }
                           >
                             입출차 내역

@@ -9,6 +9,7 @@ import { useCookies } from 'react-cookie';
 import { DashboardData } from '../types/dashboard.ts';
 import Loader from '../common/Loader/index.tsx';
 import TableCarApplyEntry from '../components/Tables/TableCarApplyEntry.tsx';
+import Breadcrumb from '../components/Breadcrumbs/Breadcrumb.tsx';
 
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,12 +45,7 @@ const Dashboard: React.FC = () => {
       ) : (
         <>
           <div className='mb-20'>
-            <div className='flex items-center mb-2.5 text-basicdark font-semibold'>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333" className='mr-1'>
-                <path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z" />
-              </svg>
-              대시보드
-            </div>
+            <Breadcrumb pageName="대시보드" rootPage="대시보드" />
             <div className='grid grid-cols-3 gap-4'>
               {/* <div className="grid-rows-2 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7.5"> */}
               {/* 기존 색 fill="rgb(38,51,197) */}
