@@ -12,7 +12,7 @@ interface SidebarProps {
 const Sidebar = (
   { sidebarOpen, setSidebarOpen }
   // { sidebarOpen, setSidebarOpen }: SidebarProps
-  ) => {
+) => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [cookies] = useCookies(['accessToken', 'refreshToken']);
@@ -67,6 +67,10 @@ const Sidebar = (
     }
   }, [sidebarExpanded]);
 
+  // window 새창 열기
+  const openNewWindow = () => {
+    window.open('http://localhost:3000/main', '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <>
@@ -135,7 +139,9 @@ const Sidebar = (
             </li>
 
             {/* 모니터링 */}
-            <li>
+            <li
+              // onClick={openNewWindow}
+            >
               <NavLink
                 to="/monitoring"
                 className={`flex item-center gap-2.5 rounded-sm text-basicWhite font-medium hover:bg-basicponint p-3.5 transition-colors duration-300 ${(pathname === '/monitoring' || pathname.includes('monitoring')) && 'bg-basicponint'}`}

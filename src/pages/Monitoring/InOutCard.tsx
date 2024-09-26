@@ -10,16 +10,27 @@ const InOutCard = ({
     monitoringList.map((m, i) => (
       <div
         key={i}
-        className={`flex justify-between gap-2 items-center text-lg w-full cursor-pointer rounded-[10px] border-r-[5px] border-l-[5px] bg-white p-4 shadow-13 ${m.inOutType === 'IN' ? 'border-l-meta-3 border-r-white' : 'border-r-red border-l-white'} hover:bg-gray hover:border-r-gray`}
-        onClick={() => { onClickHandle(m.id) }}
+        className={`flex justify-between gap-2 items-center w-full cursor-pointer rounded-lg bg-basicWhite p-2 shadow-md transition-all duration-200 ${m.inOutType === 'IN' ? 'border-l-4 border-l-gateopen' : 'border-l-4 border-l-gateclose'
+          } hover:bg-gray-100 hover:shadow-lg`}
+        onClick={() => onClickHandle(m.id)}
       >
         <div className="flex justify-between items-center w-full">
-          <div className='text-green-600 w-1/12 font-bold'>{m.inOutType}</div>
-          <div className='text-blue-600 w-3/12 font-bold text-center'>{convertTypeToString(m.type)}</div>
-          <div className='w-4/12 font-bold text-center'>{m.vehicleNumber}</div>
-          <div className='text-stone-400 w-4/12 text-right text-sm'>{m.inOutTime}</div>
+          {/* <div className='w-4/12 font-semibold text-center text-basicdark text-base'>{m.vehicleNumber}</div>
+          <div className='text-basicdark w-8/12 text-right text-xs'>{m.inOutTime}</div> */}
         </div>
       </div>
+      //   <div
+      //   key={i}
+      //   className={`flex justify-between gap-2 items-center text-lg w-full cursor-pointer rounded-lg bg-white p-4 shadow-md transition-all duration-200 ${
+      //     m.inOutType === 'IN' ? 'border-l-4 border-l-blue-500' : 'border-l-4 border-l-red-500'
+      //   } hover:bg-gray-100 hover:shadow-lg`}
+      //   onClick={() => onClickHandle(m.id)}
+      // >
+      //   <div className="flex justify-between items-center w-full">
+      //     <div className='w-4/12 font-bold text-center text-gray-800'>{m.vehicleNumber}</div>
+      //     <div className='text-gray-500 w-4/12 text-right text-sm'>{m.inOutTime}</div>
+      //   </div>
+      // </div>
     ))
   ) : null;
   // const [carLogDetails, setCarLogDetails] = useState<CarLogDetails>();

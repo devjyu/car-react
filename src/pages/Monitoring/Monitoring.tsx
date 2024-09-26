@@ -87,49 +87,91 @@ const Monitoring: React.FC = () => {
   };
 
   // console.log(carLogDetails, "ddd");
-
+  // console.log(monitoringList, "제");
+  
+  // console.log(monitoringList.inOutType, "야");
+  
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="모니터링" rootPage="모니터링" />
-      <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
-        <div className='flex gap-5 h-[75vh]'>
-          <div className='rounded-sm border border-stroke bg-white shadow-default p-8 flex flex-col w-2/3 gap-5 h-fit'>
-            {carLogDetails ? (
-              <>
-                <div className='flex justify-between gap-7 items-center'>
-                  <div className='w-80'>
-                    <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
-                  </div>
-                  <div className='flex flex-col gap-3'>
-                    {/* <div className='flex flex-row gap-3 font-bold'> */}
-                    <div className='text-2xl text-blue-600 font-bold text-right'>{convertTypeToString(carLogDetails.type)}</div>
-                    {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
-                    {/* </div> */}
-                    {/* <div className='flex flex-row gap-3'> */}
-                    {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
-                    <div className='text-xl'>{carLogDetails.inOutTime}</div>
-                    {/* </div> */}
-                  </div>
-                </div>
-                <div>
-                  {carLogDetails.files.length > 1 && (
-                    <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-full h-130' alt="car log detail" />
-                  )}
-                </div>
-              </>
-            ) : null}
-          </div>
-          <div className='rounded-sm border border-stroke bg-white shadow-default w-1/3 p-8 flex flex-col items-center gap-5 h-fit'>
-            <div className='flex justify-between w-full'>
-              <div className='text-lg font-bold'>최근 입출차 내역</div>
-              <div className='ml-auto flex gap-2'>
-                <div>{refreshTime}</div>
-                <img src={Refresh} className='h-fit cursor-pointer' onClick={() => { getMonitoringList() }} />
+      <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
+        <div className='mx-auto max-w-screen-2xl p-5'>
+          <Breadcrumb pageName="모니터링" rootPage="모니터링" />
+          <div className="flex flex-col gap-5 2xl:gap-5">
+            <div className='flex gap-5'>
+              {/* <div className='rounded-lg bg-basicWhite shadow-md p-8 flex flex-col w-2/3 gap-5 h-fit'> */}
+              <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-5 h-fit'>
+                {carLogDetails ? (
+                  <>
+                    {carLogDetails.inOutType == "IN" ? (
+                      <>
+                        <div className='flex justify-between gap-7 items-center'>
+                          <div className='flex flex-col gap-3'>
+                            {/* <div className='flex flex-row gap-3 font-bold'> */}
+                            <div className='text-2xl text-basicdark font-bold text-left'>출차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
+                            {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
+                            {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
+                            {/* </div> */}
+                            {/* <div className='flex flex-row gap-3'> */}
+                            {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
+                            {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
+                            {/* </div> */}
+                          </div>
+                          {/* <div className='w-80'>
+                      <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
+                    </div> */}
+                        </div>
+                        <div>
+                          {carLogDetails.files.length > 1 && (
+                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-full h-130' alt="car log detail" />
+                          )}
+                        </div>
+                      </>
+                    ) : <><div>최근 입차 내역이 없습니다.</div></>}
+                  </>
+                ) : null}
               </div>
-            </div>
-            <InOutCard monitoringList={monitoringList} onClickHandle={inOutCardClickHandle} />
-            {/* <div className='flex gap-2 items-center text-lg w-full cursor-pointer rounded-[10px] border-r-[5px] border-l-[5px] bg-white p-4 shadow-13 border-l-meta-3 border-r-white hover:bg-gray hover:border-r-gray'>
+              <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-5 h-fit'>
+                {carLogDetails ? (
+                  <>
+                    {carLogDetails.inOutType == "OUT" ? (
+                      <>
+                        <div className='flex justify-between gap-7 items-center'>
+                          <div className='flex flex-col gap-3'>
+                            {/* <div className='flex flex-row gap-3 font-bold'> */}
+                            <div className='text-2xl text-basicdark font-bold text-left'>입차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
+                            {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
+                            {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
+                            {/* </div> */}
+                            {/* <div className='flex flex-row gap-3'> */}
+                            {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
+                            {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
+                            {/* </div> */}
+                          </div>
+                          {/* <div className='w-80'>
+                      <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
+                    </div> */}
+                        </div>
+                        <div>
+                          {carLogDetails.files.length > 1 && (
+                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-full h-130' alt="car log detail" />
+                          )}
+                        </div>
+                      </>
+                    ) : <><div className='text-center'>최근 출차 내역이 없습니다.</div></>}
+                  </>
+                ) : null}
+              </div>
+              {/* <div className='rounded-sm border border-stroke bg-white shadow-default w-1/3 p-8 flex flex-col items-center gap-5 h-fit'> */}
+              {/* <div className='flex justify-between w-full'>
+                <div className='text-lg font-bold'>최근 입출차 내역</div>
+                <div className='ml-auto flex gap-2'>
+                  <div>{refreshTime}</div>
+                  <img src={Refresh} className='h-fit cursor-pointer' onClick={() => { getMonitoringList() }} />
+                </div>
+              </div> */}
+              {/* <InOutCard monitoringList={monitoringList} onClickHandle={inOutCardClickHandle} /> */}
+              {/* <div className='flex gap-2 items-center text-lg w-full cursor-pointer rounded-[10px] border-r-[5px] border-l-[5px] bg-white p-4 shadow-13 border-l-meta-3 border-r-white hover:bg-gray hover:border-r-gray'>
               <div className='text-green-600 w-2/12'>입차</div>
               <div className='w-4/12'>서울12가3456</div>
               <div className='text-stone-400 w-6/12'>2024-04-21 12:01:01</div>
@@ -139,6 +181,48 @@ const Monitoring: React.FC = () => {
               <div className='w-4/12'>서울12가3456</div>
               <div className='text-stone-400 w-6/12'>2024-04-21 12:01:01</div>
             </div> */}
+              {/* </div> */}
+            </div>
+            <div className='flex gap-5'>
+              <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
+                {monitoringList.inOutType == "IN" ? (
+                  <>
+                    <div className='flex justify-between items-end w-full'>
+                      <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div>
+                      <div className='ml-auto flex items-center gap-2'>
+                        <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
+                        <img
+                          src={Refresh}
+                          className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                          onClick={getMonitoringList}
+                          alt='Refresh'
+                        />
+                      </div>
+                    </div>
+                    <InOutCard monitoringList={monitoringList} onClickHandle={inOutCardClickHandle} />
+                  </>
+                ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
+              </div>
+              <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
+                {monitoringList.inOutType == "OUT" ? (
+                  <>
+                    <div className='flex justify-between items-end w-full'>
+                      <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div>
+                      <div className='ml-auto flex items-center gap-2'>
+                        <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
+                        <img
+                          src={Refresh}
+                          className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                          onClick={getMonitoringList}
+                          alt='Refresh'
+                        />
+                      </div>
+                    </div>
+                    <InOutCard monitoringList={monitoringList} onClickHandle={inOutCardClickHandle} />
+                  </>
+                ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
+              </div>
+            </div>
           </div>
         </div>
       </div>
