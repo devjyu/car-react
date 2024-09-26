@@ -69,7 +69,7 @@ const Sidebar = (
 
   // window 새창 열기
   const openNewWindow = () => {
-    window.open('http://localhost:3000/main', '_blank', 'noopener,noreferrer');
+    window.open('http://localhost:3000/monitoring', '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -140,7 +140,7 @@ const Sidebar = (
 
             {/* 모니터링 */}
             <li
-              // onClick={openNewWindow}
+              onClick={openNewWindow}
             >
               <NavLink
                 to="/monitoring"

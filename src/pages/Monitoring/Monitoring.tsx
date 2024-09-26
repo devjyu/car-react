@@ -97,7 +97,7 @@ const Monitoring: React.FC = () => {
   return (
     <DefaultLayout>
       <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
-        <div className='mx-auto max-w-screen-2xl p-5'>
+        <div className='mx-auto max-w-screen-2xl p-5 mb-20'>
           <Breadcrumb pageName="모니터링" rootPage="모니터링" />
           <div className="flex flex-col gap-5 2xl:gap-5">
             <div className='flex gap-5'>
