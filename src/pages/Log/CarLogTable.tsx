@@ -122,10 +122,13 @@ const CarLogTable = ({
           Authorization: cookies.accessToken
         }
       });
+      // console.log('response.data :: ', response.data);
+      
       setCarLogInDetails(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
+      
       setLoading(false);
     }
   };
@@ -495,10 +498,10 @@ const CarLogTable = ({
                           if (row.original['out']) {
                             getCarLogOutDetails(row.original['out'].id); // 출차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
                           }
-                          getCarLogInDetails(null);
-                          setCarLogOutDetails(null);
+                          // getCarLogInDetails(null);
+                          // setCarLogOutDetails(null);
                         }}
-                        className={selectedRowIndex === key ? 'bg-basicponint text-basicWhite' : ''}
+                        className={selectedRowIndex === key ? 'bg-basicponint text-basicWhite hover:text-basicdark' : ''}
                       >
                         {row.cells.map((cell, key) => {
                           return (
