@@ -17,8 +17,8 @@ export enum InOutType {
 export interface CarLogInOut {
   id: number;
   apartment: ApartmentData;
-  inOutType: InOutType;
   inOutTime: string;
+  inOutType: InOutType;
   type: CarLogType;
   vehicleNumber: string;
 }

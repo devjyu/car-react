@@ -4,7 +4,8 @@ import { convertTypeToString } from "../../js/stringConvert";
 
 const InOutCard = ({
   monitoringList,
-  onClickHandle
+  onClickHandle,
+  type
 }) => {
   return monitoringList && monitoringList.length > 0 ? (
     monitoringList.map((m, i) => (
@@ -14,10 +15,25 @@ const InOutCard = ({
           } hover:bg-gray-100 hover:shadow-lg`}
         onClick={() => onClickHandle(m.id)}
       >
-        <div className="flex justify-between items-center w-full">
-          {/* <div className='w-4/12 font-semibold text-center text-basicdark text-base'>{m.vehicleNumber}</div>
-          <div className='text-basicdark w-8/12 text-right text-xs'>{m.inOutTime}</div> */}
-        </div>
+        {
+          type == 'IN' && m.inOutType == 'IN' ?
+            <div className="flex justify-between items-center w-full">
+              <div className='w-4/12 font-semibold text-center text-basicdark text-base'>{m.vehicleNumber}</div>
+              <div className='text-basicdark w-8/12 text-right text-xs'>{m.inOutTime}</div>
+            </div>
+            :
+            null
+        }
+
+        {
+          type == 'OUT' && m.inOutType == 'OUT' ?
+            <div className="flex justify-between items-center w-full">
+              <div className='w-4/12 font-semibold text-center text-basicdark text-base'>{m.vehicleNumber}</div>
+              <div className='text-basicdark w-8/12 text-right text-xs'>{m.inOutTime}</div>
+            </div>
+            :
+            null
+        }
       </div>
       //   <div
       //   key={i}

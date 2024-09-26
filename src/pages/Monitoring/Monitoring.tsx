@@ -39,7 +39,10 @@ const Monitoring: React.FC = () => {
           Authorization: cookies.accessToken
         }
       });
+      // console.log(response.data[0].inOutType, "데이터");
+      
       setMonitoringList(response.data);
+      
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -85,12 +88,11 @@ const Monitoring: React.FC = () => {
       setSubLoading(false);
     }
   };
-
-  // console.log(carLogDetails, "ddd");
-  // console.log(monitoringList, "제");
-  
-  // console.log(monitoringList.inOutType, "야");
-  
+  const inType = 'IN';
+  const outType = 'OUT';
+  // console.log(carLogDetails, "사진");
+  // console.log(monitoringList, "내역들");
+    
 
   return (
     <DefaultLayout>
@@ -103,12 +105,13 @@ const Monitoring: React.FC = () => {
               <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-5 h-fit'>
                 {carLogDetails ? (
                   <>
+                    {/* {monitoringList.inOutType == "IN" ? ( */}
                     {carLogDetails.inOutType == "IN" ? (
                       <>
                         <div className='flex justify-between gap-7 items-center'>
                           <div className='flex flex-col gap-3'>
                             {/* <div className='flex flex-row gap-3 font-bold'> */}
-                            <div className='text-2xl text-basicdark font-bold text-left'>출차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
+                            <div className='text-2xl text-basicdark font-bold text-left'>입차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
                             {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
                             {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
                             {/* </div> */}
@@ -139,7 +142,7 @@ const Monitoring: React.FC = () => {
                         <div className='flex justify-between gap-7 items-center'>
                           <div className='flex flex-col gap-3'>
                             {/* <div className='flex flex-row gap-3 font-bold'> */}
-                            <div className='text-2xl text-basicdark font-bold text-left'>입차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
+                            <div className='text-2xl text-basicdark font-bold text-left'>출차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
                             {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
                             {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
                             {/* </div> */}
@@ -158,7 +161,7 @@ const Monitoring: React.FC = () => {
                           )}
                         </div>
                       </>
-                    ) : <><div className='text-center'>최근 출차 내역이 없습니다.</div></>}
+                    ) : <><div className='text-center'>최근 출차 내역이 없습니다.</div></>} 
                   </>
                 ) : null}
               </div>
@@ -185,7 +188,7 @@ const Monitoring: React.FC = () => {
             </div>
             <div className='flex gap-5'>
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
-                {monitoringList.inOutType == "IN" ? (
+                {monitoringList ? (
                   <>
                     <div className='flex justify-between items-end w-full'>
                       <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div>
@@ -199,12 +202,13 @@ const Monitoring: React.FC = () => {
                         />
                       </div>
                     </div>
-                    <InOutCard monitoringList={monitoringList} onClickHandle={inOutCardClickHandle} />
+                    <InOutCard monitoringList={monitoringList} type={inType} onClickHandle={inOutCardClickHandle} />
                   </>
-                ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
+                ) : (<><div>최근 입차 내역이 없습니다.</div></>)}
               </div>
+
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
-                {monitoringList.inOutType == "OUT" ? (
+                {monitoringList ? (
                   <>
                     <div className='flex justify-between items-end w-full'>
                       <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div>
@@ -218,9 +222,9 @@ const Monitoring: React.FC = () => {
                         />
                       </div>
                     </div>
-                    <InOutCard monitoringList={monitoringList} onClickHandle={inOutCardClickHandle} />
+                    <InOutCard monitoringList={monitoringList} type={outType} onClickHandle={inOutCardClickHandle} />
                   </>
-                ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
+                 ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
               </div>
             </div>
           </div>
