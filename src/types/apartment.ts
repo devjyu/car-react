@@ -1,3 +1,7 @@
+export interface CameraData {
+    id: number;
+}
+
 export interface ApartmentData {
     id: number;
     name: string;
@@ -41,6 +45,11 @@ export interface ApartmentUnitData {
 }
 
 export interface ApartmentGate {
+    id: number;
+    gateStatus: string;
+}
+
+export interface CameraGate {
     id: number;
     gateStatus: string;
 }
