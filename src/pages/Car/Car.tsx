@@ -338,7 +338,7 @@ const Car: React.FC = () => {
 
   return (
     <DefaultLayout>
-      <div className='mb-20'>
+      <div className='mb-24'>
         <Breadcrumb pageName="차량 관리" rootPage="차량 관리" />
         <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
           {loading ? (

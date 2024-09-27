@@ -18,16 +18,16 @@ const CarDataTable = ({
   editHandler,
   deleteHandler
   // detailsHandler
- }) => {
+}) => {
 
   const columns = useMemo(() => column, []);
   const data = useMemo(() => tableData, [tableData]);
 
   const [searchOptions, setSearchOptions] = useState([]);
-  const [searchOption, setSearchOption] = useState({key: 'number', value: ''});
-  const [dateOption, setDateOption] = useState({key: 'start', startValue: '',  endValue: ''});
-  const [allowDenyOption, setAllowDenyOption] = useState({key: 'type', value: 'ALL'});
-  const [expiredOption, setExpiredOption] = useState({key: 'expire', value: 'true'});
+  const [searchOption, setSearchOption] = useState({ key: 'number', value: '' });
+  const [dateOption, setDateOption] = useState({ key: 'start', startValue: '', endValue: '' });
+  const [allowDenyOption, setAllowDenyOption] = useState({ key: 'type', value: 'ALL' });
+  const [expiredOption, setExpiredOption] = useState({ key: 'expire', value: 'true' });
 
   const tableInstance = useTable(
     {
@@ -52,7 +52,7 @@ const CarDataTable = ({
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    page ,
+    page,
     prepareRow,
     state,
     setGlobalFilter,
@@ -65,7 +65,7 @@ const CarDataTable = ({
     gotoPage,
   } = tableInstance;
 
-  const { globalFilter, pageIndex, pageSize } = state;  
+  const { globalFilter, pageIndex, pageSize } = state;
 
   // const detailsHandler = (id) => {};
   // const editHandler = (id) => {};
@@ -88,7 +88,7 @@ const CarDataTable = ({
       //   return updatedOptions;
       // });
       // console.log(searchOptions);
-      
+
     }
   };
 
@@ -98,9 +98,9 @@ const CarDataTable = ({
     // console.log(searchOption);
     // console.log('searchOptions param 생성 시작');
     const searchParams = [];
-    searchParams.push({key: allowDenyOption.key, value: allowDenyOption.value});
-    searchParams.push({key: searchOption.key, value: searchOption.value});
-    searchParams.push({key: expiredOption.key, value: expiredOption.value});
+    searchParams.push({ key: allowDenyOption.key, value: allowDenyOption.value });
+    searchParams.push({ key: searchOption.key, value: searchOption.value });
+    searchParams.push({ key: expiredOption.key, value: expiredOption.value });
     // console.log(searchParams);
     onSearch(searchParams);
   };
@@ -152,14 +152,15 @@ const CarDataTable = ({
 
     // 오늘 날짜가 입력된 날짜보다 더 이후인 경우 false 반환
     return todayFormatted > inputDateFormatted;
-}
+  }
 
   return (
     <section className="data-table-common data-table-two rounded-lg bg-white py-4 shadow-md text-xs dark:border-strokedark dark:bg-boxdark">
       <div className='flex flex-col gap-3'>
-        <div className='px-8'>
-          <div className='flex gap-4'>
-            {/* <div>
+        <div className='px-8 mb-3.5'>
+          <div className='flex items-center justify-between'>
+            <div className='flex gap-4'>
+              {/* <div>
               <DropdownSearch
                 options={dateOptions}
                 onSelect={({label, value}) => {setDateOption({...dateOption, key:value})}}
@@ -186,82 +187,84 @@ const CarDataTable = ({
                 />
               </div>
             </div> */}
-            <div className='my-auto'>
-              허용여부
+              <div className='my-auto'>
+                허용여부
+              </div>
+              <div className='mr-4'>
+                <DropdownSearch
+                  options={allowDenyOptions}
+                  onSelect={({ label, value }) => { setAllowDenyOption({ ...allowDenyOption, value: value }) }}
+                />
+              </div>
+              <div className='my-auto'>
+                기간만료차량
+              </div>
+              <div className='mr-4'>
+                <DropdownSearch
+                  options={expiredOptions}
+                  onSelect={({ label, value }) => { setExpiredOption({ ...expiredOption, value: value }) }}
+                />
+              </div>
+              <div className='mr-4'>
+                <DropdownSearch
+                  options={dropDownSearchOptions}
+                  onSelect={({ label, value }) => { setSearchOption({ ...searchOption, key: value }) }}
+                />
+              </div>
+              <div className="w-60 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                <input
+                  type="text"
+                  value={searchOption.value}
+                  onChange={(e) => setSearchOption({ ...searchOption, value: e.target.value })}
+                  className="w-full focus:outline-none"
+                  placeholder="Search..."
+                  onKeyDown={handleKeyPress}
+                />
+                <svg
+                  className="fill-basicponint hover:fill-basicdarkponint cursor-pointer"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={handleSearch}
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M8.25 3C5.3505 3 3 5.3505 3 8.25C3 11.1495 5.3505 13.5 8.25 13.5C11.1495 13.5 13.5 11.1495 13.5 8.25C13.5 5.3505 11.1495 3 8.25 3ZM1.5 8.25C1.5 4.52208 4.52208 1.5 8.25 1.5C11.9779 1.5 15 4.52208 15 8.25C15 11.9779 11.9779 15 8.25 15C4.52208 15 1.5 11.9779 1.5 8.25Z"
+                    fill=""
+                  />
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M11.9572 11.9572C12.2501 11.6643 12.7249 11.6643 13.0178 11.9572L16.2803 15.2197C16.5732 15.5126 16.5732 15.9874 16.2803 16.2803C15.9874 16.5732 15.5126 16.5732 15.2197 16.2803L11.9572 13.0178C11.6643 12.7249 11.6643 12.2501 11.9572 11.9572Z"
+                    fill=""
+                  />
+                </svg>
+              </div>
             </div>
-            <div className='mr-4'>
-              <DropdownSearch
-                options={allowDenyOptions}
-                onSelect={({label, value}) => {setAllowDenyOption({...allowDenyOption, value: value})}}
-              />
-            </div>
-            <div className='my-auto'>
-              기간만료차량
-            </div>
-            <div className='mr-4'>
-              <DropdownSearch
-                options={expiredOptions}
-                onSelect={({label, value}) => {setExpiredOption({...expiredOption, value: value})}}
-              />
+            <div>
+              <div className="flex items-center font-medium">
+                <select
+                  value={pageSize}
+                  onChange={(e) => setPageSize(Number(e.target.value))}
+                  className="bg-transparent pl-2"
+                >
+                  {[5, 10, 20, 50].map((page) => (
+                    <option key={page} value={page}>
+                      {page}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex justify-between px-8 border-b border-stroke pb-4 dark:border-strokedark">
+        {/* <div className="flex justify-between px-8 border-b border-stroke pb-4 dark:border-strokedark">
           <div className='flex'>
-            <div className='mr-4'>
-              <DropdownSearch
-                options={dropDownSearchOptions}
-                onSelect={({label, value}) => {setSearchOption({...searchOption, key: value})}}
-              />
-            </div>
-            <div className="w-60 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-              <input
-                type="text"
-                value={searchOption.value}
-                onChange={(e) => setSearchOption({...searchOption, value: e.target.value})}
-                className="w-full focus:outline-none"
-                placeholder="Search..."
-                onKeyDown={handleKeyPress}
-              />
-              <svg
-                className="fill-basicponint hover:fill-basicdarkponint cursor-pointer"
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                onClick={handleSearch}
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M8.25 3C5.3505 3 3 5.3505 3 8.25C3 11.1495 5.3505 13.5 8.25 13.5C11.1495 13.5 13.5 11.1495 13.5 8.25C13.5 5.3505 11.1495 3 8.25 3ZM1.5 8.25C1.5 4.52208 4.52208 1.5 8.25 1.5C11.9779 1.5 15 4.52208 15 8.25C15 11.9779 11.9779 15 8.25 15C4.52208 15 1.5 11.9779 1.5 8.25Z"
-                  fill=""
-                />
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M11.9572 11.9572C12.2501 11.6643 12.7249 11.6643 13.0178 11.9572L16.2803 15.2197C16.5732 15.5126 16.5732 15.9874 16.2803 16.2803C15.9874 16.5732 15.5126 16.5732 15.2197 16.2803L11.9572 13.0178C11.6643 12.7249 11.6643 12.2501 11.9572 11.9572Z"
-                  fill=""
-                />
-              </svg>
-            </div>
           </div>
-
-          <div className="flex items-center font-medium">
-            <select
-              value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
-              className="bg-transparent pl-2"
-            >
-              {[5, 10, 20, 50].map((page) => (
-                <option key={page} value={page}>
-                  {page}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        </div> */}
       </div>
 
       <table
@@ -311,25 +314,25 @@ const CarDataTable = ({
                   </div>
                 </th>
               ))}
-                {/* <th className='text-center' colSpan={1} role='columnheader' key={headerGroup.headers.length}>
+              {/* <th className='text-center' colSpan={1} role='columnheader' key={headerGroup.headers.length}>
                   <div className="flex items-center justify-center" >
                     <span>상세</span>
                   </div>
                 </th>
                  */}
-              
-                <th colSpan={1} role='columnheader' key={headerGroup.headers.length+1}>
-                  <div className="flex items-center justify-center" >
-                    <span>수정</span>
-                  </div>
-                </th>
-                
-                <th colSpan={1} role='columnheader' key={headerGroup.headers.length+2}>
-                  <div className="flex items-center justify-center" >
-                    <span>삭제</span>
-                  </div>
-                </th>
-                
+
+              <th colSpan={1} role='columnheader' key={headerGroup.headers.length + 1}>
+                <div className="flex items-center justify-center" >
+                  <span>수정</span>
+                </div>
+              </th>
+
+              <th colSpan={1} role='columnheader' key={headerGroup.headers.length + 2}>
+                <div className="flex items-center justify-center" >
+                  <span>삭제</span>
+                </div>
+              </th>
+
             </tr>
           ))}
         </thead>
@@ -341,26 +344,26 @@ const CarDataTable = ({
                 {row.cells.map((cell, key) => {
                   return (
                     <td {...cell.getCellProps()} key={key} className={cell.column.id === 'endDate' && isExpired(cell.value) ? 'text-basicponint' : ''}>
-                      {typeof cell.value === 'boolean' ? 
+                      {typeof cell.value === 'boolean' ?
                         cell.value ? '예' : '아니오'
-                      : cell.value}
+                        : cell.value}
                       {cell.column.id === 'endDate' && isExpired(cell.value) ? (' (만료)') : null}
                     </td>
                   );
                 })}
-                
+
                 {/* <td role='row' key={page.length} onClick={() => detailsHandler(row.original['id'])}>
                   <ModalDetails/>
                 </td> */}
-                
-                <td role='row' key={page.length+1} onClick={() => editHandler(row.original['id'])}>
-                  <ModalEdit/>
+
+                <td role='row' key={page.length + 1} onClick={() => editHandler(row.original['id'])}>
+                  <ModalEdit />
                 </td>
-                
-                <td role='row' key={page.length+2}>
-                  <ModalDelete deleteHandler={deleteHandler} deleteData={row.cells} deleteId={row.original['id']}/>
+
+                <td role='row' key={page.length + 2}>
+                  <ModalDelete deleteHandler={deleteHandler} deleteData={row.cells} deleteId={row.original['id']} />
                 </td>
-                
+
               </tr>
             );
           })}
@@ -399,9 +402,8 @@ const CarDataTable = ({
               onClick={() => {
                 gotoPage(index);
               }}
-              className={`${
-                pageIndex === index && 'bg-basicponint text-white'
-              } mx-1 flex cursor-pointer items-center justify-center rounded-md p-1 px-3 hover:bg-basicdarkponint hover:text-white`}
+              className={`${pageIndex === index && 'bg-basicponint text-white'
+                } mx-1 flex cursor-pointer items-center justify-center rounded-md p-1 px-3 hover:bg-basicdarkponint hover:text-white`}
             >
               {index + 1}
             </button>
