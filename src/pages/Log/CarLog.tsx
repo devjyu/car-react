@@ -200,10 +200,10 @@ const CarLog: React.FC = () => {
       Header: '차량번호',
       accessor: (row) => row.originVehicleNumber ? row.originVehicleNumber : row.in.vehicleNumber
     },
-    {
-      Header: '동/호수',
-      accessor: (row) => (row.dong && row.ho) ? `${row.dong}동 ${row.ho}호` : '-'
-    },
+    // {
+    //   Header: '동/호수',
+    //   accessor: (row) => (row.dong && row.ho) ? `${row.dong}동 ${row.ho}호` : '-'
+    // },
     { Header: '입차일시', accessor: 'in.inOutTime' },
     { Header: '출차일시', accessor: 'out.inOutTime' },
     // { Header: '출차 차량번호', accessor: 'out.vehicleNumber'},
