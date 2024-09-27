@@ -85,7 +85,7 @@ const Header = (
             <div className='text-2xl cursor-pointer' onClick={() => setSidebarOpen(!sidebarOpen)}>☰</div>
             <div className="">
               <NavLink to="/main">
-                <div className='text-2xl font-medium text-center flex-grow'>주차 관리 솔루션</div>
+                <div className='text-2xl font-semibold text-center flex-grow'>주차 관리 솔루션</div>
                 {/* 기존 로고 */}
                 {/* <img src={Logo} alt="Logo" className='h-8' /> */}
               </NavLink>
