@@ -322,10 +322,12 @@ const ApartmentUnitCar: React.FC = () => {
                           className={`relative flex items-center gap-2.5 py-2.5 px-5 font-medium duration-300 ease-linear cursor-pointer before:absolute before:left-0 before:h-0 before:w-1 before:bg-basicponint before:duration-300 before:ease-linear hover:bg-basicponint/5 hover:text-basicponint hover:before:h-full
                             ${searchData ? isIncludesDong(dong.dong) ? '' : 'hidden' : ''}
                           `}
+                          // className={`relative flex items-center gap-2.5 py-2.5 px-5 font-medium duration-300 ease-linear cursor-pointer before:absolute before:left-0 before:h-0 before:w-1 before:bg-basicponint before:duration-300 before:ease-linear hover:bg-basicponint/5 hover:text-basicponint hover:before:h-full`}
                         >
                           <div className='flex justify-between w-full gap-1.5'>
-                            <div>{dong.dong}동</div>
+                            <div>{dong.dong}</div>
                             <div className='text-sm'>{`${searchData ? countVehicleWithSameDongInSearchData(dong.dong) : dong.count}대`}</div>
+                            {/* <div className='text-sm'>{dong.count}대</div> */}
                           </div>
                         </div>
                       </li>
@@ -385,7 +387,7 @@ const ApartmentUnitCar: React.FC = () => {
                   <thead>
                     <tr className="flex border-y border-stroke dark:border-strokedark">
                       <th className="w-[15%] py-6 pl-4 pr-4 lg:pl-10">
-                        <p className="text-left font-medium">호수</p>
+                        <p className="text-left font-medium">소분류</p>
                       </th>
                       <th className="w-[85%] hidden py-6 px-4 xl:block">
                         <p className="text-left font-medium">차량번호</p>
@@ -401,6 +403,7 @@ const ApartmentUnitCar: React.FC = () => {
                               {vehicles.ho}
                             </div>
                           </td>
+                          {/* <td className="flex flex-row justify-between items-center w-full hidden p-4 xl:flex"> */}
                           <td className="flex flex-row justify-between items-center w-[85%] hidden p-4 xl:flex">
                             <div className='flex gap-2'>
                               {vehicles.vehicleNumber ? vehicles.vehicleNumber.map((s, index) => {

@@ -125,7 +125,8 @@ function App() {
           path="/car"
           element={
             <>
-              <PageTitle title="차량 | Admin - Car Admin Car" />
+              <PageTitle title="비관리 차량 | Admin - Car Admin Car" />
+              {/* <PageTitle title="차량 | Admin - Car Admin Car" /> */}
               <Car />
             </>
           }
@@ -135,7 +136,8 @@ function App() {
           path="/car-unit"
           element={
             <>
-              <PageTitle title="세대별 차량 | Admin - Car Admin Apartment Unit Car" />
+              <PageTitle title="관리 차량 | Admin - Car Admin Apartment Unit Car" />
+              {/* <PageTitle title="세대별 차량 | Admin - Car Admin Apartment Unit Car" /> */}
               <ApartmentUnitCar />
             </>
           }
