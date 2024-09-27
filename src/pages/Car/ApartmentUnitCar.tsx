@@ -90,7 +90,7 @@ const ApartmentUnitCar: React.FC = () => {
   }
 
   // console.log(carUnitData,"dd");
-  
+
 
   const getCarUnitDongData = async (dong) => {
     try {
@@ -188,10 +188,12 @@ const ApartmentUnitCar: React.FC = () => {
       getCarUnitDongData(currentDong);
     }
   };
+  const [clickedDong, setClickedDong] = useState(null);
 
   const dongClickHandle = (dong) => {
     setCurrentDong(dong);
     getCarUnitDongData(dong);
+    setClickedDong(dong);
     // setSelectedDiv(true)
   };
 
@@ -318,11 +320,15 @@ const ApartmentUnitCar: React.FC = () => {
                     return (
                       <li key={index}>
                         <div
-                          onClick={() => { dongClickHandle(dong.dong) }}
+                          onClick={() => dongClickHandle(dong.dong)}
                           className={`relative flex items-center gap-2.5 py-2.5 px-5 font-medium duration-300 ease-linear cursor-pointer before:absolute before:left-0 before:h-0 before:w-1 before:bg-basicponint before:duration-300 before:ease-linear hover:bg-basicponint/5 hover:text-basicponint hover:before:h-full
-                            ${searchData ? isIncludesDong(dong.dong) ? '' : 'hidden' : ''}
-                          `}
-                          // className={`relative flex items-center gap-2.5 py-2.5 px-5 font-medium duration-300 ease-linear cursor-pointer before:absolute before:left-0 before:h-0 before:w-1 before:bg-basicponint before:duration-300 before:ease-linear hover:bg-basicponint/5 hover:text-basicponint hover:before:h-full`}
+                          ${searchData ? isIncludesDong(dong.dong) ? '' : 'hidden' : ''}
+                          ${clickedDong === dong.dong ? 'bg-basicponint text-basicWhite' : ''}  // 클릭되었을 때 bg 색 변경
+                        `}
+                        // onClick={() => { dongClickHandle(dong.dong) }}
+                        // className={`relative flex items-center gap-2.5 py-2.5 px-5 font-medium duration-300 ease-linear cursor-pointer before:absolute before:left-0 before:h-0 before:w-1 before:bg-basicponint before:duration-300 before:ease-linear hover:bg-basicponint/5 hover:text-basicponint hover:before:h-full
+                        //   ${searchData ? isIncludesDong(dong.dong) ? '' : 'hidden' : ''}
+                        // `}
                         >
                           <div className='flex justify-between w-full gap-1.5'>
                             <div>{dong.dong}</div>
@@ -387,7 +393,7 @@ const ApartmentUnitCar: React.FC = () => {
                   <thead>
                     <tr className="flex border-y border-stroke dark:border-strokedark">
                       <th className="w-[15%] py-6 pl-4 pr-4 lg:pl-10">
-                        <p className="text-left font-medium">소분류</p>
+                        <p className="text-left font-medium">상세내역</p>
                       </th>
                       <th className="w-[85%] hidden py-6 px-4 xl:block">
                         <p className="text-left font-medium">차량번호</p>
