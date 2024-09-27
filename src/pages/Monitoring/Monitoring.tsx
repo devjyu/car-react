@@ -8,6 +8,10 @@ import InOutCard from './InOutCard.tsx';
 import { CarLogDetails, CarLogType, InOutType } from '../../types/carLog.ts';
 import { convertTypeToString } from '../../js/stringConvert.ts';
 import { formatYMDHMS } from '../../js/dateFormat.ts';
+import { useRecoilState } from 'recoil';
+import { cameraGateState } from '../../state/atoms/cameraGateState.ts';
+import { ApartmentGate, CameraGate } from '../../types/apartment.ts';
+
 
 interface Monitoring {
   dong: string;
@@ -27,9 +31,43 @@ const Monitoring: React.FC = () => {
   const [carLogDetails, setCarLogDetails] = useState<CarLogDetails>();
   const [refreshTime, setRefreshTime] = useState<string>(formatYMDHMS(new Date()));
   const [latestCarId, setLatestCarid] = useState<number>(0);
+  const [cameraGateData, setCameraGateData] = useRecoilState(cameraGateState);
+
 
   const monitoringUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_MONITORING_ENDPOINT;
+  const newMonitoringUrl = import.meta.env.VITE_BASE_URL + `/record/camara/${cameraGateData.id}/latest`;
   const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
+
+  // gate 정보만 가져오기
+  const getCameraList = async () => {
+    try {
+      setLoading(true);
+      // const response = await axios.get(`https://api.hmkpk.kr/device/camera?page=0&size=1&name=`, {
+      const response = await axios.get(newMonitoringUrl, {
+        headers: {
+          Authorization: cookies.accessToken, // 세 번째 인수로 headers 전달
+        },
+        params: {
+          id: 0,
+          gateStatus: ''
+        } as CameraGate,
+      });
+
+      // console.log(response.data.content[0], '정보');
+      // console.log(response.data.content[0].gateStatus, '정보');
+
+
+      setCameraGateData({
+        id: response.data.content[0].id,
+        gateStatus: response.data.content[0].gateStatus
+      });
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const getMonitoringList = async () => {
     try {
@@ -39,10 +77,10 @@ const Monitoring: React.FC = () => {
           Authorization: cookies.accessToken
         }
       });
-      // console.log(response.data[0].inOutType, "데이터");
-      
+      console.log(response.data[0], "데이터");
+
       setMonitoringList(response.data);
-      
+
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -51,7 +89,29 @@ const Monitoring: React.FC = () => {
     }
   }
 
+  // 기존 입출차내역(5개)
+  // const getMonitoringList = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.get(monitoringUrl, {
+  //       headers: {
+  //         Authorization: cookies.accessToken
+  //       }
+  //     });
+  //     // console.log(response.data[0].inOutType, "데이터");
+
+  //     setMonitoringList(response.data);
+
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   } finally {
+  //     setLoading(false);
+  //     setRefreshTime(formatYMDHMS(new Date()));
+  //   }
+  // }
+
   useEffect(() => {
+    getCameraList();
     getMonitoringList();
     const intervalId = setInterval(() => {
       getMonitoringList();
@@ -92,41 +152,53 @@ const Monitoring: React.FC = () => {
   const outType = 'OUT';
   // console.log(carLogDetails, "사진");
   // console.log(monitoringList, "내역들");
-    
+
 
   return (
     <DefaultLayout>
       <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
         <div className='mx-auto max-w-screen-2xl p-5 mb-20'>
-          <Breadcrumb pageName="모니터링" rootPage="모니터링" />
+          <div className='flex justify-end font-medium mb-3'>최근 입출차 내역</div>
+          {/* <Breadcrumb pageName="모니터링" rootPage="모니터링" /> */}
           <div className="flex flex-col gap-5 2xl:gap-5">
             <div className='flex gap-5'>
               {/* <div className='rounded-lg bg-basicWhite shadow-md p-8 flex flex-col w-2/3 gap-5 h-fit'> */}
-              <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-5 h-fit'>
+              <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-3 h-fit'>
                 {carLogDetails ? (
                   <>
                     {/* {monitoringList.inOutType == "IN" ? ( */}
                     {carLogDetails.inOutType == "IN" ? (
                       <>
                         <div className='flex justify-between gap-7 items-center'>
-                          <div className='flex flex-col gap-3'>
-                            {/* <div className='flex flex-row gap-3 font-bold'> */}
-                            <div className='text-2xl text-basicdark font-bold text-left'>입차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
-                            {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
-                            {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
-                            {/* </div> */}
-                            {/* <div className='flex flex-row gap-3'> */}
-                            {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
-                            {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
-                            {/* </div> */}
+                          {/* <div className='flex items-center justify-between gap-3'> */}
+                          {/* <div className='flex flex-row gap-3 font-bold'> */}
+                          <div className='flex items-center gap-1'>
+                            <div className='text-2xl text-basicdark font-bold text-left'>입차</div>
+                            <div>
+                              <img
+                                src={Refresh}
+                                className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                                onClick={getMonitoringList}
+                                alt='Refresh'
+                              />
+                            </div>
                           </div>
+                          <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span>{carLogDetails.vehicleNumber}</div>
+                          {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
+                          {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
+                          {/* </div> */}
+                          {/* <div className='flex flex-row gap-3'> */}
+                          {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
+                          {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
+                          {/* </div> */}
+                          {/* </div> */}
                           {/* <div className='w-80'>
                       <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
                     </div> */}
                         </div>
                         <div>
                           {carLogDetails.files.length > 1 && (
-                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-full h-130' alt="car log detail" />
+                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
                           )}
                         </div>
                       </>
@@ -142,7 +214,18 @@ const Monitoring: React.FC = () => {
                         <div className='flex justify-between gap-7 items-center'>
                           <div className='flex flex-col gap-3'>
                             {/* <div className='flex flex-row gap-3 font-bold'> */}
-                            <div className='text-2xl text-basicdark font-bold text-left'>출차<span className='ml-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span></div>
+                            <div className='flex items-center gap-1'>
+                            <div className='text-2xl text-basicdark font-bold text-left'>출차</div>
+                            <div>
+                              <img
+                                src={Refresh}
+                                className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                                onClick={getMonitoringList}
+                                alt='Refresh'
+                              />
+                            </div>
+                          </div>
+                            <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span>{carLogDetails.vehicleNumber}</div>
                             {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
                             {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
                             {/* </div> */}
@@ -157,11 +240,11 @@ const Monitoring: React.FC = () => {
                         </div>
                         <div>
                           {carLogDetails.files.length > 1 && (
-                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-full h-130' alt="car log detail" />
+                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
                           )}
                         </div>
                       </>
-                    ) : <><div className='text-center'>최근 출차 내역이 없습니다.</div></>} 
+                    ) : <><div className='text-center'>최근 출차 내역이 없습니다.</div></>}
                   </>
                 ) : null}
               </div>
@@ -190,18 +273,18 @@ const Monitoring: React.FC = () => {
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
                 {monitoringList ? (
                   <>
-                    <div className='flex justify-between items-end w-full'>
-                      <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div>
-                      <div className='ml-auto flex items-center gap-2'>
-                        <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
-                        <img
+                    {/* <div className='flex justify-between items-end w-full'> */}
+                    {/* <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div> */}
+                    {/* <div className='ml-auto flex items-center gap-2'> */}
+                    {/* <div className='text-deactivatetxt text-sm'>{refreshTime}</div> */}
+                    {/* <img
                           src={Refresh}
                           className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
                           onClick={getMonitoringList}
                           alt='Refresh'
-                        />
-                      </div>
-                    </div>
+                        /> */}
+                    {/* </div> */}
+                    {/* </div> */}
                     <InOutCard monitoringList={monitoringList} type={inType} onClickHandle={inOutCardClickHandle} />
                   </>
                 ) : (<><div>최근 입차 내역이 없습니다.</div></>)}
@@ -210,21 +293,16 @@ const Monitoring: React.FC = () => {
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
                 {monitoringList ? (
                   <>
-                    <div className='flex justify-between items-end w-full'>
-                      <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div>
-                      <div className='ml-auto flex items-center gap-2'>
+                    {/* <div className='flex justify-between items-end w-full'> */}
+                    {/* <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div> */}
+                    {/* <div className='ml-auto flex items-center gap-2'>
                         <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
-                        <img
-                          src={Refresh}
-                          className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
-                          onClick={getMonitoringList}
-                          alt='Refresh'
-                        />
-                      </div>
-                    </div>
+
+                      </div> */}
+                    {/* </div> */}
                     <InOutCard monitoringList={monitoringList} type={outType} onClickHandle={inOutCardClickHandle} />
                   </>
-                 ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
+                ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
               </div>
             </div>
           </div>

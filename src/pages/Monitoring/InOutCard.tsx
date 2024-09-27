@@ -11,8 +11,8 @@ const InOutCard = ({
     monitoringList.map((m, i) => (
       <div
         key={i}
-        className={`flex justify-between gap-2 items-center w-full cursor-pointer rounded-lg bg-basicWhite p-2 shadow-md transition-all duration-200 ${m.inOutType === 'IN' ? 'border-l-4 border-l-gateopen' : 'border-l-4 border-l-gateclose'
-          } hover:bg-gray-100 hover:shadow-lg`}
+        className={`flex justify-between items-center w-full cursor-pointer border border-tborder border-b border-t-0 border-r-0 border-l-0 bg-basicWhite px-2
+         transition-all duration-200 hover:bg-gray-100 hover:shadow-lg`}
         onClick={() => onClickHandle(m.id)}
       >
         {
