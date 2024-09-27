@@ -162,7 +162,7 @@ const Footer = () => {
     return (
         <footer className="flex items-center justify-around bg-basicdark text-basicWhite px-2.5 py-4 mt-5 fixed bottom-0 w-full z-10">
             <div className='flex items-center'>
-                <div className="px-6 font-semibold text-m">차단기 수동 제어</div>
+                <div className="px-6 font-semibold text-m">차단기 강제 수동 제어</div>
                 <div className="flex space-x-4">
                     <button
                         onClick={handleOpen}
@@ -188,7 +188,7 @@ const Footer = () => {
                     </button>
                 </div>
             </div>
-            <div className='flex items-center'>
+            {/* <div className='flex items-center'>
                 <div className="px-6 font-semibold text-m">카메라별 차단기 수동 제어</div>
                 <div className="flex space-x-4">
                     <button
@@ -214,7 +214,7 @@ const Footer = () => {
                         CLOSE
                     </button>
                 </div>
-            </div>
+            </div> */}
 
         </footer>
     );
