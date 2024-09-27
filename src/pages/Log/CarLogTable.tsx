@@ -123,12 +123,12 @@ const CarLogTable = ({
         }
       });
       // console.log('response.data :: ', response.data);
-      
+
       setCarLogInDetails(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      
+
       setLoading(false);
     }
   };
@@ -322,8 +322,8 @@ const CarLogTable = ({
   // console.log(carLogInDetails.type, 'type');
 
   return (
-    <div className='flex gap-7 relative'>
-      <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10 basis-3/4">
+    <div className='flex gap-5 relative'>
+      <div className="flex flex-col gap-3 md:gap-7 2xl:gap-10 basis-3/5">
         <section className="data-table-common data-table-two rounded-lg bg-basicWhite py-4 shadow-md text-xs dark:border-strokedark  dark:bg-boxdark">
           <div className='flex flex-col gap-3 px-8 mb-3'>
             <div>
@@ -607,42 +607,45 @@ const CarLogTable = ({
           }
         </section>
       </div>
-      <div className={`basis-1/4 h-full relative`}>
-        <div className={`flex flex-col gap-5 2xl:gap-5 ${detailsClass}`}>
+      <div className={`basis-2/5 h-full relative`}>
+        <div className={`flex flex-col gap-3 2xl:gap-3 ${detailsClass}`}>
           {loading ? (
             null
           ) : carLogInDetails && carLogInDetails.files ? (
             <>
-              <div className="rounded-lg p-4 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark h-fit">
+              <div className="rounded-lg p-4 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark">
                 {/* <div className="text-lg font-semibold mb-2">입차 이미지</div> */}
-                <div className="flex flex-wrap gap-4">
+                <div className="flex items-center justify-between gap-2.5">
                   {/* <div className='flex w-full justify-between items-center'> */}
-                  <div className='w-full justify-between items-center flex'>
-                    <div className='text-left w-1/2'>
+                  <div className="flex flex-col w-1/3 justify-between md:gap-36">
+                    <div className="flex flex-col">
                       {/* <div className='text-indigo-500 font-semibold text-lg'>
                         {carLogInDetails && carLogInDetails.type === 'MEMBER' ? '세대' :
                           carLogInDetails.type === 'VISIT' ? '방문' :
                             carLogInDetails.type === 'UNKNOWN' ? '미인식' :
                               carLogInDetails.type === 'UNREGISTER' ? '미등록' : ''}
                       </div> */}
-                      <div className="text-lg font-semibold mb-2 text-gateopen">입차 이미지</div>
-                      <div className='text-sm'>
+                      <div className="text-title-xxsm font-semibold mb-1 text-gateopen">입차 이미지</div>
+                      <div className='text-xs'>
                         {carLogInDetails.inOutTime}
                       </div>
                     </div>
-                    <div className='w-1/2'>
+                    <div className="mt-auto">
                       <img
                         src={`data:image/jpg;base64,${carLogInDetails.files[0].content}`}
                         alt={`입차 이미지 1`}
-                        className='w-full h-18'
+                        className='w-full h-12 object-cover'
                       />
                     </div>
 
                   </div>
-                  <div>
+                  <div className='w-2/3'>
                     <img
                       src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`}
                       alt={`입차 이미지 2`}
+                      className='w-full h-60'
+                    // className='w-full obj/ect-cover'
+                    // style={{ maxWidth: '100%', height: '' }}
                     />
                   </div>
                 </div>
@@ -661,34 +664,35 @@ const CarLogTable = ({
             <>
               <div className="rounded-lg p-4 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark">
                 {/* <div className="text-lg font-semibold mb-2">출차 이미지</div> */}
-                <div className="flex flex-wrap gap-4">
+                <div className="flex items-center justify-between gap-2.5">
                   {/* <div className='flex w-full justify-between items-center'> */}
-                  <div className='w-full justify-between items-center flex'>
-                    <div className='text-left'>
+                  <div className="flex flex-col w-1/3 justify-between md:gap-36">
+                    <div className="flex flex-col">
                       {/* <div className='text-indigo-500 font-semibold text-lg'>
                         {carLogOutDetails.type === 'MEMBER' ? '세대' :
                           carLogOutDetails.type === 'VISIT' ? '방문' :
                             carLogOutDetails.type === 'UNKNOWN' ? '미인식' :
                               carLogOutDetails.type === 'UNREGISTER' ? '미등록' : ''}
                       </div> */}
-                      <div className="text-lg font-semibold mb-2 text-gateclose">출차 이미지</div>
-                      <div className='text-sm'>
+                      <div className="text-title-xxsm font-semibold mb-1 text-gateclose">출차 이미지</div>
+                      <div className='text-xs'>
                         {carLogOutDetails.inOutTime}
                       </div>
                     </div>
-                    <div className='w-1/2'>
+                    <div className="mt-auto">
                       <img
                         src={`data:image/jpg;base64,${carLogOutDetails.files[0].content}`}
                         alt={`출차 이미지 1`}
-                        className='w-full h-18'
+                        className='w-full h-12 object-cover'
                       />
                     </div>
 
                   </div>
-                  <div>
+                  <div className='w-2/3'>
                     <img
                       src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`}
                       alt={`출차 이미지 2`}
+                      className='w-full h-60'
                     />
                   </div>
                 </div>

@@ -88,6 +88,7 @@ module.exports = {
         'title-sm': ['20px', '26px'],
         'title-sm2': ['22px', '28px'],
         'title-xsm': ['18px', '24px'],
+        'title-xxsm': ['16px', '22px'],
       },
       spacing: {
         4.5: '1.125rem',
