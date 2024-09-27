@@ -35,6 +35,7 @@ const Monitoring: React.FC = () => {
 
 
   const monitoringUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_MONITORING_ENDPOINT;
+  const cameraInfoUrl = import.meta.env.VITE_BASE_URL + `/device/camera?page=0&size=1&name=`;
   const newMonitoringUrl = import.meta.env.VITE_BASE_URL + `/record/camara/${cameraGateData.id}/latest`;
   const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
 
@@ -43,7 +44,7 @@ const Monitoring: React.FC = () => {
     try {
       setLoading(true);
       // const response = await axios.get(`https://api.hmkpk.kr/device/camera?page=0&size=1&name=`, {
-      const response = await axios.get(newMonitoringUrl, {
+      const response = await axios.get(cameraInfoUrl, {
         headers: {
           Authorization: cookies.accessToken, // 세 번째 인수로 headers 전달
         },
@@ -53,7 +54,7 @@ const Monitoring: React.FC = () => {
         } as CameraGate,
       });
 
-      // console.log(response.data.content[0], '정보');
+      console.log(response.data.content[0], '정보');
       // console.log(response.data.content[0].gateStatus, '정보');
 
 
@@ -72,7 +73,7 @@ const Monitoring: React.FC = () => {
   const getMonitoringList = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(monitoringUrl, {
+      const response = await axios.get(newMonitoringUrl, {
         headers: {
           Authorization: cookies.accessToken
         }
