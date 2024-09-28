@@ -38,7 +38,8 @@ const Monitoring: React.FC = () => {
   const cameraInfoUrl = import.meta.env.VITE_BASE_URL + `/device/camera?page=0&size=1&name=`;
   const newMonitoringUrl = import.meta.env.VITE_BASE_URL + `/record/camera/${cameraGateData.id}/latest`;
   // const newMonitoringUrl = `https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`;
-  const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
+  // const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
+  const carLogUrl = import.meta.env.VITE_BASE_URL + `record/`;
 
   // gate 정보만 가져오기
   const getCameraList = async () => {
@@ -47,13 +48,13 @@ const Monitoring: React.FC = () => {
       // const response = await axios.get(`https://api.hmkpk.kr/device/camera?page=0&size=1&name=`, {
       const response = await axios.get(cameraInfoUrl, {
         headers: {
-          // Authorization: cookies.accessToken, // 세 번째 인수로 headers 전달
+          Authorization: cookies.accessToken, // 세 번째 인수로 headers 전달
           // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1NzI2NzEsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.1VRp7HyxU2igOoaQp-x9luvy51ONm-kImQK7gMd_eoY`, // 세 번째 인수로 headers 전달
         },
-        // params: {
-        //   id: 0,
-        //   gateStatus: ''
-        // } as CameraGate,
+        params: {
+          id: 0,
+          gateStatus: ''
+        } as CameraGate,
       });
 
       // console.log(response.data.content[0], '정보');
@@ -83,16 +84,18 @@ const Monitoring: React.FC = () => {
   
 
   const getMonitoringList = async () => {
+    // console.log(`https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`, '제발');
+    
     try {
       setLoading(true);
-      // const response = await axios.get(newMonitoringUrl, {
-      const response = await axios.get(`https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`, {
+      const response = await axios.get(newMonitoringUrl, {
+      // const response = await axios.get(`https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`, {
         headers: {
-          // Authorization: cookies.accessToken
-          Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1NzI2NzEsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.1VRp7HyxU2igOoaQp-x9luvy51ONm-kImQK7gMd_eoY`, // 세 번째 인수로 headers 전달
+          Authorization: cookies.accessToken
+          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1NzI2NzEsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.1VRp7HyxU2igOoaQp-x9luvy51ONm-kImQK7gMd_eoY`, // 세 번째 인수로 headers 전달
         }
       });
-      console.log(response.data[0], "데이터");
+      // console.log(response.data, "데이터");
 
       setMonitoringList(response.data);
 
@@ -150,9 +153,11 @@ const Monitoring: React.FC = () => {
   const getCarLogDetails = async (id) => {
     try {
       setSubLoading(true);
-      const response = await axios.get(`${carLogUrl}/${id}`, {
+      const response = await axios.get(carLogUrl, {
         headers: {
           Authorization: cookies.accessToken
+          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1NzI2NzEsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.1VRp7HyxU2igOoaQp-x9luvy51ONm-kImQK7gMd_eoY`, // 세 번째 인수로 headers 전달
+
         }
       });
       setCarLogDetails(response.data);
