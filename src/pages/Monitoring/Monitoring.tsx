@@ -11,6 +11,8 @@ import { formatYMDHMS } from '../../js/dateFormat.ts';
 import { useRecoilState } from 'recoil';
 import { cameraGateState } from '../../state/atoms/cameraGateState.ts';
 import { ApartmentGate, CameraGate } from '../../types/apartment.ts';
+import { cameraEntryGateState } from '../../state/atoms/cameraEntryGateState.ts';
+import { cameraExitGateState } from '../../state/atoms/cameraExitGateStatus.ts';
 
 
 interface Monitoring {
@@ -27,11 +29,14 @@ const Monitoring: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [subLoading, setSubLoading] = useState<boolean>(true);
   const [cookies] = useCookies(['accessToken', 'refreshToken']);
-  const [monitoringList, setMonitoringList] = useState<Monitoring>();
+  const [entryMonitoringList, setEntryMonitoringList] = useState<Monitoring>();
+  const [exitMonitoringList, setExitMonitoringList] = useState<Monitoring>();
   const [carLogDetails, setCarLogDetails] = useState<CarLogDetails>();
   const [refreshTime, setRefreshTime] = useState<string>(formatYMDHMS(new Date()));
   const [latestCarId, setLatestCarid] = useState<number>(0);
   const [cameraGateData, setCameraGateData] = useRecoilState(cameraGateState);
+  const [cameraEntryData, setCameraEntryData] = useRecoilState(cameraEntryGateState);
+  const [cameraExitData, setCameraExitData] = useRecoilState(cameraEntryGateState);
 
 
   const monitoringUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_MONITORING_ENDPOINT;
@@ -61,10 +66,18 @@ const Monitoring: React.FC = () => {
       console.log(response.data.content[0].gateStatus, '정보');
       console.log(response.data.content[0].id, '정보');
 
+      const cameras = response.data.content;
+      const entryCamera = cameras.find(camera => camera.id === 1);
+      const exitCamera = cameras.find(camera => camera.id === 2);
 
-      setCameraGateData({
-        id: response.data.content[0].id,
-        gateStatus: response.data.content[0].gateStatus
+
+      setCameraEntryData({
+        id: entryCamera.id,
+        gateStatus: entryCamera.gateStatus
+      });
+      setCameraExitData({
+        id: exitCamera.id,
+        gateStatus: exitCamera.gateStatus
       });
 
     } catch (error) {
@@ -74,32 +87,62 @@ const Monitoring: React.FC = () => {
     }
   }
 
-  console.log(cameraGateData.id, '이거는?');
+  console.log(cameraExitData.id, '출차 id 이거는?');
+  console.log(cameraEntryData.id, '입차 id 이거는?');
 
   useEffect(() => {
-    getMonitoringList();
-    if (cameraGateData.id !== undefined) {
-      getMonitoringList(); // Call getMonitoringList only when cameraGateData.id is set
+    getEntryMonitoringList();
+    getExitMonitoringList();
+    if (cameraEntryData.id !== undefined || cameraExitData.id !== undefined ) {
+      getEntryMonitoringList(); // Call getMonitoringList only when cameraGateData.id is set
+      getExitMonitoringList();
     }
-  }, [cameraGateData]);
+  }, [cameraEntryData, cameraExitData]);
   
 
-  const getMonitoringList = async () => {
-    console.log(`https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`, '제발');
-    console.log(cameraGateData.id, '?');
+  const getEntryMonitoringList = async () => {
+    console.log(`https://api.hmkpk.kr/record/camera/${cameraEntryData.id}/latest`, '입차 내역 주소');
+    // console.log(cameraGateData.id, '?');
     
     try {
       setLoading(true);
       // const response = await axios.get(newMonitoringUrl, {
-      const response = await axios.get(`http://localhost:808/record/camera/${cameraGateData.id}/latest`, {
+      const response = await axios.get(`http://localhost:808/record/camera/${cameraEntryData.id}/latest`, {
         headers: {
           Authorization: cookies.accessToken
           // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
         }
       });
-      // console.log(response.data, "데이터");
+      console.log(response.data, "입차 데이터");
 
-      setMonitoringList(response.data);
+      setEntryMonitoringList(response.data);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+      setRefreshTime(formatYMDHMS(new Date()));
+    }
+  }
+
+  
+  const getExitMonitoringList = async () => {
+    console.log(`https://api.hmkpk.kr/record/camera/${cameraExitData.id}/latest`, '출차 내역 주소');
+    // console.log(cameraGateData.id, '?');
+    
+    try {
+      setLoading(true);
+      // const response = await axios.get(newMonitoringUrl, {
+      const res = await axios.get(`http://localhost:808/record/camera/${cameraExitData.id}/latest`, {
+        headers: {
+          Authorization: cookies.accessToken
+          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
+        }
+      });
+
+      console.log(res.data, "출차 데이터");
+
+      setExitMonitoringList(res.data);
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -132,9 +175,9 @@ const Monitoring: React.FC = () => {
 
   useEffect(() => {
     getCameraList();
-    getMonitoringList();
     const intervalId = setInterval(() => {
-      getMonitoringList();
+      getEntryMonitoringList();
+      getExitMonitoringList();
     }, 5000);
 
     // 컴포넌트가 언마운트될 때 clearInterval로 인터벌을 정리
@@ -142,11 +185,15 @@ const Monitoring: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (monitoringList && latestCarId != monitoringList[0].id) {
-      setLatestCarid(monitoringList[0].id);
-      getCarLogDetails(monitoringList[0].id);
+    if (entryMonitoringList && latestCarId != entryMonitoringList[0].id) {
+      setLatestCarid(entryMonitoringList[0].id);
+      getCarLogDetails(entryMonitoringList[0].id);
     }
-  }, [monitoringList]);
+    if (exitMonitoringList && latestCarId != exitMonitoringList[0].id) {
+      setLatestCarid(entryMonitoringList[0].id);
+      getCarLogDetails(exitMonitoringList[0].id);
+    }
+  }, [entryMonitoringList, exitMonitoringList]);
 
   const inOutCardClickHandle = (id) => {
     getCarLogDetails(id);
@@ -201,7 +248,7 @@ const Monitoring: React.FC = () => {
                               <img
                                 src={Refresh}
                                 className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
-                                onClick={getMonitoringList}
+                                onClick={getEntryMonitoringList}
                                 alt='Refresh'
                               />
                             </div>
@@ -243,7 +290,7 @@ const Monitoring: React.FC = () => {
                               <img
                                 src={Refresh}
                                 className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
-                                onClick={getMonitoringList}
+                                onClick={getExitMonitoringList}
                                 alt='Refresh'
                               />
                             </div>
@@ -294,7 +341,7 @@ const Monitoring: React.FC = () => {
             </div>
             <div className='flex gap-5'>
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
-                {monitoringList ? (
+                {entryMonitoringList ? (
                   <>
                     {/* <div className='flex justify-between items-end w-full'> */}
                     {/* <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div> */}
@@ -308,13 +355,13 @@ const Monitoring: React.FC = () => {
                         /> */}
                     {/* </div> */}
                     {/* </div> */}
-                    <InOutCard monitoringList={monitoringList} type={inType} onClickHandle={inOutCardClickHandle} />
+                    <InOutCard monitoringList={entryMonitoringList} onClickHandle={inOutCardClickHandle} />
                   </>
                 ) : (<><div>최근 입차 내역이 없습니다.</div></>)}
               </div>
 
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
-                {monitoringList ? (
+                {exitMonitoringList ? (
                   <>
                     {/* <div className='flex justify-between items-end w-full'> */}
                     {/* <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div> */}
@@ -323,7 +370,7 @@ const Monitoring: React.FC = () => {
 
                       </div> */}
                     {/* </div> */}
-                    <InOutCard monitoringList={monitoringList} type={outType} onClickHandle={inOutCardClickHandle} />
+                    <InOutCard monitoringList={exitMonitoringList}  onClickHandle={inOutCardClickHandle} />
                   </>
                 ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
               </div>
