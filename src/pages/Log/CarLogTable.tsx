@@ -492,12 +492,17 @@ const CarLogTable = ({
                         key={key}
                         onClick={() => {
                           setSelectedRowIndex(key); // 선택된 행의 인덱스 업데이트
-                          if (row.original['in']) {
-                            getCarLogInDetails(row.original['in'].id); // 입차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
-                          }
-                          if (row.original['out']) {
-                            getCarLogOutDetails(row.original['out'].id); // 출차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
-                          }
+                          // if (row.original['in']) {
+                          //   getCarLogInDetails(row.original['in'].id); // 입차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
+                          // }
+                          row.original['in'] ? 
+                             getCarLogInDetails(row.original['in'].id) // 입차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
+                            : null
+                          // if (row.original['out']) {
+                          //   getCarLogOutDetails(row.original['out'].id); // 출차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
+                          // }
+                          row.original['out'] ? getCarLogOutDetails(row.original['out'].id) : null
+
                           // getCarLogInDetails(null);
                           // setCarLogOutDetails(null);
                         }}
@@ -615,9 +620,9 @@ const CarLogTable = ({
             <>
               <div className="rounded-lg p-4 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark">
                 {/* <div className="text-lg font-semibold mb-2">입차 이미지</div> */}
-                <div className="flex items-center justify-between gap-2.5">
+                <div className="flex justify-between gap-2.5">
                   {/* <div className='flex w-full justify-between items-center'> */}
-                  <div className="flex flex-col w-1/3 justify-between md:gap-36">
+                  <div className="flex flex-col w-1/3 justify-start md:gap-1">
                     <div className="flex flex-col">
                       {/* <div className='text-indigo-500 font-semibold text-lg'>
                         {carLogInDetails && carLogInDetails.type === 'MEMBER' ? '세대' :
@@ -626,18 +631,15 @@ const CarLogTable = ({
                               carLogInDetails.type === 'UNREGISTER' ? '미등록' : ''}
                       </div> */}
                       <div className="text-title-xxsm font-semibold mb-1 text-gateopen">입차 이미지</div>
-                      <div className='text-xs'>
+                      <div className='text-xs mb-3'>
                         {carLogInDetails.inOutTime}
                       </div>
-                    </div>
-                    <div className="mt-auto">
                       <img
                         src={`data:image/jpg;base64,${carLogInDetails.files[0].content}`}
                         alt={`입차 이미지 1`}
                         className='w-full h-12 object-cover'
                       />
                     </div>
-
                   </div>
                   <div className='w-2/3'>
                     <img
@@ -664,9 +666,9 @@ const CarLogTable = ({
             <>
               <div className="rounded-lg p-4 bg-basicWhite shadow-md dark:border-strokedark dark:bg-boxdark">
                 {/* <div className="text-lg font-semibold mb-2">출차 이미지</div> */}
-                <div className="flex items-center justify-between gap-2.5">
+                <div className="flex justify-between gap-2.5">
                   {/* <div className='flex w-full justify-between items-center'> */}
-                  <div className="flex flex-col w-1/3 justify-between md:gap-36">
+                  <div className="flex flex-col w-1/3 justify-between">
                     <div className="flex flex-col">
                       {/* <div className='text-indigo-500 font-semibold text-lg'>
                         {carLogOutDetails.type === 'MEMBER' ? '세대' :
@@ -675,18 +677,15 @@ const CarLogTable = ({
                               carLogOutDetails.type === 'UNREGISTER' ? '미등록' : ''}
                       </div> */}
                       <div className="text-title-xxsm font-semibold mb-1 text-gateclose">출차 이미지</div>
-                      <div className='text-xs'>
+                      <div className='text-xs mb-3'>
                         {carLogOutDetails.inOutTime}
                       </div>
-                    </div>
-                    <div className="mt-auto">
                       <img
                         src={`data:image/jpg;base64,${carLogOutDetails.files[0].content}`}
                         alt={`출차 이미지 1`}
                         className='w-full h-12 object-cover'
                       />
                     </div>
-
                   </div>
                   <div className='w-2/3'>
                     <img
