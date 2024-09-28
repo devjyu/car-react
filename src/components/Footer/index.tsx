@@ -55,7 +55,7 @@ const Footer = () => {
                 params: {
                     id: 0,
                     gateStatus: ''
-                } as ApartmentGate,
+                } as CameraGate,
             });
 
             setGateData({
@@ -72,11 +72,13 @@ const Footer = () => {
 
     useEffect(() => {
         getGateStatus();
-        getSecondGateStatus();
+        // getSecondGateStatus();
     }, []);
 
+    console.log(status, "차단기 제어 상태");
     // 버튼 상태 업데이트
     const updateGateStatus = async (status) => {
+        
         try {
             const response = await axios.put(
                 gateUrl, // gateUrl은 이미 동적으로 생성됨
