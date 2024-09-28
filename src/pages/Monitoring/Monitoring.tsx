@@ -45,11 +45,11 @@ const Monitoring: React.FC = () => {
   const getCameraList = async () => {
     try {
       setLoading(true);
-      // const response = await axios.get(`https://api.hmkpk.kr/device/camera?page=0&size=1&name=`, {
-      const response = await axios.get(cameraInfoUrl, {
+      const response = await axios.get(`http://localhost:808/device/camera?page=0&size=1&name=`, {
+      // const response = await axios.get(cameraInfoUrl, {
         headers: {
           Authorization: cookies.accessToken, // 세 번째 인수로 headers 전달
-          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1NzI2NzEsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.1VRp7HyxU2igOoaQp-x9luvy51ONm-kImQK7gMd_eoY`, // 세 번째 인수로 headers 전달
+          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
         },
         params: {
           id: 0,
@@ -57,9 +57,9 @@ const Monitoring: React.FC = () => {
         } as CameraGate,
       });
 
-      // console.log(response.data.content[0], '정보');
-      // console.log(response.data.content[0].gateStatus, '정보');
-      // console.log(response.data.content[0].id, '정보');
+      console.log(response.data.content[0], '정보');
+      console.log(response.data.content[0].gateStatus, '정보');
+      console.log(response.data.content[0].id, '정보');
 
 
       setCameraGateData({
@@ -74,9 +74,10 @@ const Monitoring: React.FC = () => {
     }
   }
 
-  // console.log(cameraGateData.id, '이거는?');
+  console.log(cameraGateData.id, '이거는?');
 
   useEffect(() => {
+    getMonitoringList();
     if (cameraGateData.id !== undefined) {
       getMonitoringList(); // Call getMonitoringList only when cameraGateData.id is set
     }
@@ -84,15 +85,16 @@ const Monitoring: React.FC = () => {
   
 
   const getMonitoringList = async () => {
-    // console.log(`https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`, '제발');
+    console.log(`https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`, '제발');
+    console.log(cameraGateData.id, '?');
     
     try {
       setLoading(true);
-      const response = await axios.get(newMonitoringUrl, {
-      // const response = await axios.get(`https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`, {
+      // const response = await axios.get(newMonitoringUrl, {
+      const response = await axios.get(`http://localhost:808/record/camera/${cameraGateData.id}/latest`, {
         headers: {
           Authorization: cookies.accessToken
-          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1NzI2NzEsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.1VRp7HyxU2igOoaQp-x9luvy51ONm-kImQK7gMd_eoY`, // 세 번째 인수로 headers 전달
+          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
         }
       });
       // console.log(response.data, "데이터");
@@ -153,10 +155,11 @@ const Monitoring: React.FC = () => {
   const getCarLogDetails = async (id) => {
     try {
       setSubLoading(true);
-      const response = await axios.get(carLogUrl, {
+      // const response = await axios.get(carLogUrl, {
+      const response = await axios.get(`http://localhost:808/record/${id}`, {
         headers: {
           Authorization: cookies.accessToken
-          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1NzI2NzEsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.1VRp7HyxU2igOoaQp-x9luvy51ONm-kImQK7gMd_eoY`, // 세 번째 인수로 headers 전달
+          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
 
         }
       });
