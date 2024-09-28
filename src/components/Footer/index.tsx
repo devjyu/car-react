@@ -14,8 +14,8 @@ const Footer = () => {
 
     const apartmentUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_APARTMENT_ENDPOINT;
     const cameraUrl = `${import.meta.env.VITE_BASE_URL}/device/camera?page=0&size=1&name=`;
-    const gateUrl = `${import.meta.env.VITE_BASE_URL}/api/vi/apartment/${gateData.id}${import.meta.env.VITE_GATE_ENDPOINT}`;
-    const cameraGateUrl = `${import.meta.env.VITE_BASE_URL}/api/vi/apartment/${gateData.id}${import.meta.env.VITE_GATE_ENDPOINT}`;
+    const gateUrl = `${import.meta.env.VITE_BASE_URL}/api/v1/apartment/${gateData.id}${import.meta.env.VITE_GATE_ENDPOINT}`;
+    const cameraGateUrl = `${import.meta.env.VITE_BASE_URL}/api/v1/apartment/${gateData.id}${import.meta.env.VITE_GATE_ENDPOINT}`;
 
     // 열기/닫기 상태에 따라 버튼 활성화 여부 결정
     const isClosed = gateData.gateStatus === 'CLOSE';
