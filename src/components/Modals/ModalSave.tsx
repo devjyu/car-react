@@ -188,7 +188,7 @@ const ModalSave: React.FC = () => {
       Authorization: cookies.accessToken
     };
     let saveUrl = import.meta.env.VITE_BASE_URL;
-    
+
     switch (pathname) {
       case '/admin/apartment':
         saveUrl = saveUrl + import.meta.env.VITE_APARTMENT_ENDPOINT;
@@ -208,7 +208,7 @@ const ModalSave: React.FC = () => {
         saveUrl = saveUrl + import.meta.env.VITE_CAR_ENDPOINT;
         willSaveData = {};
         console.log(saveData, '값?');
-        
+
         saveData.forEach((data) => {
           if (!data.optional && !data.value) {
             alert(`${data.label}는/은 필수값입니다.`);
@@ -237,12 +237,12 @@ const ModalSave: React.FC = () => {
       default:
         break;
     }
-  
+
     try {
       const response = await axios.post(saveUrl, willSaveData, {
         headers: headers
       });
-  
+
       if (response.status === 200) {
         // 저장이 성공적으로 완료되면 페이지 새로고침
         alert("성공");
@@ -347,11 +347,20 @@ const ModalSave: React.FC = () => {
                     )}
                     {data.valueType === ValueType.Date && (
                       <div className="col-span-2">
+                        {data.key === 'startDate' && location.pathname === '/car' && (
+                          <input
+                            type="text"
+                            placeholder="2024-01-01"
+                            value={new Date().toISOString().slice(0, 10)}
+                            onChange={(e) => handleDateChange(index, e.target.value)}
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                          />
+                        )}
                         <input
                           type="text"
                           placeholder="2024-01-01"
-                          value={data.value ? data.value : ''}
-                          onChange={(e) => handleDateChange(index, e.target.value)}
+                          value={new Date().toISOString().slice(0, 10)}
+                          onChange={data.value ? data.value : ''}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                         />
                         {data.key === 'endDate' && location.pathname === '/notice' && (
