@@ -132,7 +132,7 @@ const ModalSave: React.FC = () => {
         initialData.push({ key: 'number', label: '차량번호', value: '', valueType: ValueType.Text, visable: true, optional: false });
         initialData.push({ key: 'phone', label: '전화번호', value: '', valueType: ValueType.Text, visable: true, optional: true });
         initialData.push({ key: 'purpose', label: '메모', value: '', valueType: ValueType.Text, visable: true, optional: true });
-        initialData.push({ key: 'startDate', label: '시작일자', value: '', valueType: ValueType.Date, visable: true, optional: false });
+        initialData.push({ key: 'startDate', label: '시작일자', value: new Date().toISOString().slice(0, 10), valueType: ValueType.Date, visable: true, optional: true });
         initialData.push({ key: 'endDate', label: '종료일자', value: '', valueType: ValueType.Date, visable: true, optional: false });
         initialData.push({
           key: 'type', label: '허용여부', value: 'ALLOW', valueType: ValueType.SelectGroup, visable: true, optional: false, selectGroupValues: [
@@ -347,22 +347,24 @@ const ModalSave: React.FC = () => {
                     )}
                     {data.valueType === ValueType.Date && (
                       <div className="col-span-2">
-                        {data.key === 'startDate' && location.pathname === '/car' && (
+                        {data.key === 'startDate' && location.pathname === '/car' ? (
                           <input
                             type="text"
+                            disabled={true}
                             placeholder="2024-01-01"
                             value={new Date().toISOString().slice(0, 10)}
                             onChange={(e) => handleDateChange(index, e.target.value)}
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
                           />
+                        ) : (
+                          <input
+                            type="text"
+                            placeholder="2024-01-01"
+                            value={data.value ? data.value : ''}
+                            onChange={(e) => handleDateChange(index, e.target.value)}
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
+                          />
                         )}
-                        <input
-                          type="text"
-                          placeholder="2024-01-01"
-                          value={new Date().toISOString().slice(0, 10)}
-                          onChange={data.value ? data.value : ''}
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-basicdark outline-none transition focus:border-basicponint active:border-basicponint disabled:cursor-default disabled:bg-deactivate dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary col-span-2"
-                        />
                         {data.key === 'endDate' && location.pathname === '/notice' && (
                           <div className="text-xs font-medium mt-1.5 px-2 text-[#CD5D5D]">
                             * 미입력시 종료날짜는 무기한입니다.

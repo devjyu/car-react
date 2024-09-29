@@ -159,7 +159,7 @@ const CarDataTable = ({
       <div className='flex flex-col gap-3'>
         <div className='px-8 mb-3.5'>
           <div className='flex items-center justify-between'>
-            <div className='flex gap-4'>
+            <div className='flex items-center gap-4'>
               {/* <div>
               <DropdownSearch
                 options={dateOptions}
