@@ -55,6 +55,8 @@ const Car: React.FC = () => {
             return c;
         }
       }));
+      // console.log(carData, 'ㄱㄱ');
+      
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -99,6 +101,13 @@ const Car: React.FC = () => {
           visable: false
         };
         switch (k) {
+          case 'apartmentId':
+            detail.key = k;
+            detail.label = 'id';
+            detail.value = response.data[k]['id'];
+            detail.valueText = (response.data[k]['id']);
+            detail.visable = false;
+            break;
           case 'apartment':
             detail.key = k;
             detail.label = '아파트명';
@@ -185,6 +194,14 @@ const Car: React.FC = () => {
           valueType: ValueType.Text
         };
         switch (k) {
+          case 'apartmentId':
+            editData.key = k;
+            editData.label = 'apartmentid';
+            editData.value = response.data[k]['id'];
+            editData.editable = false;
+            editData.visable = false;
+            editData.valueType = ValueType.Number;
+            break;
           case 'apartment':
             editData.key = k;
             editData.label = '아파트명';
@@ -312,7 +329,8 @@ const Car: React.FC = () => {
   };
 
   const deleteHandler = async (id) => {
-    const deleteUrl = carUrl + `/${id}`
+    // console.log(id, 'id값');
+    const deleteUrl = carUrl + `/${id}`;
     const response = await axios.delete(deleteUrl, {
       headers: {
         Authorization: cookies.accessToken

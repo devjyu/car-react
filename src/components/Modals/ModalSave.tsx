@@ -207,6 +207,8 @@ const ModalSave: React.FC = () => {
       case '/car':
         saveUrl = saveUrl + import.meta.env.VITE_CAR_ENDPOINT;
         willSaveData = {};
+        console.log(saveData, '값?');
+        
         saveData.forEach((data) => {
           if (!data.optional && !data.value) {
             alert(`${data.label}는/은 필수값입니다.`);
