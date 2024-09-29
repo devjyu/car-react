@@ -31,6 +31,10 @@ export interface ICarLog {
   typeText?: string;
 }
 
-export interface CarLogDetails extends CarLogInOut {
+export interface CarLogInDetails extends CarLogInOut {
+  files: any;
+}
+
+export interface CarLogOutDetails extends CarLogInOut {
   files: any;
 }

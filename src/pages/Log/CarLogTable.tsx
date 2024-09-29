@@ -19,7 +19,7 @@ import { formatYMD } from '../../js/dateFormat';
 import { endDateState } from '../../state/atoms/endDSateState';
 import { pageUnitState } from '../../state/atoms/pageUnitState';
 import { startDateState } from '../../state/atoms/startDateState';
-import { CarLogDetails } from '../../types/carLog';
+import { CarLogInDetails, CarLogOutDetails } from '../../types/carLog';
 
 const CarLogTable = ({
   column,
@@ -31,8 +31,8 @@ const CarLogTable = ({
   const data = useMemo(() => tableData, [tableData]);
   const [cookies] = useCookies(['accessToken', 'refreshToken']);
   const [loading, setLoading] = useState<boolean>(false);
-  const [carLogInDetails, setCarLogInDetails] = useState<CarLogDetails>();
-  const [carLogOutDetails, setCarLogOutDetails] = useState<CarLogDetails>();
+  const [carLogInDetails, setCarLogInDetails] = useState<CarLogInDetails>();
+  const [carLogOutDetails, setCarLogOutDetails] = useState<CarLogOutDetails>();
   const [searchOption, setSearchOption] = useState({ key: 'number', value: '' });
   const [startDate, setStartDate] = useRecoilState(startDateState);
   const [endDate, setEndDate] = useRecoilState(endDateState);
@@ -115,24 +115,37 @@ const CarLogTable = ({
   const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
 
   const getCarLogInDetails = async (id) => {
+    // console.log(id, '입차');
+
+    if (id === null) {
+      setCarLogInDetails(null); // Clear the details if the ID is null
+      setCarLogOutDetails(null); // Ensure out details are also cleared
+      return; // Exit the function early
+    }
+
     try {
       setLoading(true);
+      setCarLogOutDetails(null);
       const response = await axios.get(`${carLogUrl}/${id}`, {
         headers: {
-          Authorization: cookies.accessToken
-        }
+          Authorization: cookies.accessToken,
+        },
       });
-      // console.log('response.data :: ', response.data);
-
-      setCarLogInDetails(response.data);
+      console.log('response.data :: ', response.data);
+      setCarLogInDetails(response.data); // Set the fetched details
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-
       setLoading(false);
     }
   };
   const getCarLogOutDetails = async (id) => {
+    // console.log(id, '출차');
+
+    if (id == null) {
+      setCarLogOutDetails(null);
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.get(`${carLogUrl}/${id}`, {
@@ -141,14 +154,15 @@ const CarLogTable = ({
         }
       });
       setCarLogOutDetails(response.data);
-      setCarLogInDetails(null)
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
+
   };
   // console.log(carLogInDetails, '상세');
+  // console.log(carLogOutDetails, '상세');
 
   const excelDownload = () => {
     // console.log(data);
@@ -215,9 +229,15 @@ const CarLogTable = ({
 
 
   const handleSearch = async () => {
+    const searchParams = [];
+    // Check if searchParams is empty
+    if (searchParams.length === 0) {
+      alert('검색어를 입력해주세요');
+      window.location.reload(); // Refresh the page if no search parameters were provided
+      return; // Exit the function after refreshing
+    }
     try {
       setLoading(true); // Set loading state to true when search is initiated
-      const searchParams = [];
       searchParams.push({ key: 'startDate', value: selectedStartDate });
       searchParams.push({ key: 'endDate', value: selectedEndDate });
       searchParams.push({ key: carType.key, value: carType.value });
@@ -495,8 +515,8 @@ const CarLogTable = ({
                           // if (row.original['in']) {
                           //   getCarLogInDetails(row.original['in'].id); // 입차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
                           // }
-                          row.original['in'] ? 
-                             getCarLogInDetails(row.original['in'].id) // 입차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
+                          row.original['in'] ?
+                            getCarLogInDetails(row.original['in'].id) // 입차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행
                             : null
                           // if (row.original['out']) {
                           //   getCarLogOutDetails(row.original['out'].id); // 출차 정보가 있는 경우 해당 정보의 ID를 전달하여 함수 실행

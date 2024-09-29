@@ -2,13 +2,13 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 import Loader from '../../../common/Loader';
-import { CarLogDetails } from '../../../types/carLog';
+import { CarLogInDetails, CarLogOutDetails } from '../../../types/carLog';
 
 const CarLogDetail = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [cookies] = useCookies(['accessToken', 'refreshToken']);
-    const [carLogInDetails, setCarLogInDetails] = useState<CarLogDetails>();
-    const [carLogOutDetails, setCarLogOutDetails] = useState<CarLogDetails>();
+    const [carLogInDetails, setCarLogInDetails] = useState<CarLogInDetails>();
+    const [carLogOutDetails, setCarLogOutDetails] = useState<CarLogOutDetails>();
 
     const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
 
@@ -28,6 +28,9 @@ const CarLogDetail = () => {
         }
     };
     const getCarLogOutDetails = async (id) => {
+        if (id === null) {
+            setCarLogOutDetails(null);
+        }
         try {
             setLoading(true);
             const response = await axios.get(`${carLogUrl}/${id}`, {
@@ -36,7 +39,7 @@ const CarLogDetail = () => {
                 }
             });
             setCarLogOutDetails(response.data);
-            setCarLogInDetails(null)
+            // setCarLogInDetails(null)
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
