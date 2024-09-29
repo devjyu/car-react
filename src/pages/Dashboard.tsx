@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
             <div className='grid grid-cols-3 gap-4'>
               {/* <div className="grid-rows-2 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7.5"> */}
               {/* 기존 색 fill="rgb(38,51,197) */}
-              <CardDataStats title="등록 세대 차량 수" total={`${dashboardData.vehicleCount.toString()}`} rate="">
+              <CardDataStats title="관리 차량 댓수/비관리 차량 댓수" total={`${dashboardData.unitCount.toString()} / ${dashboardData.vehicleCount.toString()}`} rate="">
                 {/* <CardDataStats title="총 세대 / 등록 세대 차량 수" total={`${dashboardData.unitCount.toString()} / ${dashboardData.vehicleCount.toString()}`} rate=""> */}
                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="#008080">
                   <path d="M21 22h2v2h-22v-2h2v-22h18v22zm-10-3h-2v4h2v-4zm4 0h-2v4h2v-4zm4-17h-14v20h2v-5h10v5h2v-20zm-12 11h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-8-3h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-8-3h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-8-3h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z" />
