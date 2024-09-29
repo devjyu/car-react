@@ -627,8 +627,8 @@ const CarLogTable = ({
           }
         </section>
       </div>
-      <div className={`basis-2/5 h-full relative`}>
-        <div className={`flex flex-col gap-3 2xl:gap-3 ${detailsClass}`}>
+      <div className={`basis-2/5 h-full`}>
+        <div className={`flex flex-col gap-3 2xl:gap-3`}>
           {loading ? (
             null
           ) : carLogInDetails && carLogInDetails.files ? (
@@ -645,14 +645,14 @@ const CarLogTable = ({
                             carLogInDetails.type === 'UNKNOWN' ? '미인식' :
                               carLogInDetails.type === 'UNREGISTER' ? '미등록' : ''}
                       </div> */}
-                      <div className="text-title-xxsm font-semibold mb-1 text-gateopen">입차 이미지</div>
-                      <div className='text-xs mb-3'>
+                      <div className="text-title-lg font-bold mb-1 text-gateopen">입차 이미지</div>
+                      <div className='text-lg mb-3'>
                         {carLogInDetails.inOutTime}
                       </div>
                       <img
                         src={`data:image/jpg;base64,${carLogInDetails.files[0].content}`}
                         alt={`입차 이미지 1`}
-                        className='w-full h-12 object-cover'
+                        className='w-[330px]'
                       />
                     </div>
                   </div>
@@ -660,7 +660,7 @@ const CarLogTable = ({
                     <img
                       src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`}
                       alt={`입차 이미지 2`}
-                      className='w-full h-60'
+                      className=''
                     // className='w-full obj/ect-cover'
                     // style={{ maxWidth: '100%', height: '' }}
                     />
@@ -691,14 +691,14 @@ const CarLogTable = ({
                             carLogOutDetails.type === 'UNKNOWN' ? '미인식' :
                               carLogOutDetails.type === 'UNREGISTER' ? '미등록' : ''}
                       </div> */}
-                      <div className="text-title-xxsm font-semibold mb-1 text-gateclose">출차 이미지</div>
-                      <div className='text-xs mb-3'>
+                      <div className="text-title-lg font-bold mb-1 text-gateclose">출차 이미지</div>
+                      <div className='text-lg mb-3'>
                         {carLogOutDetails.inOutTime}
                       </div>
                       <img
                         src={`data:image/jpg;base64,${carLogOutDetails.files[0].content}`}
                         alt={`출차 이미지 1`}
-                        className='w-full h-12 object-cover'
+                        className='w-full h-15'
                       />
                     </div>
                   </div>
@@ -706,7 +706,7 @@ const CarLogTable = ({
                     <img
                       src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`}
                       alt={`출차 이미지 2`}
-                      className='w-full h-60'
+                      className='w-[330px]'
                     />
                   </div>
                 </div>
