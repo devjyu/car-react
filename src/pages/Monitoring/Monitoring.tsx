@@ -1,42 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import DefaultLayout from '../../layout/DefaultLayout';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import Refresh from '../../images/icon/refresh.png';
-import InOutCard from './InOutCard.tsx';
-import { CarLogDetails, CarLogType, InOutType } from '../../types/carLog.ts';
-import { convertTypeToString } from '../../js/stringConvert.ts';
-import { formatYMDHMS } from '../../js/dateFormat.ts';
 import { useRecoilState } from 'recoil';
-import { cameraGateState } from '../../state/atoms/cameraGateState.ts';
-import { ApartmentGate, CameraGate } from '../../types/apartment.ts';
+import Refresh from '../../images/icon/refresh.png';
+import { formatYMDHMS } from '../../js/dateFormat.ts';
+import DefaultLayout from '../../layout/DefaultLayout';
 import { cameraEntryGateState } from '../../state/atoms/cameraEntryGateState.ts';
 import { cameraExitGateState } from '../../state/atoms/cameraExitGateStatus.ts';
+import { cameraGateState } from '../../state/atoms/cameraGateState.ts';
+import { CarLogInDetails, CarLogOutDetails, CarLogType, InOutType } from '../../types/carLog.ts';
+import InOutCard from './InOutCard.tsx';
+import { InMonitoring, OutMonitoring } from '../../types/carLog.ts';
 
+// interface Monitoring {
+//   dong: string;
+//   ho: string;
+//   id: number;
+//   inOutTime: string;
+//   inOutType: InOutType;
+//   type: CarLogType;
+//   vehicleNumber: string;
+// }
 
-interface Monitoring {
-  dong: string;
-  ho: string;
+interface InCamera {
   id: number;
-  inOutTime: string;
-  inOutType: InOutType;
-  type: CarLogType;
-  vehicleNumber: string;
+}
+
+interface OutCamera {
+  id: number;
 }
 
 const Monitoring: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [subLoading, setSubLoading] = useState<boolean>(true);
   const [cookies] = useCookies(['accessToken', 'refreshToken']);
-  const [entryMonitoringList, setEntryMonitoringList] = useState<Monitoring>();
-  const [exitMonitoringList, setExitMonitoringList] = useState<Monitoring>();
-  const [carLogDetails, setCarLogDetails] = useState<CarLogDetails>();
+  const [entryMonitoringList, setEntryMonitoringList] = useState<InMonitoring>();
+  const [exitMonitoringList, setExitMonitoringList] = useState<OutMonitoring>();
+  const [carLogInDetails, setCarLogInDetails] = useState<CarLogInDetails>();
+  const [carLogOutDetails, setCarLogOutDetails] = useState<CarLogOutDetails>();
+  // 카메라 id
+  const [incameraId, setInCameraId] = useState<InCamera>()
+  const [outcameraId, setOutCameraId] = useState<OutCamera>()
+
   const [refreshTime, setRefreshTime] = useState<string>(formatYMDHMS(new Date()));
   const [latestCarId, setLatestCarid] = useState<number>(0);
   const [cameraGateData, setCameraGateData] = useRecoilState(cameraGateState);
   const [cameraEntryData, setCameraEntryData] = useRecoilState(cameraEntryGateState);
-  const [cameraExitData, setCameraExitData] = useRecoilState(cameraEntryGateState);
+  const [cameraExitData, setCameraExitData] = useRecoilState(cameraExitGateState);
+  const [cameraList, setCameraList] = useState();
+  const [loadingInDetails, setLoadingInDetails] = useState(false);
+  const [loadingOutDetails, setLoadingOutDetails] = useState(false);
 
 
   const monitoringUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_MONITORING_ENDPOINT;
@@ -44,76 +57,61 @@ const Monitoring: React.FC = () => {
   const newMonitoringUrl = import.meta.env.VITE_BASE_URL + `/record/camera/${cameraGateData.id}/latest`;
   // const newMonitoringUrl = `https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`;
   // const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
-  const carLogUrl = import.meta.env.VITE_BASE_URL + `record/`;
+  // const carLogUrl = import.meta.env.VITE_BASE_URL + `record/`;
+  const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
+  const inUrl = `http://localhost:808/record/camera/2/latest`;
+  const outUrl = `http://localhost:808/record/camera/1/latest`;
+
 
   // gate 정보만 가져오기
+
   const getCameraList = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:808/device/camera?page=0&size=1&name=`, {
-      // const response = await axios.get(cameraInfoUrl, {
+      const response = await axios.get(`http://localhost:808/device/camera?page=0&size=2&name=`, {
         headers: {
-          Authorization: cookies.accessToken, // 세 번째 인수로 headers 전달
-          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
+          Authorization: cookies.accessToken,
         },
-        params: {
-          id: 0,
-          gateStatus: ''
-        } as CameraGate,
+        // params: {
+        //   id: 0,
+        //   gateStatus: ''
+        // }
       });
-
-      console.log(response.data.content[0], '정보');
-      console.log(response.data.content[0].gateStatus, '정보');
-      console.log(response.data.content[0].id, '정보');
 
       const cameras = response.data.content;
-      const entryCamera = cameras.find(camera => camera.id === 1);
-      const exitCamera = cameras.find(camera => camera.id === 2);
 
+      // console.log(cameras, 'Camera List');
 
-      setCameraEntryData({
-        id: entryCamera.id,
-        gateStatus: entryCamera.gateStatus
-      });
-      setCameraExitData({
-        id: exitCamera.id,
-        gateStatus: exitCamera.gateStatus
-      });
+      const outCamera = response.data.content[0];
+      const inCamera = response.data.content[1];
+
+      setOutCameraId(outCamera.id)
+      setInCameraId(inCamera.id);
 
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  console.log(cameraExitData.id, '출차 id 이거는?');
-  console.log(cameraEntryData.id, '입차 id 이거는?');
-
-  useEffect(() => {
-    getEntryMonitoringList();
-    getExitMonitoringList();
-    if (cameraEntryData.id !== undefined || cameraExitData.id !== undefined ) {
-      getEntryMonitoringList(); // Call getMonitoringList only when cameraGateData.id is set
-      getExitMonitoringList();
-    }
-  }, [cameraEntryData, cameraExitData]);
-  
+  // console.log(outcameraId, '출차 카메라 id');
+  // console.log(incameraId, '입차 카메라 id');
 
   const getEntryMonitoringList = async () => {
-    console.log(`https://api.hmkpk.kr/record/camera/${cameraEntryData.id}/latest`, '입차 내역 주소');
-    // console.log(cameraGateData.id, '?');
-    
+    // const aa = 1
+    // console.log(`http://localhost:808/record/camera/${aa}/latest`, '입차 내역 주소');
+
     try {
       setLoading(true);
-      // const response = await axios.get(newMonitoringUrl, {
-      const response = await axios.get(`http://localhost:808/record/camera/${cameraEntryData.id}/latest`, {
+      const response = await axios.get(inUrl, {
+        // const response = await axios.get(`http://localhost:808/record/camera/${incameraId}/latest`, {
         headers: {
           Authorization: cookies.accessToken
           // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
         }
       });
-      console.log(response.data, "입차 데이터");
+      // console.log(response.data, "입차 데이터");
 
       setEntryMonitoringList(response.data);
 
@@ -125,24 +123,22 @@ const Monitoring: React.FC = () => {
     }
   }
 
-  
   const getExitMonitoringList = async () => {
-    console.log(`https://api.hmkpk.kr/record/camera/${cameraExitData.id}/latest`, '출차 내역 주소');
-    // console.log(cameraGateData.id, '?');
-    
+    // console.log(`http://localhost:808/record/camera/${outcameraId}/latest`, '출차 내역 주소');
+
     try {
       setLoading(true);
-      // const response = await axios.get(newMonitoringUrl, {
-      const res = await axios.get(`http://localhost:808/record/camera/${cameraExitData.id}/latest`, {
+      const response = await axios.get(outUrl, {
+        // const res = await axios.get(`http://localhost:808/record/camera/${outcameraId}/latest`, {
         headers: {
           Authorization: cookies.accessToken
           // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
         }
       });
 
-      console.log(res.data, "출차 데이터");
+      // console.log(response.data, "출차 데이터");
 
-      setExitMonitoringList(res.data);
+      setExitMonitoringList(response.data);
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -175,54 +171,137 @@ const Monitoring: React.FC = () => {
 
   useEffect(() => {
     getCameraList();
+    getEntryMonitoringList();
+    getExitMonitoringList();
+
     const intervalId = setInterval(() => {
       getEntryMonitoringList();
       getExitMonitoringList();
-    }, 5000);
+    }, 10000);
 
-    // 컴포넌트가 언마운트될 때 clearInterval로 인터벌을 정리
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(() => {
-    if (entryMonitoringList && latestCarId != entryMonitoringList[0].id) {
-      setLatestCarid(entryMonitoringList[0].id);
-      getCarLogDetails(entryMonitoringList[0].id);
-    }
-    if (exitMonitoringList && latestCarId != exitMonitoringList[0].id) {
-      setLatestCarid(entryMonitoringList[0].id);
-      getCarLogDetails(exitMonitoringList[0].id);
-    }
-  }, [entryMonitoringList, exitMonitoringList]);
+  // useEffect(() => {
+  //   if (entryMonitoringList && latestCarId != entryMonitoringList[0].id) {
+  //     setLatestCarid(entryMonitoringList[0].id);
+  //     getCarLogInDetails(entryMonitoringList[0].id);
+  //   }
 
-  const inOutCardClickHandle = (id) => {
-    getCarLogDetails(id);
+  //   if (exitMonitoringList && latestCarId != exitMonitoringList[0].id) {
+  //     setLatestCarid(exitMonitoringList[0].id);
+  //     getCarLogOutDetails(exitMonitoringList[0].id);
+  //   }
+  // }, [entryMonitoringList, exitMonitoringList]);
+
+  useEffect(() => {
+    if (entryMonitoringList && latestCarId !== entryMonitoringList[0].id && !loadingInDetails) {
+      setLoadingInDetails(true); // 비동기 요청 시작
+      setLatestCarid(entryMonitoringList[0].id);
+      getCarLogInDetails(entryMonitoringList[0].id).finally(() => {
+        setLoadingInDetails(false); // 비동기 요청 완료
+      });
+    }
+
+    if (exitMonitoringList && latestCarId !== exitMonitoringList[0].id && !loadingOutDetails) {
+      setLoadingOutDetails(true); // 비동기 요청 시작
+      setLatestCarid(exitMonitoringList[0].id);
+      getCarLogOutDetails(exitMonitoringList[0].id).finally(() => {
+        setLoadingOutDetails(false); // 비동기 요청 완료
+      });
+    }
+  }, [entryMonitoringList, exitMonitoringList, latestCarId]);
+
+  const inCardClickHandle = (id) => {
+    getCarLogInDetails(id);
   };
 
-  const getCarLogDetails = async (id) => {
-    try {
-      setSubLoading(true);
-      // const response = await axios.get(carLogUrl, {
-      const response = await axios.get(`http://localhost:808/record/${id}`, {
-        headers: {
-          Authorization: cookies.accessToken
-          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
+  const outCardClickHandle = (id) => {
+    getCarLogOutDetails(id);
+  };
 
-        }
+  const getCarLogInDetails = async (id) => {
+    console.log(id, '입차');
+
+    try {
+      setLoading(true);
+      setCarLogOutDetails(null);
+      const response = await axios.get(`${carLogUrl}/${id}`, {
+        headers: {
+          Authorization: cookies.accessToken,
+        },
       });
-      setCarLogDetails(response.data);
+      console.log('response.data.in :: ', response.data);
+      setCarLogInDetails(response.data); // Set the fetched details
     } catch (error) {
-      alert('오류가 발생했습니다. 새로고침 후 다시 시도해주세요.');
       console.error('Error fetching data:', error);
     } finally {
-      setSubLoading(false);
+      setLoading(false);
     }
   };
-  const inType = 'IN';
-  const outType = 'OUT';
-  // console.log(carLogDetails, "사진");
-  // console.log(monitoringList, "내역들");
+  const getCarLogOutDetails = async (id) => {
+    console.log(id, '출차');
+    try {
+      setLoading(true);
+      const response = await axios.get(`${carLogUrl}/${id}`, {
+        headers: {
+          Authorization: cookies.accessToken
+        }
+      });
+      console.log('response.data.in :: ', response.data);
+      setCarLogOutDetails(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
 
+  };
+
+  // useEffect(() => {
+  //   getEntryMonitoringList();
+  //   getExitMonitoringList();
+  //   getCameraList();
+  //   const intervalId = setInterval(() => {
+  //     getEntryMonitoringList();
+  //     getExitMonitoringList();
+  //   }, 5000);
+
+  //   // 컴포넌트가 언마운트될 때 clearInterval로 인터벌을 정리
+  //   return () => clearInterval(intervalId);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (entryMonitoringList && latestCarId != entryMonitoringList[0].id) {
+  //     setLatestCarid(entryMonitoringList[0].id);
+  //     getCarLogInDetails(entryMonitoringList[0].id);
+  //   }
+  //   if (exitMonitoringList && latestCarId != exitMonitoringList[0].id) {
+  //     setLatestCarid(exitMonitoringList[0].id);
+  //     getCarLogOutDetails(exitMonitoringList[0].id);
+  //   }
+  // }, [entryMonitoringList, exitMonitoringList]);
+
+
+  // const getCarLogDetails = async (id) => {
+  //   try {
+  //     setSubLoading(true);
+  //     // const response = await axios.get(carLogUrl, {
+  //     const response = await axios.get(`http://localhost:808/record/${id}`, {
+  //       headers: {
+  //         Authorization: cookies.accessToken
+  //         // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
+
+  //       }
+  //     });
+  //     setCarLogInDetails(response.data);
+  //   } catch (error) {
+  //     alert('오류가 발생했습니다. 새로고침 후 다시 시도해주세요.');
+  //     console.error('Error fetching data:', error);
+  //   } finally {
+  //     setSubLoading(false);
+  //   }
+  // };
 
   return (
     <DefaultLayout>
@@ -233,91 +312,83 @@ const Monitoring: React.FC = () => {
           <div className="flex flex-col gap-5 2xl:gap-5">
             <div className='flex gap-5'>
               {/* <div className='rounded-lg bg-basicWhite shadow-md p-8 flex flex-col w-2/3 gap-5 h-fit'> */}
-              <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-3 h-fit'>
-                {carLogDetails ? (
+              {carLogInDetails ? (
+                <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-3 h-fit'>
                   <>
                     {/* {monitoringList.inOutType == "IN" ? ( */}
-                    {carLogDetails.inOutType == "IN" ? (
-                      <>
-                        <div className='flex justify-between gap-7 items-center'>
-                          {/* <div className='flex items-center justify-between gap-3'> */}
-                          {/* <div className='flex flex-row gap-3 font-bold'> */}
-                          <div className='flex items-center gap-1'>
-                            <div className='text-2xl text-basicdark font-bold text-left'>입차</div>
-                            <div>
-                              <img
-                                src={Refresh}
-                                className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
-                                onClick={getEntryMonitoringList}
-                                alt='Refresh'
-                              />
-                            </div>
-                          </div>
-                          <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span>{carLogDetails.vehicleNumber}</div>
-                          {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
-                          {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
-                          {/* </div> */}
-                          {/* <div className='flex flex-row gap-3'> */}
-                          {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
-                          {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
-                          {/* </div> */}
-                          {/* </div> */}
-                          {/* <div className='w-80'>
+                    <div className='flex justify-between gap-7 items-center'>
+                      {/* <div className='flex items-center justify-between gap-3'> */}
+                      {/* <div className='flex flex-row gap-3 font-bold'> */}
+                      <div className='flex items-center gap-1'>
+                        <div className='text-2xl text-basicdark font-bold text-left'>입차</div>
+                        <div>
+                          <img
+                            src={Refresh}
+                            className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                            onClick={getEntryMonitoringList}
+                            alt='Refresh'
+                          />
+                        </div>
+                      </div>
+                      <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogInDetails.inOutTime})</span>{carLogInDetails.vehicleNumber}</div>
+                      {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
+                      {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
+                      {/* </div> */}
+                      {/* <div className='flex flex-row gap-3'> */}
+                      {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
+                      {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
+                      {/* </div> */}
+                      {/* </div> */}
+                      {/* <div className='w-80'>
                       <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
                     </div> */}
-                        </div>
-                        <div>
-                          {carLogDetails.files.length > 1 && (
-                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
-                          )}
-                        </div>
-                      </>
-                    ) : <><div>최근 입차 내역이 없습니다.</div></>}
+                    </div>
+                    <div>
+                      {carLogInDetails.files.length > 0 && (
+                        <img src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
+                      )}
+                    </div>
                   </>
-                ) : null}
-              </div>
-              <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-5 h-fit'>
-                {carLogDetails ? (
+                </div>
+              ) : null}
+              {carLogOutDetails ? (
+                <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-3 h-fit'>
                   <>
-                    {carLogDetails.inOutType == "OUT" ? (
-                      <>
-                        <div className='flex justify-between gap-7 items-center'>
-                          <div className='flex flex-col gap-3'>
-                            {/* <div className='flex flex-row gap-3 font-bold'> */}
-                            <div className='flex items-center gap-1'>
-                            <div className='text-2xl text-basicdark font-bold text-left'>출차</div>
-                            <div>
-                              <img
-                                src={Refresh}
-                                className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
-                                onClick={getExitMonitoringList}
-                                alt='Refresh'
-                              />
-                            </div>
-                          </div>
-                            <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogDetails.inOutTime})</span>{carLogDetails.vehicleNumber}</div>
-                            {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
-                            {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
-                            {/* </div> */}
-                            {/* <div className='flex flex-row gap-3'> */}
-                            {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
-                            {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
-                            {/* </div> */}
-                          </div>
-                          {/* <div className='w-80'>
+                    <div className='flex justify-between gap-7 items-center'>
+                      {/* <div className='flex flex-col gap-3'> */}
+                      {/* <div className='flex flex-row gap-3 font-bold'> */}
+                      <div className='flex items-center gap-1'>
+                        <div className='text-2xl text-basicdark font-bold text-left'>출차</div>
+                        <div>
+                          <img
+                            src={Refresh}
+                            className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                            onClick={getExitMonitoringList}
+                            alt='Refresh'
+                          />
+                        </div>
+                      </div>
+                      <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogOutDetails.inOutTime})</span>{carLogOutDetails.vehicleNumber}</div>
+                      {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
+                      {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
+                      {/* </div> */}
+                      {/* <div className='flex flex-row gap-3'> */}
+                      {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
+                      {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
+                      {/* </div> */}
+                      {/* </div> */}
+                      {/* <div className='w-80'>
                       <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
                     </div> */}
-                        </div>
-                        <div>
-                          {carLogDetails.files.length > 1 && (
-                            <img src={`data:image/jpg;base64,${carLogDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
-                          )}
-                        </div>
-                      </>
-                    ) : <><div className='text-center'>최근 출차 내역이 없습니다.</div></>}
+                    </div>
+                    <div>
+                      {carLogOutDetails.files.length > 0 && (
+                        <img src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
+                      )}
+                    </div>
                   </>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
               {/* <div className='rounded-sm border border-stroke bg-white shadow-default w-1/3 p-8 flex flex-col items-center gap-5 h-fit'> */}
               {/* <div className='flex justify-between w-full'>
                 <div className='text-lg font-bold'>최근 입출차 내역</div>
@@ -355,7 +426,7 @@ const Monitoring: React.FC = () => {
                         /> */}
                     {/* </div> */}
                     {/* </div> */}
-                    <InOutCard monitoringList={entryMonitoringList} onClickHandle={inOutCardClickHandle} />
+                    <InOutCard monitoringList={entryMonitoringList} onClickHandle={inCardClickHandle} />
                   </>
                 ) : (<><div>최근 입차 내역이 없습니다.</div></>)}
               </div>
@@ -370,7 +441,7 @@ const Monitoring: React.FC = () => {
 
                       </div> */}
                     {/* </div> */}
-                    <InOutCard monitoringList={exitMonitoringList}  onClickHandle={inOutCardClickHandle} />
+                    <InOutCard monitoringList={exitMonitoringList} onClickHandle={outCardClickHandle} />
                   </>
                 ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
               </div>

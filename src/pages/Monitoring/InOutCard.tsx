@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CarLogDetails } from "../../types/carLog";
+// import { CarLogDetails } from "../../types/carLog";
 import { convertTypeToString } from "../../js/stringConvert";
 
 const InOutCard = ({
