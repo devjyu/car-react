@@ -152,9 +152,9 @@ const AddUnitCarModal = ({
       <button
         ref={trigger}
         onClick={() => setModalOpen(!modalOpen)}
-        className="inline-flex rounded-lg py-1 px-6 text-sm font-semibold bg-basicponint text-basicWhite hover:bg-basicdarkponint dark:text-white"
+        className="inline-flex items-center justify-center rounded-lg py-1 px-6 text-sm font-semibold bg-basicponint text-basicWhite hover:bg-basicdarkponint dark:text-white"
       >
-        추가
+        <span className="whitespace-nowrap">추가</span>
       </button>
       <div
         className={`fixed left-0 top-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${modalOpen ? 'block' : 'hidden'
@@ -166,7 +166,7 @@ const AddUnitCarModal = ({
           className="md:px-17.5 w-full max-w-142.5 rounded-lg bg-basicWhite px-8 py-12 text-center dark:bg-boxdark md:py-15"
         >
           <div className="mb-4 text-center mb-5">
-            <p className="text-sm text-basicdark dark:text-gray-400">{dong}동 {ho}호</p>
+            <p className="text-sm text-basicdark dark:text-gray-400">{dong} {ho}</p>
             <h2 className="text-xl font-bold text-basicdark dark:text-white">차량 등록</h2>
           </div>
           <div className="grid grid-cols-2 mb-4">

@@ -131,7 +131,7 @@ const ApartmentUnitCar: React.FC = () => {
       });
       // console.log(response);
     } catch (error) {
-      alert("해당 아파트는 차량 3대까지 등록 가능합니다.");
+      alert(error.message);
       console.error('Error fetching data:', error);
     } finally {
       getCarUnitDongData(currentDong);
@@ -146,7 +146,7 @@ const ApartmentUnitCar: React.FC = () => {
     //   return;
     // }
 
-    if (confirm(`${currentDong}동 ${ho}호 ${vehicleNumber.vehicleNumber}차량을 삭제하시겠습니까?`)) {
+    if (confirm(`${currentDong} ${ho} ${vehicleNumber.vehicleNumber}차량을 삭제하시겠습니까?`)) {
       try {
         await axios.put(delUnitCarUrl, {}, {
           headers: {
@@ -411,11 +411,12 @@ const ApartmentUnitCar: React.FC = () => {
                           </td>
                           {/* <td className="flex flex-row justify-between items-center w-full hidden p-4 xl:flex"> */}
                           <td className="flex flex-row justify-between items-center w-[85%] hidden p-4 xl:flex">
-                            <div className='flex gap-2'>
+                            <div className='flex flex-wrap gap-2'>
                               {vehicles.vehicleNumber ? vehicles.vehicleNumber.map((s, index) => {
                                 return (
-                                  <div className='flex align-center justify-center w-33' key={index}>
-                                    {/* <button
+                                  <>
+                                    <div className='flex align-center' key={index}>
+                                      {/* <button
                                       className={`w-full rounded-lg border border-[#d5d5d5] text-sm font-medium hover:opacity-80 dark:text-white py-1
                                   ${selectedVehicle && selectedVehicle.id === s.id && `bg-primary text-white`}
                                 `}
@@ -427,40 +428,109 @@ const ApartmentUnitCar: React.FC = () => {
                                       </p>
 
                                     </button> */}
-                                    <button
-                                      className={`flex items-center py-1.5 w-full rounded-lg border border-[#d5d5d5] text-sm font-medium hover:opacity-80 dark:text-white py-1 px-1`}
-                                    // key={index}
-                                    >
-                                      <div className="flex-1 flex justify-center px-1"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          openModal({ id: s.id, vehicleNumber: s.vehicleNumber });
-                                          selectVehicleHandle(s);
-                                        }}
+                                      <button
+                                        className={`flex items-center py-1.5 w-full rounded-lg border border-[#d5d5d5] text-sm font-medium hover:opacity-80 dark:text-white py-1 px-1`}
+                                      // key={index}
                                       >
-                                        {searchData ? fillColorNumber(s.vehicleNumber) : s.vehicleNumber}
-                                        {/* <span className='text-xs text-slate-400 pt-0.5 pl-1'>({s.addition.length})</span> */}
-                                      </div>
-                                      <svg
-                                        clipRule="evenodd"
-                                        fillRule="evenodd"
-                                        strokeLinejoin="round"
-                                        strokeMiterlimit="2"
-                                        viewBox="0 0 24 24"
-                                        width="14"
-                                        height="14"
-                                        fill='rgb(138,138,138)'
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          delUnitCarHandler({ unitId: vehicles.unitId, ho: vehicles.ho, vehicleNumber: s });
-                                        }}
+                                        <div className="flex-1 flex px-1"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            openModal({ id: s.id, vehicleNumber: s.vehicleNumber });
+                                            selectVehicleHandle(s);
+                                          }}
+                                        >
+                                          {searchData ? fillColorNumber(s.vehicleNumber) : s.vehicleNumber}
+                                          {/* <span className='text-xs text-slate-400 pt-0.5 pl-1'>({s.addition.length})</span> */}
+                                        </div>
+                                        <svg
+                                          clipRule="evenodd"
+                                          fillRule="evenodd"
+                                          strokeLinejoin="round"
+                                          strokeMiterlimit="2"
+                                          viewBox="0 0 24 24"
+                                          width="14"
+                                          height="14"
+                                          fill='rgb(138,138,138)'
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            delUnitCarHandler({ unitId: vehicles.unitId, ho: vehicles.ho, vehicleNumber: s });
+                                          }}
+                                        >
+                                          <path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                    <div>
+                                      <button
+                                        className={`flex items-center py-1.5 w-full rounded-lg border border-[#d5d5d5] text-sm font-medium hover:opacity-80 dark:text-white py-1 px-1`}
+                                      // key={index}
                                       >
-                                        <path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z" />
-                                      </svg>
-                                    </button>
-                                  </div>
-                                );
+                                        <div className="flex-1 flex px-1"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            openModal({ id: s.id, vehicleNumber: s.vehicleNumber });
+                                            selectVehicleHandle(s);
+                                          }}
+                                        >
+                                          {searchData ? fillColorNumber(s.vehicleNumber) : s.vehicleNumber}
+                                          {/* <span className='text-xs text-slate-400 pt-0.5 pl-1'>({s.addition.length})</span> */}
+                                        </div>
+                                        <svg
+                                          clipRule="evenodd"
+                                          fillRule="evenodd"
+                                          strokeLinejoin="round"
+                                          strokeMiterlimit="2"
+                                          viewBox="0 0 24 24"
+                                          width="14"
+                                          height="14"
+                                          fill='rgb(138,138,138)'
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            delUnitCarHandler({ unitId: vehicles.unitId, ho: vehicles.ho, vehicleNumber: s });
+                                          }}
+                                        >
+                                          <path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                    <div>
+                                      <button
+                                        className={`flex items-center py-1.5 w-full rounded-lg border border-[#d5d5d5] text-sm font-medium hover:opacity-80 dark:text-white py-1 px-1`}
+                                      // key={index}
+                                      >
+                                        <div className="flex-1 flex px-1"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            openModal({ id: s.id, vehicleNumber: s.vehicleNumber });
+                                            selectVehicleHandle(s);
+                                          }}
+                                        >
+                                          {searchData ? fillColorNumber(s.vehicleNumber) : s.vehicleNumber}
+                                          {/* <span className='text-xs text-slate-400 pt-0.5 pl-1'>({s.addition.length})</span> */}
+                                        </div>
+                                        <svg
+                                          clipRule="evenodd"
+                                          fillRule="evenodd"
+                                          strokeLinejoin="round"
+                                          strokeMiterlimit="2"
+                                          viewBox="0 0 24 24"
+                                          width="14"
+                                          height="14"
+                                          fill='rgb(138,138,138)'
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            delUnitCarHandler({ unitId: vehicles.unitId, ho: vehicles.ho, vehicleNumber: s });
+                                          }}
+                                        >
+                                          <path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z" />
+                                        </svg>
+                                      </button>
+                                    </div>
+
+                                  </>);
                               }) : <div className='flex align-center justify-start w-26'>없음</div>}
                               {/* {isVehicleSelected ?
                                 <UnregonizedCarModal
