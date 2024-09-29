@@ -164,7 +164,7 @@ const Footer = () => {
     return (
         <footer className="flex items-center justify-around bg-basicdark text-basicWhite px-2.5 py-4 mt-5 fixed bottom-0 w-full z-10">
             <div className='flex items-center'>
-                <div className="px-6 font-medium text-m">@COPYRIGHT</div>
+                <div className="px-6 font-medium text-m">@COPYRIGHT (주)한민경테크</div>
                 {/* <div className="flex space-x-4">
                     <button
                         onClick={handleOpen}
