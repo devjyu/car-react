@@ -431,7 +431,7 @@ const Monitoring: React.FC = () => {
                     </div>
                     <InOutCard monitoringList={entryMonitoringList} onClickHandle={inCardClickHandle} />
                   </>
-                ) : (<><div>최근 입차 내역이 없습니다.</div></>)}
+                ) : null}
               </div>
 
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
@@ -451,7 +451,7 @@ const Monitoring: React.FC = () => {
                     </div>
                     <InOutCard monitoringList={exitMonitoringList} onClickHandle={outCardClickHandle} />
                   </>
-                ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
+                ) : null}
               </div>
             </div>
           </div>
