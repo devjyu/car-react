@@ -231,11 +231,6 @@ const CarLogTable = ({
   const handleSearch = async () => {
     const searchParams = [];
     // Check if searchParams is empty
-    if (searchParams.length === 0) {
-      alert('검색어를 입력해주세요');
-      window.location.reload(); // Refresh the page if no search parameters were provided
-      return; // Exit the function after refreshing
-    }
     try {
       setLoading(true); // Set loading state to true when search is initiated
       searchParams.push({ key: 'startDate', value: selectedStartDate });
