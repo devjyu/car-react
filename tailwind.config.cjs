@@ -16,6 +16,7 @@ module.exports = {
       'lg': '1024px',
       'xl': '1280px',
       '2xl': '1536px',
+      '2xxl': '1920px',
       '3xl': '2000px',
       ...defaultTheme.screens,
     },
