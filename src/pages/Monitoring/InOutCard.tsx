@@ -10,13 +10,13 @@ const InOutCard = ({
     monitoringList.map((m, i) => (
       <div
         key={i}
-        className={`flex justify-between items-center w-full cursor-pointer border border-tborder border-b border-t-0 border-r-0 border-l-0 bg-basicWhite px-2
+        className={`flex justify-between items-center w-full cursor-pointer border border-tborder border-b border-t-0 border-r-0 border-l-0 bg-basicWhite px-2 py-1
          transition-all duration-200 hover:bg-gray-100 hover:shadow-lg`}
         onClick={() => onClickHandle(m.id)}
       >
         <div className="flex justify-between items-center w-full">
-          <div className='w-4/12 font-semibold text-center text-basicdark text-base'>{m.vehicleNumber}</div>
-          <div className='text-basicdark w-8/12 text-right text-xs'>{m.inOutTime}</div>
+          <div className='w-4/12 font-bold text-center text-basicdark'>{m.vehicleNumber}</div>
+          <div className='text-basicdark w-8/12 text-center text-sm'>{m.inOutTime}</div>
         </div>
         {/* {
           type == 'IN' && m.inOutType == 'IN' ?

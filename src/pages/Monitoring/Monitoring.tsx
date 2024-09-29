@@ -5,22 +5,29 @@ import { useRecoilState } from 'recoil';
 import Refresh from '../../images/icon/refresh.png';
 import { formatYMDHMS } from '../../js/dateFormat.ts';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { cameraEntryGateState } from '../../state/atoms/cameraEntryGateState.ts';
-import { cameraExitGateState } from '../../state/atoms/cameraExitGateStatus.ts';
 import { cameraGateState } from '../../state/atoms/cameraGateState.ts';
 import { CarLogInDetails, CarLogOutDetails, CarLogType, InOutType } from '../../types/carLog.ts';
 import InOutCard from './InOutCard.tsx';
-import { InMonitoring, OutMonitoring } from '../../types/carLog.ts';
 
-// interface Monitoring {
-//   dong: string;
-//   ho: string;
-//   id: number;
-//   inOutTime: string;
-//   inOutType: InOutType;
-//   type: CarLogType;
-//   vehicleNumber: string;
-// }
+interface InMonitoring {
+  dong: string;
+  ho: string;
+  id: number;
+  inOutTime: string;
+  inOutType: InOutType;
+  type: CarLogType;
+  vehicleNumber: string;
+}
+
+interface OutMonitoring {
+  dong: string;
+  ho: string;
+  id: number;
+  inOutTime: string;
+  inOutType: InOutType;
+  type: CarLogType;
+  vehicleNumber: string;
+}
 
 interface InCamera {
   id: number;
@@ -44,20 +51,16 @@ const Monitoring: React.FC = () => {
 
   const [refreshTime, setRefreshTime] = useState<string>(formatYMDHMS(new Date()));
   const [latestCarId, setLatestCarid] = useState<number>(0);
-  const [cameraGateData, setCameraGateData] = useRecoilState(cameraGateState);
-  const [cameraEntryData, setCameraEntryData] = useRecoilState(cameraEntryGateState);
-  const [cameraExitData, setCameraExitData] = useRecoilState(cameraExitGateState);
-  const [cameraList, setCameraList] = useState();
   const [loadingInDetails, setLoadingInDetails] = useState(false);
   const [loadingOutDetails, setLoadingOutDetails] = useState(false);
 
 
-  const monitoringUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_MONITORING_ENDPOINT;
-  const cameraInfoUrl = import.meta.env.VITE_BASE_URL + `/device/camera?page=0&size=1&name=`;
-  const newMonitoringUrl = import.meta.env.VITE_BASE_URL + `/record/camera/${cameraGateData.id}/latest`;
+  // const monitoringUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_MONITORING_ENDPOINT;
+  // const cameraInfoUrl = import.meta.env.VITE_BASE_URL + `/device/camera?page=0&size=1&name=`;
+  // const newMonitoringUrl = import.meta.env.VITE_BASE_URL + `/record/camera/${cameraGateData.id}/latest`;
   // const newMonitoringUrl = `https://api.hmkpk.kr/record/camera/${cameraGateData.id}/latest`;
   // const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
-  // const carLogUrl = import.meta.env.VITE_BASE_URL + `record/`;
+  // const carLogUrl = import.meta.env.VITE_BASE_URL + `record/`;s
   const carLogUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_CAR_LOG_ENDPOINT;
   const inUrl = `http://localhost:808/record/camera/2/latest`;
   const outUrl = `http://localhost:808/record/camera/1/latest`;
@@ -78,7 +81,7 @@ const Monitoring: React.FC = () => {
         // }
       });
 
-      const cameras = response.data.content;
+      // const cameras = response.data.content;
 
       // console.log(cameras, 'Camera List');
 
@@ -307,7 +310,7 @@ const Monitoring: React.FC = () => {
     <DefaultLayout>
       <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
         <div className='mx-auto max-w-screen-2xl p-5 mb-20'>
-          <div className='flex justify-end font-medium mb-3'>최근 입출차 내역</div>
+          {/* <div className='flex justify-end font-medium mb-3'>최근 입출차 내역</div> */}
           {/* <Breadcrumb pageName="모니터링" rootPage="모니터링" /> */}
           <div className="flex flex-col gap-5 2xl:gap-5">
             <div className='flex gap-5'>
@@ -320,17 +323,17 @@ const Monitoring: React.FC = () => {
                       {/* <div className='flex items-center justify-between gap-3'> */}
                       {/* <div className='flex flex-row gap-3 font-bold'> */}
                       <div className='flex items-center gap-1'>
-                        <div className='text-2xl text-basicdark font-bold text-left'>입차</div>
+                        <div className='text-3xl text-basicdark font-bold text-left'>입차</div>
                         <div>
                           <img
                             src={Refresh}
-                            className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                            className='h-5 w-5 cursor-pointer hover:scale-105 transition-transform'
                             onClick={getEntryMonitoringList}
                             alt='Refresh'
                           />
                         </div>
                       </div>
-                      <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogInDetails.inOutTime})</span>{carLogInDetails.vehicleNumber}</div>
+                      <div className='text-basicponint text-3xl font-bold'><span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogInDetails.inOutTime})</span>{carLogInDetails.vehicleNumber}</div>
                       {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
                       {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
                       {/* </div> */}
@@ -345,7 +348,7 @@ const Monitoring: React.FC = () => {
                     </div>
                     <div>
                       {carLogInDetails.files.length > 0 && (
-                        <img src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
+                        <img src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`} className='w-full h-[414px]' alt="car log detail" />
                       )}
                     </div>
                   </>
@@ -358,17 +361,17 @@ const Monitoring: React.FC = () => {
                       {/* <div className='flex flex-col gap-3'> */}
                       {/* <div className='flex flex-row gap-3 font-bold'> */}
                       <div className='flex items-center gap-1'>
-                        <div className='text-2xl text-basicdark font-bold text-left'>출차</div>
+                        <div className='text-3xl text-basicdark font-bold text-left'>출차</div>
                         <div>
                           <img
                             src={Refresh}
-                            className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                            className='h-5 w-5 cursor-pointer hover:scale-105 transition-transform'
                             onClick={getExitMonitoringList}
                             alt='Refresh'
                           />
                         </div>
                       </div>
-                      <div className='text-basicponint text-2xl font-bold'><span className='mr-2 text-sm font-medium text-deactivatetxt'>({carLogOutDetails.inOutTime})</span>{carLogOutDetails.vehicleNumber}</div>
+                      <div className='text-basicponint text-3xl font-bold'><span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogOutDetails.inOutTime})</span>{carLogOutDetails.vehicleNumber}</div>
                       {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
                       {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
                       {/* </div> */}
@@ -383,7 +386,7 @@ const Monitoring: React.FC = () => {
                     </div>
                     <div>
                       {carLogOutDetails.files.length > 0 && (
-                        <img src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`} className='w-[900px] h-[300px]' alt="car log detail" />
+                        <img src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`} className='w-full h-[414px]' alt="car log detail" />
                       )}
                     </div>
                   </>
@@ -414,18 +417,18 @@ const Monitoring: React.FC = () => {
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
                 {entryMonitoringList ? (
                   <>
-                    {/* <div className='flex justify-between items-end w-full'> */}
-                    {/* <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div> */}
-                    {/* <div className='ml-auto flex items-center gap-2'> */}
-                    {/* <div className='text-deactivatetxt text-sm'>{refreshTime}</div> */}
-                    {/* <img
+                    <div className='flex justify-start items-end w-full'>
+                      <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div>
+                      <div className='ml-auto flex items-center gap-2'>
+                        <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
+                        <img
                           src={Refresh}
                           className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
-                          onClick={getMonitoringList}
+                          onClick={getEntryMonitoringList}
                           alt='Refresh'
-                        /> */}
-                    {/* </div> */}
-                    {/* </div> */}
+                        />
+                      </div>
+                    </div>
                     <InOutCard monitoringList={entryMonitoringList} onClickHandle={inCardClickHandle} />
                   </>
                 ) : (<><div>최근 입차 내역이 없습니다.</div></>)}
@@ -434,13 +437,18 @@ const Monitoring: React.FC = () => {
               <div className='rounded-lg bg-basicWhite shadow-md w-1/2 p-5 flex flex-col items-center gap-4 h-fit'>
                 {exitMonitoringList ? (
                   <>
-                    {/* <div className='flex justify-between items-end w-full'> */}
-                    {/* <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div> */}
-                    {/* <div className='ml-auto flex items-center gap-2'>
+                    <div className='flex justify-between items-end w-full'>
+                      <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div>
+                      <div className='ml-auto flex items-center gap-2'>
                         <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
-
-                      </div> */}
-                    {/* </div> */}
+                        <img
+                          src={Refresh}
+                          className='h-4.5 w-4.5 cursor-pointer hover:scale-105 transition-transform'
+                          onClick={getEntryMonitoringList}
+                          alt='Refresh'
+                        />
+                      </div>
+                    </div>
                     <InOutCard monitoringList={exitMonitoringList} onClickHandle={outCardClickHandle} />
                   </>
                 ) : (<><div>최근 출차 내역이 없습니다.</div></>)}
