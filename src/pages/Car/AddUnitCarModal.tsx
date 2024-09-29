@@ -68,7 +68,7 @@ const AddUnitCarModal = ({
 
   const addUnitCar = () => {
     if (checkValid()) {
-      if (confirm(`${dong}동 ${ho}호에 ${vehicleNumber}을 등록하시겠습니까?`)) {
+      if (confirm(`${dong} ${ho}에 ${vehicleNumber}을 등록하시겠습니까?`)) {
         addHandler(vehicleNumber, phone);
       }
     }

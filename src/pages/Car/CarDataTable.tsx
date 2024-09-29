@@ -155,7 +155,7 @@ const CarDataTable = ({
   }
 
   return (
-    <section className="data-table-common data-table-two rounded-lg bg-white py-4 shadow-md text-xs dark:border-strokedark dark:bg-boxdark">
+    <section className="data-table-common data-table-two rounded-lg bg-white py-4 shadow-md text-l dark:border-strokedark dark:bg-boxdark">
       <div className='flex flex-col gap-3'>
         <div className='px-8 mb-3.5'>
           <div className='flex items-center justify-between'>
