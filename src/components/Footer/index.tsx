@@ -75,7 +75,7 @@ const Footer = () => {
         // getSecondGateStatus();
     }, []);
 
-    console.log(status, "차단기 제어 상태");
+    // console.log(status, "차단기 제어 상태");
     // 버튼 상태 업데이트
     const updateGateStatus = async (status) => {
         
@@ -164,8 +164,8 @@ const Footer = () => {
     return (
         <footer className="flex items-center justify-around bg-basicdark text-basicWhite px-2.5 py-4 mt-5 fixed bottom-0 w-full z-10">
             <div className='flex items-center'>
-                <div className="px-6 font-semibold text-m">차단기 강제 수동 제어</div>
-                <div className="flex space-x-4">
+                <div className="px-6 font-medium text-m">@COPYRIGHT</div>
+                {/* <div className="flex space-x-4">
                     <button
                         onClick={handleOpen}
                         className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 font-semibold text-title-xsm shadow-md transition-all duration-300 ease-in-out ${isClosed
@@ -188,7 +188,7 @@ const Footer = () => {
                         <img src="/close.png" alt="" className='w-8 mr-2' />
                         CLOSE
                     </button>
-                </div>
+                </div> */}
             </div>
             {/* <div className='flex items-center'>
                 <div className="px-6 font-semibold text-m">카메라별 차단기 수동 제어</div>
