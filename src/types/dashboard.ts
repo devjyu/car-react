@@ -15,6 +15,7 @@ export interface DashboardData {
     vehicleCount: number;
     visitInCount: number;
     visitOutCount: number;
+    apartmentVehicleCount: number;
     inCount: number;
     outCount: number;
     userCount: number;
