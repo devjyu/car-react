@@ -206,10 +206,11 @@ const CarDataTable = ({
                 />
               </div>
               <div className='mr-4'>
-                <DropdownSearch
+                {/* <DropdownSearch
                   options={dropDownSearchOptions}
                   onSelect={({ label, value }) => { setSearchOption({ ...searchOption, key: value }) }}
-                />
+                /> */}
+                <div>차량번호</div>
               </div>
               <div className="w-60 flex rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
                 <input
