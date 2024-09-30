@@ -140,7 +140,7 @@ const Sidebar = (
 
             {/* 모니터링 */}
             <li
-              onClick={openNewWindow}
+              // onClick={openNewWindow}
             >
               <NavLink
                 to="/monitoring"
