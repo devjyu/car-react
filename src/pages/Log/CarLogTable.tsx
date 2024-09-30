@@ -683,7 +683,7 @@ const CarLogTable = ({
                 {/* <div className="text-lg font-semibold mb-2">출차 이미지</div> */}
                 <div className="flex justify-between gap-2.5">
                   {/* <div className='flex w-full justify-between items-center'> */}
-                  <div className="flex flex-col w-1/3 justify-between">
+                  <div className="flex flex-col w-1/3 justify-start md:gap-1">
                     <div className="flex flex-col">
                       {/* <div className='text-indigo-500 font-semibold text-lg'>
                         {carLogOutDetails.type === 'MEMBER' ? '세대' :
@@ -698,7 +698,7 @@ const CarLogTable = ({
                       <img
                         src={`data:image/jpg;base64,${carLogOutDetails.files[0].content}`}
                         alt={`출차 이미지 1`}
-                        className='w-full h-15'
+                        className='w-[330px]'
                       />
                     </div>
                   </div>
@@ -706,7 +706,7 @@ const CarLogTable = ({
                     <img
                       src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`}
                       alt={`출차 이미지 2`}
-                      className='w-[330px]'
+                      className=''
                     />
                   </div>
                 </div>
