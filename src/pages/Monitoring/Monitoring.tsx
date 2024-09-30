@@ -114,7 +114,7 @@ const Monitoring: React.FC = () => {
           // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
         }
       });
-      // console.log(response.data, "입차 데이터");
+      console.log(response.data, "입차 데이터");
 
       setEntryMonitoringList(response.data);
 
@@ -139,7 +139,7 @@ const Monitoring: React.FC = () => {
         }
       });
 
-      // console.log(response.data, "출차 데이터");
+      console.log(response.data, "출차 데이터");
 
       setExitMonitoringList(response.data);
 
@@ -172,6 +172,7 @@ const Monitoring: React.FC = () => {
   //   }
   // }
 
+
   useEffect(() => {
     getCameraList();
     getEntryMonitoringList();
@@ -180,10 +181,87 @@ const Monitoring: React.FC = () => {
     const intervalId = setInterval(() => {
       getEntryMonitoringList();
       getExitMonitoringList();
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
+
+  // useEffect(() => {
+  //   if (entryMonitoringList && exitMonitoringList) {
+  //     const latestEntryId = entryMonitoringList[0]?.id;
+  //     const latestExitId = exitMonitoringList[0]?.id;
+
+  //     if (latestEntryId && latestExitId && latestCarId !== latestEntryId && latestCarId !== latestExitId) {
+  //       setLatestCarid(latestEntryId); // latestEntryId 또는 latestExitId로 설정
+  //       getCarLogs(latestEntryId, latestExitId); // 두 개의 로그를 동시에 가져오는 함수 호출
+  //     }
+  //   }
+  // }, [entryMonitoringList, exitMonitoringList]);
+
+  // const getCarLogs = async (entryId: number, exitId: number) => {
+  //   try {
+  //     setLoading(true);
+  //     const [entryResponse, exitResponse] = await Promise.all([
+  //       axios.get(`${carLogUrl}/${entryId}`, {
+  //         headers: { Authorization: cookies.accessToken },
+  //       }),
+  //       axios.get(`${carLogUrl}/${exitId}`, {
+  //         headers: { Authorization: cookies.accessToken },
+  //       }),
+  //     ]);
+
+  //     setCarLogInDetails(entryResponse.data); // Set the fetched entry details
+  //     setCarLogOutDetails(exitResponse.data); // Set the fetched exit details
+  //     // console.log('entryResponse.data :: ', entryResponse.data);
+  //     // console.log('exitResponse.data :: ', exitResponse.data);
+  //   } catch (error) {
+  //     console.error('Error fetching car logs:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  useEffect(() => {
+    if (entryMonitoringList) {
+      const latestEntryId = entryMonitoringList[0]?.id;
+
+      // Check if we have a new entry car ID and only update when it's different
+      if (latestEntryId && latestCarId !== latestEntryId) {
+        setLatestCarid(latestEntryId);
+        getCarLogInDetails(latestEntryId); // Fetch entry data
+      }
+    }
+
+    if (exitMonitoringList) {
+      const latestExitId = exitMonitoringList[0]?.id;
+
+      // Check if we have a new exit car ID and only update when it's different
+      if (latestExitId && latestCarId !== latestExitId) {
+        setLatestCarid(latestExitId);
+        getCarLogOutDetails(latestExitId); // Fetch exit data
+      }
+    }
+  }, [entryMonitoringList, exitMonitoringList]);
+
+  // useEffect(() => {
+  //   if (entryMonitoringList) {
+  //     const latestEntryId = entryMonitoringList[0]?.id;
+
+  //     if (latestEntryId && latestCarId !== latestEntryId) {
+  //       setLatestCarid(latestEntryId);
+  //       getCarLogInDetails(latestEntryId); // 입차 데이터 요청
+  //     }
+  //   }
+
+  //   if (exitMonitoringList) {
+  //     const latestExitId = exitMonitoringList[0]?.id;
+
+  //     if (latestExitId && latestCarId !== latestExitId) {
+  //       setLatestCarid(latestExitId);
+  //       getCarLogOutDetails(latestExitId); // 출차 데이터 요청
+  //     }
+  //   }
+  // }, [entryMonitoringList, exitMonitoringList]);
 
   // useEffect(() => {
   //   if (entryMonitoringList && latestCarId != entryMonitoringList[0].id) {
@@ -197,38 +275,84 @@ const Monitoring: React.FC = () => {
   //   }
   // }, [entryMonitoringList, exitMonitoringList]);
 
-  useEffect(() => {
-    if (entryMonitoringList && latestCarId !== entryMonitoringList[0].id && !loadingInDetails) {
-      setLoadingInDetails(true); // 비동기 요청 시작
-      setLatestCarid(entryMonitoringList[0].id);
-      getCarLogInDetails(entryMonitoringList[0].id).finally(() => {
-        setLoadingInDetails(false); // 비동기 요청 완료
-      });
-    }
+  // useEffect(() => {
+  //   if (entryMonitoringList && latestCarId !== entryMonitoringList[0].id && !loadingInDetails) {
+  //     setLoadingInDetails(true); // 비동기 요청 시작
+  //     setLatestCarid(entryMonitoringList[0].id);
+  //     getCarLogInDetails(entryMonitoringList[0].id).finally(() => {
+  //       setLoadingInDetails(false); // 비동기 요청 완료
+  //     });
+  //   }
 
-    if (exitMonitoringList && latestCarId !== exitMonitoringList[0].id && !loadingOutDetails) {
-      setLoadingOutDetails(true); // 비동기 요청 시작
-      setLatestCarid(exitMonitoringList[0].id);
-      getCarLogOutDetails(exitMonitoringList[0].id).finally(() => {
-        setLoadingOutDetails(false); // 비동기 요청 완료
-      });
-    }
-  }, [entryMonitoringList, exitMonitoringList, latestCarId]);
+  //   if (exitMonitoringList && latestCarId !== exitMonitoringList[0].id && !loadingOutDetails) {
+  //     setLoadingOutDetails(true); // 비동기 요청 시작
+  //     setLatestCarid(exitMonitoringList[0].id);
+  //     getCarLogOutDetails(exitMonitoringList[0].id).finally(() => {
+  //       setLoadingOutDetails(false); // 비동기 요청 완료
+  //     });
+  //   }
+  // }, [entryMonitoringList, exitMonitoringList, latestCarId]);
 
   const inCardClickHandle = (id) => {
-    getCarLogInDetails(id);
+    getCarLogInDetails(id); // Fetch entry data on in-card click
   };
 
   const outCardClickHandle = (id) => {
-    getCarLogOutDetails(id);
+    getCarLogOutDetails(id); // Fetch exit data on out-card click
   };
+
+  // const inCardClickHandle = (entryId: number, exitId: number) => {
+  //   getCarLogs(entryId, exitId);
+  // };
+
+  // const outCardClickHandle = (id: number) => {
+  //   getCarLogs(id);
+  // };
+
+  // const getCarLogInDetails = async (id) => {
+  //   console.log(id, '입차');
+
+  //   try {
+  //     setLoading(true);
+  //     setCarLogOutDetails(null);
+  //     const response = await axios.get(`${carLogUrl}/${id}`, {
+  //       headers: {
+  //         Authorization: cookies.accessToken,
+  //       },
+  //     });
+  //     console.log('response.data.in :: ', response.data);
+  //     setCarLogInDetails(response.data); // Set the fetched details
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // const getCarLogOutDetails = async (id) => {
+  //   console.log(id, '출차');
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.get(`${carLogUrl}/${id}`, {
+  //       headers: {
+  //         Authorization: cookies.accessToken
+  //       }
+  //     });
+  //     console.log('response.data.out :: ', response.data);
+  //     setCarLogOutDetails(response.data);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+
+  // };
 
   const getCarLogInDetails = async (id) => {
     console.log(id, '입차');
 
     try {
       setLoading(true);
-      setCarLogOutDetails(null);
+      // Don't reset the out details here, just update the in details
       const response = await axios.get(`${carLogUrl}/${id}`, {
         headers: {
           Authorization: cookies.accessToken,
@@ -242,23 +366,25 @@ const Monitoring: React.FC = () => {
       setLoading(false);
     }
   };
+
   const getCarLogOutDetails = async (id) => {
     console.log(id, '출차');
+
     try {
       setLoading(true);
+      // Don't reset the in details here, just update the out details
       const response = await axios.get(`${carLogUrl}/${id}`, {
         headers: {
           Authorization: cookies.accessToken
         }
       });
-      console.log('response.data.in :: ', response.data);
-      setCarLogOutDetails(response.data);
+      console.log('response.data.out :: ', response.data);
+      setCarLogOutDetails(response.data); // Set the fetched details
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
-
   };
 
   // useEffect(() => {
@@ -309,7 +435,7 @@ const Monitoring: React.FC = () => {
   return (
     <DefaultLayout>
       <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
-        <div className='mx-auto max-w-screen-2xl p-5 mb-20'>
+        <div className='mx-auto max-w-screen-2xxl mb-20'>
           {/* <div className='flex justify-end font-medium mb-3'>최근 입출차 내역</div> */}
           {/* <Breadcrumb pageName="모니터링" rootPage="모니터링" /> */}
           <div className="flex flex-col gap-5 2xl:gap-5">
@@ -322,16 +448,16 @@ const Monitoring: React.FC = () => {
                     <div className='flex justify-between gap-7 items-center'>
                       {/* <div className='flex items-center justify-between gap-3'> */}
                       {/* <div className='flex flex-row gap-3 font-bold'> */}
-                      <div className='flex items-center gap-1'>
+                      <div className='flex items-center gap-2'>
                         <div className='text-3xl text-basicdark font-bold text-left'>입차</div>
-                        <div>
+                        {/* <div>
                           <img
                             src={Refresh}
                             className='h-5 w-5 cursor-pointer hover:scale-105 transition-transform'
                             onClick={getEntryMonitoringList}
                             alt='Refresh'
                           />
-                        </div>
+                        </div> */}
                       </div>
                       <div className='text-basicponint text-3xl font-bold'><span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogInDetails.inOutTime})</span>{carLogInDetails.vehicleNumber}</div>
                       {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
@@ -348,7 +474,7 @@ const Monitoring: React.FC = () => {
                     </div>
                     <div>
                       {carLogInDetails.files.length > 0 && (
-                        <img src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`} className='w-full h-[414px]' alt="car log detail" />
+                        <img src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`} className='w-full h-fit' alt="car log detail" />
                       )}
                     </div>
                   </>
@@ -360,16 +486,16 @@ const Monitoring: React.FC = () => {
                     <div className='flex justify-between gap-7 items-center'>
                       {/* <div className='flex flex-col gap-3'> */}
                       {/* <div className='flex flex-row gap-3 font-bold'> */}
-                      <div className='flex items-center gap-1'>
+                      <div className='flex items-center gap-2'>
                         <div className='text-3xl text-basicdark font-bold text-left'>출차</div>
-                        <div>
+                        {/* <div>
                           <img
                             src={Refresh}
                             className='h-5 w-5 cursor-pointer hover:scale-105 transition-transform'
                             onClick={getExitMonitoringList}
                             alt='Refresh'
                           />
-                        </div>
+                        </div> */}
                       </div>
                       <div className='text-basicponint text-3xl font-bold'><span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogOutDetails.inOutTime})</span>{carLogOutDetails.vehicleNumber}</div>
                       {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
@@ -386,7 +512,7 @@ const Monitoring: React.FC = () => {
                     </div>
                     <div>
                       {carLogOutDetails.files.length > 0 && (
-                        <img src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`} className='w-full h-[414px]' alt="car log detail" />
+                        <img src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`} className='w-full h-fit' alt="car log detail" />
                       )}
                     </div>
                   </>
@@ -430,6 +556,7 @@ const Monitoring: React.FC = () => {
                       </div>
                     </div>
                     <InOutCard monitoringList={entryMonitoringList} onClickHandle={inCardClickHandle} />
+                    {/* <InOutCard monitoringList={entryMonitoringList} onClickHandle={inCardClickHandle} /> */}
                   </>
                 ) : null}
               </div>
