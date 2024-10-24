@@ -191,7 +191,7 @@ const Car: React.FC = () => {
           value: '',
           editable: false,
           visable: false,
-          valueType: ValueType.Text
+          valueType: ValueType.SelectGroup
         };
         switch (k) {
           case 'apartmentId':
@@ -341,7 +341,7 @@ const Car: React.FC = () => {
 
   const convertValueToText = (value) => {
     switch (value) {
-      case 'ALLOY':
+      case 'ALLOw':
         return '허용';
       case 'DENY':
         return '금지';
