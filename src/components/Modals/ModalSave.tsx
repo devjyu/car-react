@@ -207,7 +207,7 @@ const ModalSave: React.FC = () => {
       case '/car':
         saveUrl = saveUrl + import.meta.env.VITE_CAR_ENDPOINT;
         willSaveData = {};
-        console.log(saveData, '값?');
+        // console.log(saveData, '값?');
 
         saveData.forEach((data) => {
           if (!data.optional && !data.value) {
