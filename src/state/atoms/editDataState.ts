@@ -7,7 +7,7 @@ export interface EditData {
     value: any,
     editable: boolean,
     visable: boolean,
-    selectGroupValues?: any,
+    selectGroupValues?: { label: string, value: any }[];
     valueType: ValueType
   }
 
