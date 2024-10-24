@@ -11,65 +11,24 @@ import ModalEdit from '../../components/Modals/ModalEdit';
 import ModalDelete from '../../components/Modals/ModalDelete';
 import DropdownSearch from '../../components/Dropdowns/DropdownSearch';
 import Refresh from '../../images/icon/refresh.png';
-// import ModalEdit from './ModalEdit'; // ModalEdit 컴포넌트 가져오기
-import { EditData } from '../../state/atoms/editDataState';
-import { ValueType } from '../../common/Enum/valueType';
 
 const CarDataTable = ({
   column,
   tableData,
   onSearch,
   editHandler,
-  deleteHandler,
+  deleteHandler
   // detailsHandler
-  onEditSubmit
 }) => {
 
-  // const columns = useMemo(() => column, []);
-  // const data = useMemo(() => tableData, [tableData]);
+  const columns = useMemo(() => column, []);
+  const data = useMemo(() => tableData, [tableData]);
 
   const [searchOptions, setSearchOptions] = useState([]);
   const [searchOption, setSearchOption] = useState({ key: 'number', value: '' });
   const [dateOption, setDateOption] = useState({ key: 'start', startValue: '', endValue: '' });
   const [allowDenyOption, setAllowDenyOption] = useState({ key: 'type', value: 'ALL' });
   const [expiredOption, setExpiredOption] = useState({ key: 'expire', value: 'true' });
-
-    // 테이블의 열 정의를 useMemo로 메모이제이션
-    const columns = useMemo(
-      () => [
-        {
-          Header: '차량번호',
-          accessor: 'vehicleNumber',
-        },
-        {
-          Header: '전화번호',
-          accessor: 'phone',
-        },
-        {
-          Header: '시작일자',
-          accessor: 'startDate',
-        },
-        {
-          Header: '종료일자',
-          accessor: 'endDate',
-        },
-        {
-          Header: '허용여부',
-          accessor: 'type',
-        },
-        {
-          Header: '수정',
-          accessor: 'edit',
-          Cell: ({ row }) => (
-            <button onClick={() => openEditModal(row.original)}>수정</button>
-          ),
-        },
-      ],
-      [] // 정적이므로 빈 배열로 메모이제이션
-    );
-  
-    // 테이블 데이터를 useMemo로 메모이제이션
-    const data = useMemo(() => tableData, [tableData]);
 
   const tableInstance = useTable(
     {
@@ -183,66 +142,6 @@ const CarDataTable = ({
   //     value: 'end'
   //   }
   // ];
-
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [currentEditData, setCurrentEditData] = useState<EditData[]>([]);
-
-  const openEditModal = (rowData) => {
-    const editData: EditData[] = [
-      {
-        key: 'vehicleNumber',
-        label: '차량번호',
-        value: rowData.vehicleNumber,
-        editable: true,
-        visable: true,
-        valueType: ValueType.Text,
-      },
-      {
-        key: 'phone',
-        label: '전화번호',
-        value: rowData.phone,
-        editable: true,
-        visable: true,
-        valueType: ValueType.Text,
-      },
-      {
-        key: 'startDate',
-        label: '시작일자',
-        value: rowData.startDate,
-        editable: true,
-        visable: true,
-        valueType: ValueType.Date,
-      },
-      {
-        key: 'endDate',
-        label: '종료일자',
-        value: rowData.endDate,
-        editable: true,
-        visable: true,
-        valueType: ValueType.Date,
-      },
-      {
-        key: 'type',
-        label: '허용여부',
-        value: rowData.type,
-        editable: true,
-        visable: true,
-        valueType: ValueType.SelectGroup,
-        selectGroupValues: [
-          { label: '허용', value: 'ALLOW' },
-          { label: '금지', value: 'DENY' },
-        ],
-      },
-    ];
-
-    setCurrentEditData(editData);
-    setModalOpen(true);
-  };
-
-  const handleEditSubmit = (updatedData) => {
-    onEditSubmit(updatedData); // 부모 컴포넌트에 수정된 데이터 전달
-    setModalOpen(false); // 모달 닫기
-  };
 
   const refresh = () => {
     window.location.reload();
@@ -473,17 +372,6 @@ const CarDataTable = ({
 
                 <td role='row' key={page.length + 1} onClick={() => editHandler(row.original['id'])}>
                   <ModalEdit />
-                  {/* <div> */}
-                    {/* 테이블이나 다른 요소들 */}
-                    {/* <button onClick={() => openEditModal(row)}>수정</button>
-                    <ModalEdit
-                      isOpen={isModalOpen}
-                      onClose={() => setModalOpen(false)}
-                      editData={currentEditData}
-                      onSubmit={handleEditSubmit}
-                    /> */}
-                  {/* </div> */}
-
                 </td>
 
                 <td role='row' key={page.length + 2}>
