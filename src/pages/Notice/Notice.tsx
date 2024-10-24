@@ -170,7 +170,7 @@ const Notice: React.FC = () => {
       });
       
       setEditData(apartmentEditData);
-      console.log(apartmentEditData, 'edit data');
+      // console.log(apartmentEditData, 'edit data');
     } catch (error) {
       console.error("Error fetching notice details for edit:", error);
     }
