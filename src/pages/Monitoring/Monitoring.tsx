@@ -49,10 +49,17 @@ const Monitoring: React.FC = () => {
   const [incameraId, setInCameraId] = useState<InCamera>()
   const [outcameraId, setOutCameraId] = useState<OutCamera>()
 
+  const [initialCarLogInDetails, setInitialCarLogInDetails] = useState<CarLogInDetails | null>(null);
+  const [initialCarLogOutDetails, setInitialCarLogOutDetails] = useState<CarLogOutDetails | null>(null);
+
   const [refreshTime, setRefreshTime] = useState<string>(formatYMDHMS(new Date()));
   const [latestCarId, setLatestCarid] = useState<number>(0);
   const [loadingInDetails, setLoadingInDetails] = useState(false);
   const [loadingOutDetails, setLoadingOutDetails] = useState(false);
+  const [manualInDetail, setManualInDetail] = useState(false);
+  const [manualOutDetail, setManualOutDetail] = useState(false);
+  const [selectedInLogId, setSelectedInLogId] = useState(null);
+  const [selectedOutLogId, setSelectedOutLogId] = useState(null);
 
 
   // const monitoringUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_MONITORING_ENDPOINT;
@@ -102,55 +109,56 @@ const Monitoring: React.FC = () => {
   // console.log(incameraId, '입차 카메라 id');
 
   const getEntryMonitoringList = async () => {
-    // const aa = 1
-    // console.log(`http://localhost:808/record/camera/${aa}/latest`, '입차 내역 주소');
-
     try {
       setLoading(true);
       const response = await axios.get(inUrl, {
-        // const response = await axios.get(`http://localhost:808/record/camera/${incameraId}/latest`, {
         headers: {
-          Authorization: cookies.accessToken
-          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
-        }
+          Authorization: cookies.accessToken,
+        },
       });
-      console.log(response.data, "입차 데이터");
-
+      // console.log(response.data, "입차 데이터");
       setEntryMonitoringList(response.data);
 
+      // Only update the inDetail if the user has not manually clicked an entry
+      if (!selectedInLogId) {
+        const latestEntryId = response.data[0]?.id;
+        if (latestEntryId) {
+          getCarLogInDetails(latestEntryId); // Automatically fetch latest if no manual click
+        }
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
       setRefreshTime(formatYMDHMS(new Date()));
     }
-  }
+  };
 
   const getExitMonitoringList = async () => {
-    // console.log(`http://localhost:808/record/camera/${outcameraId}/latest`, '출차 내역 주소');
-
     try {
       setLoading(true);
       const response = await axios.get(outUrl, {
-        // const res = await axios.get(`http://localhost:808/record/camera/${outcameraId}/latest`, {
         headers: {
-          Authorization: cookies.accessToken
-          // Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnc3N5MDAxIiwic2NvcGUiOiJNRU1CRVJfQVBBUlRNRU5UIiwiaXNzIjoibm9tYWRsYWIiLCJleHAiOjE3Mjc1Nzg3NDQsInR5cGUiOiJBQ0NFU1NfVE9LRU4ifQ.3XwrWUXh5nr_yNF_YI7LXTmwTjYdxPM8CV8mx1h5Nm8`, // 세 번째 인수로 headers 전달
-        }
+          Authorization: cookies.accessToken,
+        },
       });
-
-      console.log(response.data, "출차 데이터");
-
+      // console.log(response.data, "출차 데이터");
       setExitMonitoringList(response.data);
 
+      // Only update the outDetail if the user has not manually clicked an exit log
+      if (!selectedOutLogId) {
+        const latestExitId = response.data[0]?.id;
+        if (latestExitId) {
+          getCarLogOutDetails(latestExitId); // Automatically fetch the latest if no manual click
+        }
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
       setRefreshTime(formatYMDHMS(new Date()));
     }
-  }
-
+  };
   // 기존 입출차내역(5개)
   // const getMonitoringList = async () => {
   //   try {
@@ -174,17 +182,17 @@ const Monitoring: React.FC = () => {
 
 
   useEffect(() => {
-    getCameraList();
-    getEntryMonitoringList();
-    getExitMonitoringList();
-
     const intervalId = setInterval(() => {
-      getEntryMonitoringList();
-      getExitMonitoringList();
+      if (!manualInDetail) {
+        getEntryMonitoringList(); // Fetch 'in' data automatically
+      }
+      if (!manualOutDetail) {
+        getExitMonitoringList(); // Fetch 'out' data automatically
+      }
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [manualInDetail, manualOutDetail]); // Depend on both states
 
   // useEffect(() => {
   //   if (entryMonitoringList && exitMonitoringList) {
@@ -230,6 +238,9 @@ const Monitoring: React.FC = () => {
         setLatestCarid(latestEntryId);
         getCarLogInDetails(latestEntryId); // Fetch entry data
       }
+
+      // Immediately set the image when the entryMonitoringList is fetched
+      getCarLogInDetails(latestEntryId);
     }
 
     if (exitMonitoringList) {
@@ -240,6 +251,7 @@ const Monitoring: React.FC = () => {
         setLatestCarid(latestExitId);
         getCarLogOutDetails(latestExitId); // Fetch exit data
       }
+      getCarLogOutDetails(latestExitId);
     }
   }, [entryMonitoringList, exitMonitoringList]);
 
@@ -292,13 +304,14 @@ const Monitoring: React.FC = () => {
   //     });
   //   }
   // }, [entryMonitoringList, exitMonitoringList, latestCarId]);
-
   const inCardClickHandle = (id) => {
-    getCarLogInDetails(id); // Fetch entry data on in-card click
+    setSelectedInLogId(id); // Track the manually selected entry log
+    getCarLogInDetails(id); // Fetch the clicked entry details
   };
 
   const outCardClickHandle = (id) => {
-    getCarLogOutDetails(id); // Fetch exit data on out-card click
+    setSelectedOutLogId(id); // Track the manually selected exit log
+    getCarLogOutDetails(id); // Fetch the clicked exit details
   };
 
   // const inCardClickHandle = (entryId: number, exitId: number) => {
@@ -347,19 +360,34 @@ const Monitoring: React.FC = () => {
 
   // };
 
-  const getCarLogInDetails = async (id) => {
-    console.log(id, '입차');
+  useEffect(() => {
+    if (selectedInLogId) {
+      const timeoutId = setTimeout(() => setSelectedInLogId(null), 30000); // Reset after 30 seconds
+      return () => clearTimeout(timeoutId);
+    }
+  }, [selectedInLogId]);
 
+  useEffect(() => {
+    if (selectedOutLogId) {
+      const timeoutId = setTimeout(() => setSelectedOutLogId(null), 30000); // Reset after 30 seconds
+      return () => clearTimeout(timeoutId);
+    }
+  }, [selectedOutLogId]);
+
+  // Option 2: Add a button to reset manually for 'out'
+  const resetManualOutDetail = () => setManualOutDetail(false);
+
+  const getCarLogInDetails = async (id) => {
     try {
       setLoading(true);
-      // Don't reset the out details here, just update the in details
       const response = await axios.get(`${carLogUrl}/${id}`, {
-        headers: {
-          Authorization: cookies.accessToken,
-        },
+        headers: { Authorization: cookies.accessToken },
       });
-      console.log('response.data.in :: ', response.data);
-      setCarLogInDetails(response.data); // Set the fetched details
+      // console.log('response.data.in :: ', response.data);
+
+      if (!initialCarLogInDetails || response.data.id !== carLogInDetails?.id) {
+        setCarLogInDetails(response.data); // Update if details differ
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -368,24 +396,23 @@ const Monitoring: React.FC = () => {
   };
 
   const getCarLogOutDetails = async (id) => {
-    console.log(id, '출차');
-
     try {
       setLoading(true);
-      // Don't reset the in details here, just update the out details
       const response = await axios.get(`${carLogUrl}/${id}`, {
-        headers: {
-          Authorization: cookies.accessToken
-        }
+        headers: { Authorization: cookies.accessToken },
       });
-      console.log('response.data.out :: ', response.data);
-      setCarLogOutDetails(response.data); // Set the fetched details
+      // console.log('response.data.out :: ', response.data);
+
+      if (!initialCarLogOutDetails || response.data.id !== carLogOutDetails?.id) {
+        setCarLogOutDetails(response.data); // Update if details differ
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
+
 
   // useEffect(() => {
   //   getEntryMonitoringList();
@@ -443,79 +470,32 @@ const Monitoring: React.FC = () => {
               {/* <div className='rounded-lg bg-basicWhite shadow-md p-8 flex flex-col w-2/3 gap-5 h-fit'> */}
               {carLogInDetails ? (
                 <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-3 h-fit'>
-                  <>
-                    {/* {monitoringList.inOutType == "IN" ? ( */}
-                    <div className='flex justify-between gap-7 items-center'>
-                      {/* <div className='flex items-center justify-between gap-3'> */}
-                      {/* <div className='flex flex-row gap-3 font-bold'> */}
-                      <div className='flex items-center gap-2'>
-                        <div className='text-3xl text-basicdark font-bold text-left'>입차</div>
-                        {/* <div>
-                          <img
-                            src={Refresh}
-                            className='h-5 w-5 cursor-pointer hover:scale-105 transition-transform'
-                            onClick={getEntryMonitoringList}
-                            alt='Refresh'
-                          />
-                        </div> */}
-                      </div>
-                      <div className='text-basicponint text-3xl font-bold'><span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogInDetails.inOutTime})</span>{carLogInDetails.vehicleNumber}</div>
-                      {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
-                      {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
-                      {/* </div> */}
-                      {/* <div className='flex flex-row gap-3'> */}
-                      {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
-                      {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
-                      {/* </div> */}
-                      {/* </div> */}
-                      {/* <div className='w-80'>
-                      <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
-                    </div> */}
+                  <div className='flex justify-between gap-7 items-center'>
+                    <div className='text-3xl text-basicdark font-bold text-left'>입차</div>
+                    <div className='text-basicponint text-3xl font-bold'>
+                      <span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogInDetails.inOutTime})</span>
+                      {carLogInDetails.vehicleNumber}
                     </div>
-                    <div>
-                      {carLogInDetails.files.length > 0 && (
-                        <img src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`} className='w-full h-fit' alt="car log detail" />
-                      )}
-                    </div>
-                  </>
+                  </div>
+                  <div>
+                    {carLogInDetails.files.length > 0 && (
+                      <img src={`data:image/jpg;base64,${carLogInDetails.files[1].content}`} className='w-full h-fit' alt="car log detail" />
+                    )}
+                  </div>
                 </div>
               ) : null}
               {carLogOutDetails ? (
                 <div className='rounded-lg bg-basicWhite shadow-md p-5 flex flex-col w-1/2 gap-3 h-fit'>
-                  <>
-                    <div className='flex justify-between gap-7 items-center'>
-                      {/* <div className='flex flex-col gap-3'> */}
-                      {/* <div className='flex flex-row gap-3 font-bold'> */}
-                      <div className='flex items-center gap-2'>
-                        <div className='text-3xl text-basicdark font-bold text-left'>출차</div>
-                        {/* <div>
-                          <img
-                            src={Refresh}
-                            className='h-5 w-5 cursor-pointer hover:scale-105 transition-transform'
-                            onClick={getExitMonitoringList}
-                            alt='Refresh'
-                          />
-                        </div> */}
-                      </div>
-                      <div className='text-basicponint text-3xl font-bold'><span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogOutDetails.inOutTime})</span>{carLogOutDetails.vehicleNumber}</div>
-                      {/* <div className='text-2xl text-blue-600 font-bold text-left'>{convertTypeToString(carLogDetails.type)}</div> */}
-                      {/* <div className='w-40 text-2xl'>{carLogDetails.vehicleNumber}</div> */}
-                      {/* </div> */}
-                      {/* <div className='flex flex-row gap-3'> */}
-                      {/* <div className='text-2xl text-green-700'>입/출차 시각</div> */}
-                      {/* <div className='text-md text-deactivatetxt'>{carLogDetails.inOutTime}</div> */}
-                      {/* </div> */}
-                      {/* </div> */}
-                      {/* <div className='w-80'>
-                      <img src={`data:image/jpg;base64,${carLogDetails.files[0].content}`} className='w-full h-20'></img>
-                    </div> */}
+                  <div className='flex justify-between gap-7 items-center'>
+                    <div className='text-3xl text-basicdark font-bold text-left'>출차</div>
+                    <div className='text-basicponint text-3xl font-bold'>
+                      <span className='mr-2 text-lg font-medium text-deactivatetxt'>({carLogOutDetails.inOutTime})</span>
+                      {carLogOutDetails.vehicleNumber}
                     </div>
-                    <div>
-                      {carLogOutDetails.files.length > 0 && (
-                        <img src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`} className='w-full h-fit' alt="car log detail" />
-                      )}
-                    </div>
-                  </>
+                  </div>
+                  {carLogOutDetails.files.length > 0 && (
+                    <img src={`data:image/jpg;base64,${carLogOutDetails.files[1].content}`} className='w-full h-fit' alt="car log detail" />
+                  )}
                 </div>
               ) : null}
               {/* <div className='rounded-sm border border-stroke bg-white shadow-default w-1/3 p-8 flex flex-col items-center gap-5 h-fit'> */}
@@ -544,7 +524,7 @@ const Monitoring: React.FC = () => {
                 {entryMonitoringList ? (
                   <>
                     <div className='flex justify-start items-end w-full'>
-                      <div className='text-lg font-bold text-basicdark'>최근 입차 내역</div>
+                      <div className='text-lg font-bold text-basicdark'>최근 입차 내역<span  className='text-deactivatetxt text-xs'>(최근 입차 차량 5초마다 새로고침 됩니다.)</span></div>
                       <div className='ml-auto flex items-center gap-2'>
                         <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
                         <img
@@ -565,7 +545,7 @@ const Monitoring: React.FC = () => {
                 {exitMonitoringList ? (
                   <>
                     <div className='flex justify-between items-end w-full'>
-                      <div className='text-lg font-bold text-basicdark'>최근 출차 내역</div>
+                      <div className='text-lg font-bold text-basicdark'>최근 출차 내역<span  className='text-deactivatetxt text-xs'>(최근 출차 차량 5초마다 새로고침 됩니다.)</span></div>
                       <div className='ml-auto flex items-center gap-2'>
                         <div className='text-deactivatetxt text-sm'>{refreshTime}</div>
                         <img
