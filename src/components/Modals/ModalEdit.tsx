@@ -102,8 +102,8 @@ const ModalEdit: React.FC = () => {
           willUpdateData[data.key] = data.value;
         });
         break;
-    }
-
+      }
+      
     try {
       // console.log(willUpdateData, '전송할 데이터');
       const id = initialEditData.find(data => data.key === 'id').value;
@@ -111,7 +111,6 @@ const ModalEdit: React.FC = () => {
         headers: headers
       });
       if (response.status === 200) {
-        // alert('성공');
         // 업데이트된 데이터를 상태에 반영
         const updatedData = response.data;
         setEditableEditData(prevState =>
@@ -122,6 +121,7 @@ const ModalEdit: React.FC = () => {
             return data;
           })
         );
+        alert('성공');
         window.location.reload();
       } else {
         // alert('실패');
