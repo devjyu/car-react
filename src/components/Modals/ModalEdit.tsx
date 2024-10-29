@@ -57,6 +57,7 @@ const ModalEdit: React.FC = () => {
   const updateHandler = async () => {
     const pathname = location.pathname;
     let willUpdateData = {}; // Initialize willUpdateData here
+    
     let headers = {
       Authorization: cookies.accessToken
     };
@@ -81,8 +82,10 @@ const ModalEdit: React.FC = () => {
             // 데이터의 key는 vehicleNumber인데 postman에서 보면 통신을 할때 number로 보내야 함.
             if (data.key == 'vehicleNumber') {
               willUpdateData['number'] = data.value;
+              // console.log(willUpdateData, '들어갔을때1');
             } else {
               willUpdateData[data.key] = data.value;
+              // console.log(willUpdateData, '들어갔을때2');
             }
           }
         });
