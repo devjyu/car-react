@@ -56,86 +56,152 @@ const ModalEdit: React.FC = () => {
 
   const updateHandler = async () => {
     const pathname = location.pathname;
-    let willUpdateData = {}; // Initialize willUpdateData here
-    
+    let willUpdateData = {};
+  
     let headers = {
-      Authorization: cookies.accessToken
+      Authorization: cookies.accessToken,
     };
+  
     let updateUrl = import.meta.env.VITE_BASE_URL;
     switch (pathname) {
-      case '/admin/apartment':
-        updateUrl = updateUrl + import.meta.env.VITE_APARTMENT_ENDPOINT;
-        break;
-      case '/apartment/unit':
-        updateUrl = updateUrl + import.meta.env.VITE_APARTMENT_UNIT_ENDPOINT;
-        break;
-      case '/device':
-        updateUrl = updateUrl + import.meta.env.VITE_DEVICE_ENDPOINT;
-        break;
       case '/car':
         updateUrl = updateUrl + import.meta.env.VITE_CAR_ENDPOINT;
-        // console.log(editableEditData, '뭐임?');
-        
         editableEditData.forEach((data) => {
-          if (['vehicleNumber', 'purpose', 'phone', 'startDate', 'endDate', 'type'].includes(data.key)) {
-            // 시간이 없어서 임의로 급하게 넣은 것 => 보시면 제대로 수정바람
-            // 데이터의 key는 vehicleNumber인데 postman에서 보면 통신을 할때 number로 보내야 함.
-            if (data.key == 'vehicleNumber') {
+          if (
+            ['vehicleNumber', 'purpose', 'phone', 'startDate', 'endDate', 'type', 'allowDenyGroup'].includes(data.key)
+          ) {
+            if (data.key === 'vehicleNumber') {
               willUpdateData['number'] = data.value;
-              // console.log(willUpdateData, '들어갔을때1');
+            } else if (data.key === 'allowDenyGroup') {
+              willUpdateData['groupType'] = data.value; // Assuming 'groupType' is the correct key for the backend
             } else {
               willUpdateData[data.key] = data.value;
-              // console.log(willUpdateData, '들어갔을때2');
             }
           }
         });
         break;
-      case '/notice':
-        updateUrl = updateUrl + import.meta.env.VITE_NOTICE_ENDPOINT;
-        // Extract only the required fields
-        editableEditData.forEach((data) => {
-          if (['title', 'content'].includes(data.key)) {
-            willUpdateData[data.key] = data.value;
-          }
-        });
-        break;
+  
       default:
-        // Populate willUpdateData with all fields for other cases
         editableEditData.forEach((data) => {
           willUpdateData[data.key] = data.value;
         });
         break;
-      }
-      
+    }
+  
     try {
-      // console.log(willUpdateData, '전송할 데이터');
-      const id = initialEditData.find(data => data.key === 'id').value;
+      const id = initialEditData.find((data) => data.key === 'id').value;
       const response = await axios.put(`${updateUrl}/${id}`, willUpdateData, {
-        headers: headers
+        headers: headers,
       });
+  
       if (response.status === 200) {
-        // 업데이트된 데이터를 상태에 반영
         const updatedData = response.data;
-        setEditableEditData(prevState =>
-          prevState.map(data => {
+  
+        // Update the state with the response to reflect changes
+        setEditableEditData((prevState) =>
+          prevState.map((data) => {
             if (data.key in updatedData) {
               return { ...data, value: updatedData[data.key] };
             }
             return data;
           })
         );
-        alert('성공');
-        window.location.reload();
+  
+        alert('Update successful');
+        window.location.reload(); // Ensures a full reload to reflect changes
       } else {
-        // alert('실패');
-        console.error('저장 실패:', response.statusText);
+        console.error('Update failed:', response.statusText);
       }
     } catch (error) {
-      console.error('Fetch 에러:', error);
+      console.error('Error during update:', error);
     } finally {
       closeModal();
     }
   };
+
+
+  // const updateHandler = async () => {
+  //   const pathname = location.pathname;
+  //   let willUpdateData = {}; // Initialize willUpdateData here
+    
+  //   let headers = {
+  //     Authorization: cookies.accessToken
+  //   };
+  //   let updateUrl = import.meta.env.VITE_BASE_URL;
+  //   switch (pathname) {
+  //     case '/admin/apartment':
+  //       updateUrl = updateUrl + import.meta.env.VITE_APARTMENT_ENDPOINT;
+  //       break;
+  //     case '/apartment/unit':
+  //       updateUrl = updateUrl + import.meta.env.VITE_APARTMENT_UNIT_ENDPOINT;
+  //       break;
+  //     case '/device':
+  //       updateUrl = updateUrl + import.meta.env.VITE_DEVICE_ENDPOINT;
+  //       break;
+  //     case '/car':
+  //       updateUrl = updateUrl + import.meta.env.VITE_CAR_ENDPOINT;
+  //       // console.log(editableEditData, '뭐임?');
+        
+  //       editableEditData.forEach((data) => {
+  //         if (['vehicleNumber', 'purpose', 'phone', 'startDate', 'endDate', 'type'].includes(data.key)) {
+  //           // 시간이 없어서 임의로 급하게 넣은 것 => 보시면 제대로 수정바람
+  //           // 데이터의 key는 vehicleNumber인데 postman에서 보면 통신을 할때 number로 보내야 함.
+  //           if (data.key == 'vehicleNumber') {
+  //             willUpdateData['number'] = data.value;
+  //             // console.log(willUpdateData, '들어갔을때1');
+  //           } else {
+  //             willUpdateData[data.key] = data.value;
+  //             // console.log(willUpdateData, '들어갔을때2');
+  //           }
+  //         }
+  //       });
+  //       break;
+  //     case '/notice':
+  //       updateUrl = updateUrl + import.meta.env.VITE_NOTICE_ENDPOINT;
+  //       // Extract only the required fields
+  //       editableEditData.forEach((data) => {
+  //         if (['title', 'content'].includes(data.key)) {
+  //           willUpdateData[data.key] = data.value;
+  //         }
+  //       });
+  //       break;
+  //     default:
+  //       // Populate willUpdateData with all fields for other cases
+  //       editableEditData.forEach((data) => {
+  //         willUpdateData[data.key] = data.value;
+  //       });
+  //       break;
+  //     }
+      
+  //   try {
+  //     // console.log(willUpdateData, '전송할 데이터');
+  //     const id = initialEditData.find(data => data.key === 'id').value;
+  //     const response = await axios.put(`${updateUrl}/${id}`, willUpdateData, {
+  //       headers: headers
+  //     });
+  //     if (response.status === 200) {
+  //       // 업데이트된 데이터를 상태에 반영
+  //       const updatedData = response.data;
+  //       setEditableEditData(prevState =>
+  //         prevState.map(data => {
+  //           if (data.key in updatedData) {
+  //             return { ...data, value: updatedData[data.key] };
+  //           }
+  //           return data;
+  //         })
+  //       );
+  //       alert('성공');
+  //       window.location.reload();
+  //     } else {
+  //       // alert('실패');
+  //       console.error('저장 실패:', response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Fetch 에러:', error);
+  //   } finally {
+  //     closeModal();
+  //   }
+  // };
 
   return (
     <div>
